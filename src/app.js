@@ -1,8 +1,8 @@
 var fs = require('fs');
 var dao = require('./dao');
 
-dao.getCredentials()
- 
+dao.connect()
+
 var http = require('http').createServer(function handler(req, res) {
   fs.readFile(__dirname + '/views/index.html', function(err, data) {
     if (err) {
