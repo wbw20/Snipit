@@ -1,2 +1,7 @@
-h1 'Snipit'
-div 'everything you live about social videos'
+html ->
+  head ->
+    link rel: 'stylesheet', type: 'text/css', href: 'style.css'
+
+  body ->
+    h1 'Snipit'
+    div class: 'block', 'everything you love about social videos'

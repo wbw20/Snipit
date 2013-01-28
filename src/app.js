@@ -5,6 +5,7 @@ var models = require('./models');
 
 var app = express();
 app.engine('coffee', require('coffeecup').__express);
+app.use(express.static(__dirname + '/static'));
 
 app.get('/', function(req, res) {
   res.render(__dirname + '/views/index.coffee');
