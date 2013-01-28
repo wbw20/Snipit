@@ -6,16 +6,17 @@ var models = require('./models');
 var app = express();
 app.engine('coffee', require('coffeecup').__express);
 
-//dao.init();
-models.User.sync().success(function() {
-var will = models.User.build({
-  name: 'Tom',
-  id: 'dsdgfddsfds'
-}).save();
-});
-
 app.get('/', function(req, res) {
   res.render(__dirname + '/views/index.coffee');
+});
+
+app.get('/new', function(req, res) {
+  var will = models.User.build({
+    name: 'Will',
+    id: 'dsdgfddsfds'
+  }).save();
+
+  res.render(__dirname + '/views/new.coffee');
 });
 
 app.listen(8080);
