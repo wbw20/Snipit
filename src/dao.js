@@ -1,22 +1,9 @@
 var fs = require('fs'),
-    persist = require('persist');
+    Sequelize = require('sequelize');
 
 module.exports = {
-    save : function(model) {
- 
-        persist.runSql('SELECT * FROM user');
-
-        var connection = persist.connect({
-              driver: 'mysql',
-              database: 'snipit',
-              password: 'wetw179#',
-              debug: true
-            }, function(err, conn){
-                if(err) { next(err); return; }
-                console.log(conn)
-                model.save(conn, function() {
-                console.log('save successful');
-            });
-        });
-    }
+  connection : new Sequelize('snipit', 'root', 'wetw179#', {
+    host: 'localhost',
+    port: 3306
+  })
 }

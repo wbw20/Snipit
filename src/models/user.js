@@ -1,13 +1,8 @@
-var persist = require('persist');
-var type = persist.type;
+var Sequalize = require('sequelize');
+var connection = require('../dao').connection;
 
-module.exports = User = persist.define('User', {
-        'id'        : { type: type.STRING },
-        'name'      : { type: type.STRING },
-        'age'       : { type: type.INTEGER },
-        'photo'     : { type: type.BLOB }// BLOB/BINARY
+module.exports = User = connection.define('user', {
+        id        : { type: Sequalize.STRING },
+        name      : { type: Sequalize.STRING },
+        age       : { type: Sequalize.INTEGER }
 });
-
-User.onSave = function(obj, connection, callback) {
-  console.log('SAVING!');
-}
