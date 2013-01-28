@@ -1,0 +1,7 @@
+mysql> exit
+mysql> SET GLOBAL log_output = "FILE";
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SET GLOBAL general_log_file = "/path/to/your/logfile.log"
+    -> Ctrl-C -- exit!
+Aborted
