@@ -1,15 +1,15 @@
 html ->
   head ->
     link rel: 'stylesheet', type: 'text/css', href: 'style.css'
+    link rel: 'stylesheet', type: 'text/css', href: 'dijit/themes/claro/claro.css'
     script src: 'dojo/dojo.js'
 
-  body ->
+  body class: 'claro', ->
     img src: 'logo.jpg'
-    div class: 'block', 'data-dojo-id': 'search', 'data-dojo-type': 'dijit/form/Form', encType: 'multipart/form-data', action: '', method: '', ->
-      input type: 'text', name: 'search', id: 'search', 'data-dojo-type': 'dijit/form/ValidationTextBox', required: 'true'
+    div class: 'block', id: 'searchContainer', ->
       coffeescript ->
-        require ["dojo/parser", "dijit/form/Form", "dijit/form/Button", "dijit/form/ValidationTextBox", "dijit/form/DateTextBox"]
-      coffeescript ->
-        require 'dojo/ready', (ready) ->
+        require ['dojo/ready', 'dijit/form/TextBox'], (ready) ->
           ready () ->
-            alert 'yay'
+            dojo.addOnLoad () ->
+              searchBox = new dijit.form.TextBox
+              (dojo.byId 'searchContainer').appendChild searchBox.domNode
