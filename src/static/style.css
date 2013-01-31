@@ -1,7 +1,40 @@
 body {
   background-color: #C6E2FF;
+  font-family: Arial,sans-serif;
   text-align: center;
-},
+}
 div.block {
-  background-color: #00B2EE;
+}
+div.bar {
+  position: fixed;
+  height: 37px;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-color: #000000;
+}
+div.loginBox {
+  color: #9AB8E4;
+  font-weight: bold;
+  display: inline-block;
+  height: 31px;
+  width: 140px;
+  line-height: 29px;
+  position: relative;
+  top: 5px;
+  left: 540px;
+  vertical-align: top;
+}
+span.login {
+  padding-left: 5px;
+}
+div.loginDropdown {
+  position: relative;
+  left: 10px;
+  height: 110px;
+  width: 150%;
+  background-color: white;
+}
+.hidden {
+  display: none;
 }
