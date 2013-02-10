@@ -22,7 +22,7 @@ div.loginBox {
   line-height: 29px;
   position: relative;
   top: 5px;
-  left: 540px;
+  left: 30%;
   vertical-align: top;
 }
 span.login {
@@ -30,6 +30,7 @@ span.login {
 }
 div.loginDropdown {
   position: relative;
+  top: 4px;
   left: 10px;
   height: 110px;
   width: 150%;
