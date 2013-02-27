@@ -13,7 +13,7 @@ app.get('/', function(req, res) {
 
 app.get('/new', function(req, res) {
   var will = models.User.build({
-    name: 'Will',
+    name: 'Will Wettersten',
     id: 'dsdgfddsfds'
   }).save();
 

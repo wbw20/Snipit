@@ -8,24 +8,33 @@ html ->
     div class: 'bar', ->
       div class: 'loginBox', ->
         div 'data-dojo-type': 'dijit/form/DropDownButton', ->
-          span 'Sign In'
-          div 'data-dojo-type': 'dijit/TooltopDialog', ->
-            input 'data-dojo-type': 'dijit/form/TextBox'
-            button 'data-dojo-type': 'dijit/form/Button', type: 'submit'
-        span id: 'signup', '  Sign Up'
+          div id: 'signinBox'
+          div id: 'signupBox'
         div id: 'signupDropdown', class: 'hidden loginDropdown'
       coffeescript ->
-        signUp = dojo.byId 'signup'
+        require ['dijit/DropDownMenu', 'dijit/form/TextBox', 'dijit/form/DropDownButton'],
+        (DropDownMenu, TextBox, DropDownButton) ->
+          menu = new DropDownMenu { style: "display: none;"}
+          username = new TextBox
+          menu.addChild username
 
-        dojo.connect signUp, 'onclick', (event) ->
-          dojo.toggleClass 'signupDropdown', 'hidden'
+          password = new TextBox
+          menu.addChild password
+
+          button = new DropDownButton {
+              label: "Sign In",
+              name: "signInButton",
+              dropDown: menu,
+              id: "progButton"
+          }
+          dojo.byId('signinBox').appendChild button.domNode
 
     div name: 'spacer', style: 'height: 50px'
     img src: 'logo.jpg'
     div class: 'block', id: 'searchContainer', ->
       coffeescript ->
-        require ['dojo/ready', 'dijit/form/TextBox', 'dijit/form/DropDownButton', 'dijit/TooltipDialog'], (ready) ->
+        require ['dojo/ready', 'dijit/form/TextBox'], (ready, TextBox) ->
           ready () ->
             dojo.addOnLoad () ->
-              searchBox = new dijit.form.TextBox
+              searchBox = new TextBox
               (dojo.byId 'searchContainer').appendChild searchBox.domNode
