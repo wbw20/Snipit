@@ -9,39 +9,20 @@ html ->
       div class: 'loginBox', ->
         div class: 'loginDropdown', id: 'signinBox'
         div class: 'loginDropdown', id: 'signupBox'
-
       coffeescript ->
-        require ['dijit/DropDownMenu', 'dijit/form/TextBox', 'dijit/form/DropDownButton'],
-        (DropDownMenu, TextBox, DropDownButton) ->
-          signinmenu = new DropDownMenu { style: "display: none;"}
-          username = new TextBox
-          signinmenu.addChild username
+        require ['dojo/ready', 'dojo/parser', 'dijit/form/TextBox', 'dijit/form/DropDownButton', 'dijit/TooltipDialog'], (ready, parser, TextBox, Button, Dialog) ->
+          ready () ->
+            signinDialog = new Dialog {
+              content: '<label for="username">userame:</label> <input data-dojo-type="dijit/form/TextBox" id="username" name="username"><br><br>' +
+                       '<label for="password">password:</label> <input data-dojo-type="dijit/form/TextBox" id="password" name="password">'
+            }
 
-          password = new TextBox
-          signinmenu.addChild password
+            button = new Button {
+              label: 'Sign In'
+              dropDown: signinDialog
+            }
 
-          button = new DropDownButton {
-              label: "Sign In",
-              name: "signInButton",
-              dropDown: signinmenu,
-              id: "progButton"
-          }
-          dojo.byId('signupBox').appendChild button.domNode
-
-          signupmenu = new DropDownMenu { style: "display: none;"}
-          username = new TextBox
-          signupmenu.addChild username
-
-          password = new TextBox
-          signupmenu.addChild password
-
-          button = new DropDownButton {
-              label: "Sign Up",
-              name: "signUpButton",
-              dropDown: signupmenu,
-              id: "signUpButton"
-          }
-          dojo.byId('signinBox').appendChild button.domNode
+            (dojo.byId 'signinBox').appendChild button.domNode
 
     div name: 'spacer', style: 'height: 50px'
     img src: 'logo.jpg'
