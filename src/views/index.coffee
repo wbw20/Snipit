@@ -7,25 +7,39 @@ html ->
   body class: 'claro', ->
     div class: 'bar', ->
       div class: 'loginBox', ->
-        div 'data-dojo-type': 'dijit/form/DropDownButton', ->
-          div id: 'signinBox'
-          div id: 'signupBox'
-        div id: 'signupDropdown', class: 'hidden loginDropdown'
+        div class: 'loginDropdown', id: 'signinBox'
+        div class: 'loginDropdown', id: 'signupBox'
+
       coffeescript ->
         require ['dijit/DropDownMenu', 'dijit/form/TextBox', 'dijit/form/DropDownButton'],
         (DropDownMenu, TextBox, DropDownButton) ->
-          menu = new DropDownMenu { style: "display: none;"}
+          signinmenu = new DropDownMenu { style: "display: none;"}
           username = new TextBox
-          menu.addChild username
+          signinmenu.addChild username
 
           password = new TextBox
-          menu.addChild password
+          signinmenu.addChild password
 
           button = new DropDownButton {
               label: "Sign In",
               name: "signInButton",
-              dropDown: menu,
+              dropDown: signinmenu,
               id: "progButton"
+          }
+          dojo.byId('signupBox').appendChild button.domNode
+
+          signupmenu = new DropDownMenu { style: "display: none;"}
+          username = new TextBox
+          signupmenu.addChild username
+
+          password = new TextBox
+          signupmenu.addChild password
+
+          button = new DropDownButton {
+              label: "Sign Up",
+              name: "signUpButton",
+              dropDown: signupmenu,
+              id: "signUpButton"
           }
           dojo.byId('signinBox').appendChild button.domNode
 

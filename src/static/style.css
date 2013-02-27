@@ -18,7 +18,7 @@ div.loginBox {
   font-weight: bold;
   display: inline-block;
   height: 31px;
-  width: 140px;
+  width: 200px;
   line-height: 29px;
   position: relative;
   top: 5px;
@@ -29,12 +29,7 @@ span.login {
   padding-left: 5px;
 }
 div.loginDropdown {
-  position: relative;
-  top: 4px;
-  left: 10px;
-  height: 110px;
-  width: 150%;
-  background-color: white;
+  float: left;
 }
 .hidden {
   display: none;
