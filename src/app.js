@@ -13,8 +13,13 @@ dao.connection.sync().failure(function(error) {
 });
 
 /* rsa keys */
-var privateKey = ursa.createPrivateKey(fs.readFileSync('../conf/id_rsa')); 
-var publicKey = ursa.createPublicKey(fs.readFileSync('../conf/id_rsa.pub'));
+try {
+  var privateKey = ursa.createPrivateKey(fs.readFileSync('../conf/id_rsa')); 
+  var publicKey = ursa.createPublicKey(fs.readFileSync('../conf/id_rsa.pub'));
+} catch (err) {
+  console.log('\nDo you have an rsa keypair in conf?');
+  throw err;
+}
 
 app.configure(function() {
 
