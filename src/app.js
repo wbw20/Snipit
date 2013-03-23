@@ -7,7 +7,10 @@ var Cookies = require('cookies');
 var dao = require('./dao');
 var models = require('./models');
 
+/* BEGIN MAIN ROUTINE */
+
 var app = express();
+dao.createForeignKeys(models);
 dao.connection.sync().failure(function(error) {
   console.log(error);
 });
@@ -25,12 +28,14 @@ app.configure(function() {
 
   /* our state of the art authentication filter */
   app.use(function(req, res, next) {
-    var cookie = new Cookies(req, res).get('login');
+    /*var cookie = new Cookies(req, res).get('login');
     console.log(cookie);
 
     if (cookie) {
       privateKey.decrypt(cookie, undefined, 'utf8');
     }
+
+*/
 
     next();
   });
