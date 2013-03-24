@@ -2,10 +2,13 @@ var fs = require('fs'),
     Sequelize = require('sequelize');
 
 module.exports = {
-  connection: new Sequelize('snipit', 'root', '', {
-    host: 'localhost',
-    port: 3306
-  }),
+  connection: (function(credentials) {
+      return new Sequelize('snipit', credentials.db.username, credentials.db.password, {
+        host: credentials.db.host,
+        port: credentials.db.password
+      })
+    }(JSON.parse(fs.readFileSync('../conf/properties.json').toString()))
+  ),
 
   createForeignKeys: function(models) {
     var User = models.User;
