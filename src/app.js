@@ -2,12 +2,15 @@ var coffeecup = require('coffeecup');
 var express = require('express');
 var crypto = require('crypto');
 var fs = require('fs');
-var ursa = require('ursa');
+//var ursa = require('ursa');
 var Cookies = require('cookies');
 var dao = require('./dao');
 var models = require('./models');
 
+/* BEGIN MAIN ROUTINE */
+
 var app = express();
+dao.createForeignKeys(models);
 dao.connection.sync().failure(function(error) {
   console.log(error);
 });
@@ -16,19 +19,18 @@ dao.connection.sync().failure(function(error) {
 var privateKey = fs.readFileSync('../conf/id_rsa', 'utf8'); 
 //var publicKey = ursa.createPublicKey(fs.readFileSync('../conf/id_rsa.pub', 'utf8'));
 
-console.log(privateKey);
-//console.log(publicKey);
-
 app.configure(function() {
 
   /* our state of the art authentication filter */
   app.use(function(req, res, next) {
-    var cookie = new Cookies(req, res).get('login');
+    /*var cookie = new Cookies(req, res).get('login');
     console.log(cookie);
 
     if (cookie) {
       privateKey.decrypt(cookie, undefined, 'utf8');
     }
+
+*/
 
     next();
   });
