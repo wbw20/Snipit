@@ -15,14 +15,9 @@ dao.connection.sync().failure(function(error) {
   console.log(error);
 });
 
-/* rsa keys
-try {
-  var privateKey = ursa.createPrivateKey(fs.readFileSync('../conf/id_rsa')); 
-  var publicKey = ursa.createPublicKey(fs.readFileSync('../conf/id_rsa.pub'));
-} catch (err) {
-  console.log('\nDo you have an rsa keypair in conf?');
-  throw err;
-}*/
+/* rsa keys */
+var privateKey = fs.readFileSync('../conf/id_rsa', 'utf8'); 
+//var publicKey = ursa.createPublicKey(fs.readFileSync('../conf/id_rsa.pub', 'utf8'));
 
 app.configure(function() {
 
