@@ -13,8 +13,11 @@ dao.connection.sync().failure(function(error) {
 });
 
 /* rsa keys */
-var privateKey = ursa.createPrivateKey(fs.readFileSync('../conf/id_rsa')); 
-var publicKey = ursa.createPublicKey(fs.readFileSync('../conf/id_rsa.pub'));
+var privateKey = fs.readFileSync('../conf/id_rsa', 'utf8'); 
+//var publicKey = ursa.createPublicKey(fs.readFileSync('../conf/id_rsa.pub', 'utf8'));
+
+console.log(privateKey);
+//console.log(publicKey);
 
 app.configure(function() {
 
