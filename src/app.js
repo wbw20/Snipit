@@ -2,7 +2,7 @@ var coffeecup = require('coffeecup');
 var express = require('express');
 var crypto = require('crypto');
 var fs = require('fs');
-//var ursa = require('ursa');
+var ursa = require('ursa');
 var Cookies = require('cookies');
 var dao = require('./dao');
 var models = require('./models');
@@ -16,26 +16,22 @@ dao.connection.sync().failure(function(error) {
 });
 
 /* rsa keys */
-var privateKey = fs.readFileSync('../conf/id_rsa', 'utf8'); 
-//var publicKey = ursa.createPublicKey(fs.readFileSync('../conf/id_rsa.pub', 'utf8'));
+var key = ursa.createPrivateKey(fs.readFileSync('../conf/id_rsa.pem', 'utf8')); 
 
 app.configure(function() {
 
   /* our state of the art authentication filter */
   app.use(function(req, res, next) {
-    /*var cookie = new Cookies(req, res).get('login');
-    console.log(cookie);
+    var cookie = new Cookies(req, res).get('login');
+    console.log('COOKIE: ' + cookie);
 
     if (cookie) {
-      privateKey.decrypt(cookie, undefined, 'utf8');
+      key.decrypt(cookie);
     }
-
-*/
 
     next();
   });
 
-  app.use(app.router);
   app.engine('coffee', require('coffeecup').__express);
   app.use(express.static(__dirname + '/static'));
   app.use(express.bodyParser());
@@ -64,7 +60,8 @@ app.post('/login', function (req, res) {
       }
     }).success(function(theUserWeFound) {
       if (theUserWeFound) {
-        var cookieHash = publicKey.encrypt(
+        console.log('USER: ' + theUserWeFound.username + ' ' + theUserWeFound.password);
+        var cookieHash = key.encrypt(
           new Buffer(theUserWeFound.username + theUserWeFound.password, 'utf8'));
         new Cookies(req, res).set('login', cookieHash);
         res.send(200); //authenticate the user
