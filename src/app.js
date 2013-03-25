@@ -1,8 +1,7 @@
 var coffeecup = require('coffeecup');
 var express = require('express');
-var crypto = require('crypto');
 var fs = require('fs');
-var ursa = require('ursa');
+var keygrip = require('keygrip')();
 var Cookies = require('cookies');
 var dao = require('./dao');
 var models = require('./models');
@@ -15,22 +14,23 @@ dao.connection.sync().failure(function(error) {
   console.log(error);
 });
 
-/* rsa keys */
-var password = JSON.parse(fs.readFileSync('../conf/properties.json').toString()).keys.password;
-var key = ursa.createPrivateKey(fs.readFileSync('../conf/id_rsa.pem', 'utf8'), password); 
-
 app.configure(function() {
-
   /* our state of the art authentication filter */
   app.use(function(req, res, next) {
-    var cookie = new Cookies(req, res).get('login');
-    console.log('COOKIE: ' + cookie);
+    var cookie = new Cookies(req, res, keygrip).get('login', {signed: true});
 
     if (cookie) {
-      key.decrypt(cookie);
+      models.User.find({
+        where: {
+          username: cookie.toString(),
+        }
+      }).success(function(foundUser) {
+        req.user = foundUser;
+        next();
+      });
+    } else {
+      next();
     }
-
-    next();
   });
 
   app.engine('coffee', require('coffeecup').__express);
@@ -39,7 +39,9 @@ app.configure(function() {
 });
 
 app.get('/', function(req, res) {
-  res.render(__dirname + '/views/index.coffee');
+  res.render(__dirname + '/views/index.coffee', {
+    user: req.user
+  });
 });
 
 app.get('/new', function(req, res) {
@@ -61,10 +63,7 @@ app.post('/login', function (req, res) {
       }
     }).success(function(theUserWeFound) {
       if (theUserWeFound) {
-        console.log('USER: ' + theUserWeFound.username + ' ' + theUserWeFound.password);
-        var cookieHash = key.encrypt(
-          new Buffer(theUserWeFound.username + theUserWeFound.password, 'utf8'));
-        new Cookies(req, res).set('login', cookieHash);
+        new Cookies(req, res, keygrip).set('login', req.body.username, {signed: true});
         res.send(200); //authenticate the user
       } else {
         res.send(401); //fuck 'em

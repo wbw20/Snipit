@@ -41,6 +41,7 @@ html ->
             (dojo.byId 'signinBox').appendChild button.domNode
 
     div name: 'spacer', style: 'height: 50px'
+    h1 'Hello ' + @user.username + '!' if @user?
     img src: 'logo.jpg'
     div class: 'block', id: 'searchContainer', ->
       coffeescript ->
