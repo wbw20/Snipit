@@ -16,7 +16,8 @@ dao.connection.sync().failure(function(error) {
 });
 
 /* rsa keys */
-var key = ursa.createPrivateKey(fs.readFileSync('../conf/id_rsa.pem', 'utf8')); 
+var password = JSON.parse(fs.readFileSync('../conf/properties.json').toString()).keys.password;
+var key = ursa.createPrivateKey(fs.readFileSync('../conf/id_rsa.pem', 'utf8'), password); 
 
 app.configure(function() {
 
