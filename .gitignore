@@ -1,4 +1,6 @@
 conf/
+temp/
+data/
 .idea/
 
 *database.json
