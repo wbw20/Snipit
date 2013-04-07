@@ -44,6 +44,12 @@ app.get('/', function(req, res) {
   });
 });
 
+app.get('/profile', function(req, res) {
+  res.render(__dirname + '/views/profile.coffee', {
+    user: req.user
+  });
+});
+
 app.get('/new', function(req, res) {
   var will = models.User.build({
     name: 'Will Wettersten',
