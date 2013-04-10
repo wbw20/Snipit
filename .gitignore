@@ -4,3 +4,5 @@ data/
 .idea/
 
 *database.json
+
+*.swp
