@@ -43,7 +43,10 @@ html ->
 
         # still within loginBox
         if @user
-          span "Hello, " + @user.username
+          span style: 'vertical-align: top;', ->
+            'hello, ' + @user.username
+          img src: 'icon.png'
+          div class: 'loginDropdown', id: 'logout'
 
     div name: 'spacer', style: 'height: 50px'
     img src: 'logo.jpg'
