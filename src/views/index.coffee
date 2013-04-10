@@ -41,8 +41,9 @@ html ->
 
               (dojo.byId 'signinBox').appendChild button.domNode
 
-    if @user
-      span "Hello, " + @user.username
+        # still within loginBox
+        if @user
+          span "Hello, " + @user.username
 
     div name: 'spacer', style: 'height: 50px'
     img src: 'logo.jpg'
