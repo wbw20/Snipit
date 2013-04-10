@@ -7,8 +7,11 @@ html ->
   body class: 'claro', ->
     div class: 'bar', ->
       div class: 'loginBox', ->
-        div class: 'loginDropdown', id: 'signinBox'
-        div class: 'loginDropdown', id: 'signupBox'
+        if !@user
+          div class: 'loginDropdown', id: 'signinBox'
+          div class: 'loginDropdown', id: 'signupBox'
+        else
+          span "Hello, " + @user.username
       coffeescript ->
         require ['dojo/ready', 'dojo/on', 'dojo/parser', 'dijit/form/TextBox', 'dijit/form/Button', 'dijit/form/DropDownButton', 'dijit/TooltipDialog'], (ready, dojon, parser, TextBox, Button, DropDownButton, Dialog) ->
           ready () ->
@@ -41,7 +44,6 @@ html ->
             (dojo.byId 'signinBox').appendChild button.domNode
 
     div name: 'spacer', style: 'height: 50px'
-    h1 'Hello ' + @user.username + '!' if @user?
     img src: 'logo.jpg'
     div class: 'block', id: 'searchContainer', ->
       coffeescript ->
