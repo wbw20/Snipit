@@ -12,7 +12,7 @@ html ->
           div class: 'loginDropdown', id: 'signupBox'
           coffeescript ->
             require ['dojo/ready', 'dojo/on', 'dojo/parser', 'dijit/form/TextBox', 'dijit/form/Button', 'dijit/form/DropDownButton', 'dijit/TooltipDialog'], (ready, dojon, parser, TextBox, Button, DropDownButton, Dialog) ->
-            ready () ->
+              ready () ->
               signinDialog = new Dialog {
                 content: '<form id="signinform">' +
                            '<label for="username">userame:</label> <input type="text" data-dojo-type="dijit/form/TextBox" id="username" name="username"><br><br>' +
