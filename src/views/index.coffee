@@ -7,7 +7,7 @@ html ->
   body class: 'claro', ->
     div class: 'bar', ->
       div class: 'loginBox', ->
-        if !@user
+        unless @user
           div class: 'loginDropdown', id: 'signinBox'
           div class: 'loginDropdown', id: 'signupBox'
           coffeescript ->
@@ -45,8 +45,24 @@ html ->
         if @user
           span style: 'vertical-align: top;', ->
             'hello, ' + @user.username
-          img src: 'icon.png'
-          div class: 'loginDropdown', id: 'logout'
+          img id: 'icon', src: 'icon.png'
+
+          coffeescript ->
+            require ['dojo/ready', 'dijit/TooltipDialog', 'dijit/popup', 'dojo/on', 'dojo/dom'], (ready, TooltipDialog, popup, dojon, dom) ->
+              ready () ->
+                iconDialog = new TooltipDialog {
+                  id: 'iconDialog',
+                  style: 'width: 300px;',
+                  content: 'put logout button here',
+                  onMouseLeave: () ->
+                    popup.close iconDialog
+                }
+
+                dojon (dom.byId 'icon'), 'mouseover', () ->
+                  popup.open {
+                    popup: iconDialog,
+                    around: (dom.byId 'icon')
+                  }
 
     div name: 'spacer', style: 'height: 50px'
     img src: 'logo.jpg'
