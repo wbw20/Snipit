@@ -84,10 +84,15 @@ html ->
                   searchBox = new TextBox
                   domstyle.set searchBox.domNode, 'width', '30em'
                   (dojo.byId 'searchContainer').appendChild searchBox.domNode
-      coffeescript ->
-        require ['dojo/dom-construct'], (dom) ->
-          sections = ['Popular', 'Recent', 'Our Favorites']
-          for section in sections
-            sectionNode = dojo.create 'section', {name: section}
-            dojo.place sectionNode, (dojo.byId 'main'), 'last'
-            
+      sections = [{
+                    name: 'Popular'
+                  }, {
+                    name: 'Recent'
+                  }, {
+                    name: 'Our Favorites'
+                  }]
+      div name: 'spacer', style: 'height: 60px'
+      for sec in sections
+        section name: sec.name, ->
+          div name: 'spacer', style: 'height: 40px'
+          div class: 'videobar'

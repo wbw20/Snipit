@@ -40,6 +40,13 @@ div.main {
   height: 100%;
   margin: 0 auto;
 }
+div.videobar {
+  width: 80%;
+  height: 200px;
+  background-color: #DBDBDB;
+  margin: 0 auto;
+  border: 2px solid #B8CCFF;
+}
 .hidden {
   display: none;
 }
