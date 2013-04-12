@@ -25,10 +25,11 @@ html ->
                     dojo.xhrPost {
                       url: 'login',
                       form: (dojo.byId 'signinform'),
-                      handleAs: 'application/json',
                       load: (data) ->
-                        if data['status'] = 401
-                          console.log 'FAIL',
+                        if data == 'invalid login'
+                          console.log 'FAIL'
+                        else
+                          location.reload(true)
                       error: (error) ->
                         console.log error
                     }

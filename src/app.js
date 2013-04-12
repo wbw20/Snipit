@@ -72,6 +72,7 @@ app.post('/login', function (req, res) {
         new Cookies(req, res, keygrip).set('login', req.body.username, {signed: true});
         res.send(200); //authenticate the user
       } else {
+        res.send('invalid login');
         res.send(401);//or don't
       }
     });
