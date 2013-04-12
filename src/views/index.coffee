@@ -68,16 +68,19 @@ html ->
                   }
 
     div class: 'main', ->
-      div name: 'spacer', style: 'height: 50px'
-      img src: 'logo.jpg'
-      div class: 'block', id: 'searchContainer', ->
-        coffeescript ->
-          require ['dojo/ready', 'dijit/form/TextBox'], (ready, TextBox) ->
-            ready () ->
-              dojo.addOnLoad () ->
-                dojoConfig = {
-                  baseUrl: 'localhost:8080'
-                }
+      section name: 'search', ->
+        div name: 'spacer', style: 'height: 50px'
+        img src: 'logo.jpg'
+        div name: 'spacer', style: 'height: 20px'
+        div class: 'block', id: 'searchContainer', ->
+          coffeescript ->
+            require ['dojo/ready', 'dojo/dom-style', 'dijit/form/TextBox'], (ready, domstyle,  TextBox) ->
+              ready () ->
+                dojo.addOnLoad () ->
+                  dojoConfig = {
+                    baseUrl: 'localhost:8080'
+                  }
 
-                searchBox = new TextBox
-                (dojo.byId 'searchContainer').appendChild searchBox.domNode
+                  searchBox = new TextBox
+                  domstyle.set searchBox.domNode, 'width', '30em'
+                  (dojo.byId 'searchContainer').appendChild searchBox.domNode
