@@ -17,7 +17,7 @@ html ->
                 content: '<form id="signinform">' +
                            '<label for="username">userame:</label> <input type="text" data-dojo-type="dijit/form/TextBox" id="username" name="username"><br><br>' +
                            '<label for="password">password:</label> <input type="text" data-dojo-type="dijit/form/TextBox" id="password" name="password">' +
-                           '<button id="signinsubmit" type="submit" data-dojo-type="dijit/form/Button">Save</button>' +
+                           '<button id="signinsubmit" type="submit" data-dojo-type="dijit/form/Button">Login</button>' +
                          '</form>'
                 onOpen: () ->
                   dojo.connect (dojo.byId 'signinform'), "onsubmit", (event) ->
