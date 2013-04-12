@@ -67,7 +67,7 @@ html ->
                     around: (dom.byId 'icon')
                   }
 
-    div class: 'main', ->
+    div id: 'main', class: 'main', ->
       section name: 'search', ->
         div name: 'spacer', style: 'height: 50px'
         img src: 'logo.jpg'
@@ -84,3 +84,10 @@ html ->
                   searchBox = new TextBox
                   domstyle.set searchBox.domNode, 'width', '30em'
                   (dojo.byId 'searchContainer').appendChild searchBox.domNode
+      coffeescript ->
+        require ['dojo/dom-construct'], (dom) ->
+          sections = ['Popular', 'Recent', 'Our Favorites']
+          for section in sections
+            sectionNode = dojo.create 'section', {name: section}
+            dojo.place sectionNode, (dojo.byId 'main'), 'last'
+            
