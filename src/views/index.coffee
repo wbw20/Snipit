@@ -53,7 +53,9 @@ html ->
                 iconDialog = new TooltipDialog {
                   id: 'iconDialog',
                   style: 'width: 300px;',
-                  content: 'put logout button here',
+                  content: '<form action="logout">' +
+                              '<button id="logoutsubmit" type="submit" data-dojo-type="dijit/form/Button">Log out</button>' +
+                            '</form>',
                   onMouseLeave: () ->
                     popup.close iconDialog
                 }

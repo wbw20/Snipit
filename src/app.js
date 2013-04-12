@@ -77,4 +77,14 @@ app.post('/login', function (req, res) {
     });
 });
 
+app.get('/logout', function (req, res) {
+    var cookies = new Cookies(req, res, keygrip);
+    cookies.set('login', 'wbw20', {
+      overwrite: true,
+      expires: new Date()
+    });
+
+    return res.redirect('/');
+});
+
 app.listen(8080);
