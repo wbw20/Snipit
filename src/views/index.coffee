@@ -67,16 +67,17 @@ html ->
                     around: (dom.byId 'icon')
                   }
 
-    div name: 'spacer', style: 'height: 50px'
-    img src: 'logo.jpg'
-    div class: 'block', id: 'searchContainer', ->
-      coffeescript ->
-        require ['dojo/ready', 'dijit/form/TextBox'], (ready, TextBox) ->
-          ready () ->
-            dojo.addOnLoad () ->
-              dojoConfig = {
-                baseUrl: 'localhost:8080'
-              }
+    div class: 'main', ->
+      div name: 'spacer', style: 'height: 50px'
+      img src: 'logo.jpg'
+      div class: 'block', id: 'searchContainer', ->
+        coffeescript ->
+          require ['dojo/ready', 'dijit/form/TextBox'], (ready, TextBox) ->
+            ready () ->
+              dojo.addOnLoad () ->
+                dojoConfig = {
+                  baseUrl: 'localhost:8080'
+                }
 
-              searchBox = new TextBox
-              (dojo.byId 'searchContainer').appendChild searchBox.domNode
+                searchBox = new TextBox
+                (dojo.byId 'searchContainer').appendChild searchBox.domNode
