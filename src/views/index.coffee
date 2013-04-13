@@ -100,7 +100,7 @@ html ->
               sec.name
             div class: 'videobar', ->
               for thumbnail in sec.content
-                img src: 'photos/thumbnail/' + thumbnail.id + '.jpg', class: 'thumbnail'
+                img src: 'photos/thumbnail/' + thumbnail.id + '.jpg', class: 'thumbnail', alt: 'play.png'
 
       div name: 'footer', style: 'float: bottom', ->
         span 'copyright 2013 Snipit'
