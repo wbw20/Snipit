@@ -40,6 +40,11 @@ div.main {
   height: 100%;
   margin: 0 auto;
 }
+img.thumbnail {
+  float: left;
+  height: 120px;
+  width: 160px;
+}
 div.videobar {
   width: 80%;
   height: 200px;

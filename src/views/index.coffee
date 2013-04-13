@@ -92,7 +92,9 @@ html ->
                     name: 'Our Favorites'
                   }]
       div name: 'spacer', style: 'height: 60px'
-      for sec in sections
+      for sec in @videos
         section name: sec.name, ->
           div name: 'spacer', style: 'height: 40px'
-          div class: 'videobar'
+          div class: 'videobar', ->
+            for thumbnail in sec.content
+              img src: 'photos/thumbnail/' + thumbnail.id + '.jpg', class: 'thumbnail'

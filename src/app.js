@@ -4,6 +4,7 @@ var fs = require('fs');
 var keygrip = require('keygrip')();
 var Cookies = require('cookies');
 var dao = require('./dao');
+var util = require('./util');
 var models = require('./models');
 
 /* BEGIN MAIN ROUTINE */
@@ -35,12 +36,17 @@ app.configure(function() {
 
   app.engine('coffee', require('coffeecup').__express);
   app.use(express.static(__dirname + '/static'));
+  app.use(express.static(__dirname + '/../data'));
   app.use(express.bodyParser());
 });
 
 app.get('/', function(req, res) {
   res.render(__dirname + '/views/index.coffee', {
-    user: req.user
+    user: req.user,
+    videos: [{
+      name: 'Popular',
+      content: util.getPopular()
+    }]
   });
 });
 
