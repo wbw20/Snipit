@@ -1,5 +1,5 @@
 body {
-  background-color: #C6E2FF;
+  background-color: #D4E7F3;
   font-family: Arial,sans-serif;
   text-align: center;
 }
@@ -30,6 +30,22 @@ span.login {
 }
 div.loginDropdown {
   float: left;
+}
+div.main {
+  background-color: #C6E2FF;
+  border: 2px solid transparent;
+  border-left-color: #B8CCFF;
+  border-right-color: #B8CCFF;
+  width: 1100px;
+  height: 100%;
+  margin: 0 auto;
+}
+div.videobar {
+  width: 80%;
+  height: 200px;
+  background-color: #DBDBDB;
+  margin: 0 auto;
+  border: 2px solid #B8CCFF;
 }
 .hidden {
   display: none;

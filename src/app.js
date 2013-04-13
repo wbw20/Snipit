@@ -72,9 +72,20 @@ app.post('/login', function (req, res) {
         new Cookies(req, res, keygrip).set('login', req.body.username, {signed: true});
         res.send(200); //authenticate the user
       } else {
+        res.send('invalid login');
         res.send(401);//or don't
       }
     });
+});
+
+app.get('/logout', function (req, res) {
+    var cookies = new Cookies(req, res, keygrip);
+    cookies.set('login', 'wbw20', {
+      overwrite: true,
+      expires: new Date()
+    });
+
+    return res.redirect('/');
 });
 
 app.listen(8080);

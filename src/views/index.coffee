@@ -17,7 +17,7 @@ html ->
                 content: '<form id="signinform">' +
                            '<label for="username">userame:</label> <input type="text" data-dojo-type="dijit/form/TextBox" id="username" name="username"><br><br>' +
                            '<label for="password">password:</label> <input type="text" data-dojo-type="dijit/form/TextBox" id="password" name="password">' +
-                           '<button id="signinsubmit" type="submit" data-dojo-type="dijit/form/Button">Save</button>' +
+                           '<button id="signinsubmit" type="submit" data-dojo-type="dijit/form/Button">Login</button>' +
                          '</form>'
                 onOpen: () ->
                   dojo.connect (dojo.byId 'signinform'), "onsubmit", (event) ->
@@ -25,10 +25,11 @@ html ->
                     dojo.xhrPost {
                       url: 'login',
                       form: (dojo.byId 'signinform'),
-                      handleAs: 'application/json',
                       load: (data) ->
-                        if data['status'] = 401
-                          console.log 'FAIL',
+                        if data == 'invalid login'
+                          console.log 'FAIL'
+                        else
+                          location.reload(true)
                       error: (error) ->
                         console.log error
                     }
@@ -53,7 +54,9 @@ html ->
                 iconDialog = new TooltipDialog {
                   id: 'iconDialog',
                   style: 'width: 300px;',
-                  content: 'put logout button here',
+                  content: '<form action="logout">' +
+                              '<button id="logoutsubmit" type="submit" data-dojo-type="dijit/form/Button">Log out</button>' +
+                            '</form>',
                   onMouseLeave: () ->
                     popup.close iconDialog
                 }
@@ -64,16 +67,32 @@ html ->
                     around: (dom.byId 'icon')
                   }
 
-    div name: 'spacer', style: 'height: 50px'
-    img src: 'logo.jpg'
-    div class: 'block', id: 'searchContainer', ->
-      coffeescript ->
-        require ['dojo/ready', 'dijit/form/TextBox'], (ready, TextBox) ->
-          ready () ->
-            dojo.addOnLoad () ->
-              dojoConfig = {
-                baseUrl: 'localhost:8080'
-              }
+    div id: 'main', class: 'main', ->
+      section name: 'search', ->
+        div name: 'spacer', style: 'height: 50px'
+        img src: 'logo.jpg'
+        div name: 'spacer', style: 'height: 20px'
+        div class: 'block', id: 'searchContainer', ->
+          coffeescript ->
+            require ['dojo/ready', 'dojo/dom-style', 'dijit/form/TextBox'], (ready, domstyle,  TextBox) ->
+              ready () ->
+                dojo.addOnLoad () ->
+                  dojoConfig = {
+                    baseUrl: 'localhost:8080'
+                  }
 
-              searchBox = new TextBox
-              (dojo.byId 'searchContainer').appendChild searchBox.domNode
+                  searchBox = new TextBox
+                  domstyle.set searchBox.domNode, 'width', '30em'
+                  (dojo.byId 'searchContainer').appendChild searchBox.domNode
+      sections = [{
+                    name: 'Popular'
+                  }, {
+                    name: 'Recent'
+                  }, {
+                    name: 'Our Favorites'
+                  }]
+      div name: 'spacer', style: 'height: 60px'
+      for sec in sections
+        section name: sec.name, ->
+          div name: 'spacer', style: 'height: 40px'
+          div class: 'videobar'
