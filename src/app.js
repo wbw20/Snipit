@@ -56,6 +56,18 @@ app.get('/profile', function(req, res) {
   });
 });
 
+app.get('/snip', function(req, res) {
+  res.render(__dirname + '/views/snip.coffee', {
+    user: req.user,
+  });
+});
+
+app.post('/snip', function(req, res) {
+  res.render(__dirname + '/views/snip.coffee', {
+    user: req.user,
+  });
+});
+
 app.get('/new', function(req, res) {
   var will = models.User.build({
     name: 'Will Wettersten',
