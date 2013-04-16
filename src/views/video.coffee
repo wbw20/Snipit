@@ -1,8 +1,12 @@
+doctype 5
 html ->
   head ->
     link rel: 'stylesheet', type: 'text/css', href: 'style.css'
     link rel: 'stylesheet', type: 'text/css', href: 'dijit/themes/claro/claro.css'
+    link rel: 'stylesheet', type: 'text/css', href: 'flowplayer/skin/minimalist.css'
     script src: 'dojo/dojo.js'
+    script src: 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js'
+    script src: 'flowplayer/flowplayer.min.js'
 
   body class: 'claro', ->
     div class: 'bar', ->
@@ -39,3 +43,14 @@ html ->
             }
 
             (dojo.byId 'signinBox').appendChild button.domNode
+
+    h1 'Video Name: ' + ' Video ID: ' + @vid
+    div id: 'video', ->
+	  div class: 'flowplayer', 'data-swf': 'flowplayer/flowplayer.swf', 'data-ratio': '0.667', ->
+	    video ->
+	      source type: 'video/mp4', src: 'http://stream.flowplayer.org/bauhaus/624x260.mp4'   
+	      #source type: 'video/mp4', src: 'test.flv'
+	      
+	      
+	      
+      

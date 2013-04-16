@@ -3,8 +3,10 @@ var express = require('express');
 var fs = require('fs');
 var keygrip = require('keygrip')();
 var Cookies = require('cookies');
+var url = require('url');
 var dao = require('./dao');
 var models = require('./models');
+
 
 /* BEGIN MAIN ROUTINE */
 
@@ -59,6 +61,18 @@ app.get('/new', function(req, res) {
   }).save();
 
   res.render(__dirname + '/views/new.coffee');
+});
+
+app.get('/video', function(req, res) {
+  var url_str = url.parse(req.url, true).query;
+  //models.Video.query({where : {id: url_str.v}
+  //}).success(function(video) {
+	  res.render(__dirname + '/views/video.coffee', {
+        user: req.user,
+        vid: url_str.v
+        //vid: video
+    });
+  //};
 });
 
 app.post('/login', function (req, res) {
