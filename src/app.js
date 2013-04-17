@@ -63,6 +63,7 @@ app.get('/snip', function(req, res) {
 });
 
 app.post('/snip', function(req, res) {
+  util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/delta.mpg', 3000000, 6000000]);
   res.render(__dirname + '/views/snip.coffee', {
     user: req.user,
   });

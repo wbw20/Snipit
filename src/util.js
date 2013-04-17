@@ -2,8 +2,10 @@ var child = require('child_process');
 var fs = require('fs');
 
 module.exports = {
-  spawn: function(process, args, options) {
-    return child.spawn(process, args, options);
+  spawn: function(process, args) {
+    return child.spawn(process, args).stdout.on('data', function(data) {
+      console.log(data);
+    });;
   },
   getPopular: function() {
     /* fake data for now */
