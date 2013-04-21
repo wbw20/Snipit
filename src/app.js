@@ -51,17 +51,31 @@ app.get('/', function(req, res) {
 });
 
 app.get('/profile', function(req, res) {
+  res.render(__dirname + '/views/profile.coffee', {
+    user: req.user
+  });
+});
+
+app.get('/uploads', function(req, res) {
+  var ajaxdata = [];
+
   models.Video.findAll({
     where: {
       uploader: req.user.id
     }
   }).success(function(results) {
     console.log(results);
-    res.render(__dirname + '/views/profile.coffee', {
-      user: req.user,
-      uploads: results
-    });
+    for (var item in results) {
+      console.log(item);
+      ajaxdata.push({
+        name: results[item].selectedValues.name,
+        thumbnail: 'FAKE',
+        description: 'description of ' + results[item].selectedValues.name
+      });
+    }
   });
+
+  res.send(ajaxdata);
 });
 
 app.get('/snip', function(req, res) {

@@ -12,12 +12,51 @@ html ->
         h1 @user.username
       div name: 'avatarBox', style: 'float: left', ->
         img src: 'silhouette.png'
+    div id: 'contentTable', ->
+      coffeescript ->
+        require ['dojo/_base/lang', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore', 
+        'dojo/dom', 'dojo/domReady!'], (lang, DataGrid, ItemFileWriteStore, dom) ->
+          dojo.xhrGet {
+            url: 'uploads',
+            handleAs: 'text',
+            load: (uploadata) ->
+              console.log uploadata
+
+              store = new ItemFileWriteStore { data: uploadata }
+
+              layout = [[ {'name': 'Name', 'field': 'name', 'width': '100px'},
+                          {'name': 'Thumbnail', 'field': 'thumbnail', 'width': '200px'},
+                          {'name': 'Description', 'field': 'description', 'width': '100px'} ]]
+              grid = new DataGrid {
+                id: 'grid',
+                store: store,
+                structure: layout,
+                rowSelector: '20px'
+              }
+
+              grid.placeAt 'contentTable'
+              grid.startup ''
+          }
+     
+      ###     
+      table ->
+        for video in @uploads 
+          tr -> 
+            td -> 
+              a ->
+                video.selectedValues.name
+            #td -> a video.selectedValues.thumbnail
+            #td -> a video.selectedValues.description
+            td -> 
+              a -> 
+                video.selectedValues.createdAt.toString ''
+            td -> 
+              a -> 
+                video.selectedValues.updatedAt.toString ''
+      ###
+                                
     div name: 'tabContainer', style: 'width: 60%', ->
       div id: 'tcl-prog'
-      div id: 'test', ->
-        for value in @uploads
-          div ->
-            a value.selectedValues.name
       coffeescript ->
         require ["dojo/ready", "dijit/layout/TabContainer", "dijit/layout/ContentPane"], (ready, TabContainer, ContentPane) ->
           ready () ->
@@ -27,7 +66,7 @@ html ->
 
             cp1 = new ContentPane {
               title: 'uploads',
-              content: dojo.byId 'test'
+              content: dojo.byId 'contentTable'
             }
             tc.addChild cp1
  
