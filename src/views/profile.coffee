@@ -14,6 +14,10 @@ html ->
         img src: 'silhouette.png'
     div name: 'tabContainer', style: 'width: 60%', ->
       div id: 'tcl-prog'
+      div id: 'test', ->
+        for value in @uploads
+          div ->
+            a value.selectedValues.name
       coffeescript ->
         require ["dojo/ready", "dijit/layout/TabContainer", "dijit/layout/ContentPane"], (ready, TabContainer, ContentPane) ->
           ready () ->
@@ -23,7 +27,7 @@ html ->
 
             cp1 = new ContentPane {
               title: 'uploads',
-              content: 'put uploads here'
+              content: dojo.byId 'test'
             }
             tc.addChild cp1
  

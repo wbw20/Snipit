@@ -21,9 +21,9 @@ module.exports = {
     var LikeDislike = models.LikeDislike;
 
     /* Entity Foreign keys */
-    Video.belongsTo(User);
-    Playlist.belongsTo(User);
-    Group.belongsTo(User);
+    Video.belongsTo(User, {foreignKey: 'uploader'});
+    Playlist.belongsTo(User, {foreignKey: 'creator'});
+    Group.belongsTo(User, {foreignKey: 'owner'});
 
     /* Playlist Member */
     Playlist.hasMany(Video, {joinTableName: 'video_to_playlist'});
