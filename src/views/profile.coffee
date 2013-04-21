@@ -33,4 +33,4 @@ html ->
             }
             tc.addChild cp2
 
-            tc.startup
+            tc.startup ''
