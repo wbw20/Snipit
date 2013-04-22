@@ -6,10 +6,10 @@ html ->
 
   body class: 'claro', ->
     div class: 'bar', ->
-    div name: 'main', class: 'main', ->
+    div name: 'main', style: 'text-align: center;', class: 'main', ->
       div name: 'spacer', style: 'height: 50px'
-      form method: 'post', ->
-        table ->
+      form method: 'post', style: 'margin: auto', ->
+        table style: 'margin: auto;', ->
           tr ->
             td ->
               label for: 'url', ->
@@ -28,4 +28,4 @@ html ->
                 'End (ms)'
               input name: 'end'
         p ->
-          input type: 'submit', style: 'float: left'
+          input type: 'submit', style: 'margin-left: auto; margin-right: auto;'
