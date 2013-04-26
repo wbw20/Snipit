@@ -6,33 +6,70 @@ html ->
 
   body class: 'claro', ->
     div class: 'bar', ->
-    div name: 'main', class: 'main', ->
+    div name: 'main', class: 'main', style:'text-align: center', ->
       div name: 'spacer', style: 'height: 50px'
+      img src: 'join.png'
       form method: 'post', ->
-        table ->
+        table style: 'margin: auto', ->
           tr ->
             td ->
-              label for: 'name', ->
-                'Name'
-              input name: 'name'
+              div id: 'first', style: 'display: inline-block; margin-right: 4px'
+              div id: 'last', style: 'display: inline-block'
 
           tr ->
             td ->
-              label for: 'age', ->
-                'Age'
-              input name: 'age'
+              div id: 'username'
 
           tr ->
             td ->
-              label for: 'username', ->
-                'Username'
-              input name: 'username'
+              div id: 'password'
 
           tr ->
             td ->
-              label for: 'password', ->
-                'Password'
-              input name: 'password'
+              div id: 'email'
+
+          tr ->
+            td ->
+              div id: 'confirmemail'
+
+      coffeescript ->
+        require ['dojo/ready', 'dojo/dom-style', 'dijit/form/TextBox'], (ready, domstyle,  TextBox) ->
+          ready () ->
+            username = new TextBox {
+              placeHolder: 'Username'
+            }
+            (dojo.byId 'username').appendChild username.domNode
+            domstyle.set username.domNode, 'width', '20.35em'
+
+            first = new TextBox {
+            placeHolder: 'First Name'
+            }
+            (dojo.byId 'first').appendChild first.domNode
+            domstyle.set first.domNode, 'width', '10em'
+
+            last = new TextBox {
+            placeHolder: 'Last Name'
+            }
+            (dojo.byId 'last').appendChild last.domNode
+            domstyle.set last.domNode, 'width', '10em'
+
+            password = new TextBox {
+            placeHolder: 'Password'
+            }
+            (dojo.byId 'password').appendChild password.domNode
+            domstyle.set password.domNode, 'width', '20.35em'
+
+            email = new TextBox {
+            placeHolder: 'Email Address'
+            }
+            (dojo.byId 'email').appendChild email.domNode
+            domstyle.set email.domNode, 'width', '20.35em'
+
+            confirmemail = new TextBox {
+            placeHolder: 'Confirm Email Address'
+            }
+            (dojo.byId 'confirmemail').appendChild confirmemail.domNode
+            domstyle.set confirmemail.domNode, 'width', '20.35em'
 
         p ->
           input type: 'submit', style: 'float: left', value: 'Create'
