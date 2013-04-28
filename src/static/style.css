@@ -29,12 +29,33 @@ div.main {
   margin: 0 auto;
   width: 1000px;
 }
+img.thumbnail {
+  float: left;
+  height: 120px;
+  width: 160px;
+  padding: 5px;
+  padding-top: 30px;
+}
 div.videobar {
-  width: 80%;
+  width: 85%;
   height: 200px;
   background-color: #DBDBDB;
+<<<<<<< HEAD
   margin: 30px auto;
+=======
+>>>>>>> master
   border: 2px solid #B8CCFF;
+  margin: 0 auto;
+}
+div.videocontainer {
+  width: 92%;
+  height: 240px;
+  margin: 0 auto;
+}
+span.videobartitle {
+  position: relative;
+  right: 35%;
+  font-size: 17pt;
 }
 #searchContainer {
   padding: 20px 0;

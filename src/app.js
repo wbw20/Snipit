@@ -5,6 +5,7 @@ var keygrip = require('keygrip')();
 var Cookies = require('cookies');
 var url = require('url');
 var dao = require('./dao');
+var util = require('./util');
 var models = require('./models');
 
 
@@ -37,12 +38,17 @@ app.configure(function() {
 
   app.engine('coffee', require('coffeecup').__express);
   app.use(express.static(__dirname + '/static'));
+  app.use(express.static(__dirname + '/../data'));
   app.use(express.bodyParser());
 });
 
 app.get('/', function(req, res) {
   res.render(__dirname + '/views/index.coffee', {
-    user: req.user
+    user: req.user,
+    videos: [{
+      name: 'Popular',
+      content: util.getPopular()
+    }]
   });
 });
 
@@ -52,12 +58,46 @@ app.get('/profile', function(req, res) {
   });
 });
 
+app.get('/uploads', function(req, res) {
+  var ajaxdata = [];
+
+  models.Video.findAll({
+    where: {
+      uploader: req.user.id
+    }
+  }).success(function(results) {
+    console.log(results);
+    for (var item in results) {
+      console.log(item);
+      ajaxdata.push({
+        name: results[item].selectedValues.name,
+        thumbnail: 'FAKE',
+        description: 'description of ' + results[item].selectedValues.name
+      });
+    }
+  });
+
+  res.send(ajaxdata);
+});
+
+app.get('/snip', function(req, res) {
+  res.render(__dirname + '/views/snip.coffee', {
+    user: req.user,
+  });
+});
+
+app.post('/snip', function(req, res) {
+  util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/delta.mpg', 3000000, 6000000]);
+  res.render(__dirname + '/views/snip.coffee', {
+    user: req.user,
+  });
+});
+
 app.get('/new', function(req, res) {
   var will = models.User.build({
     name: 'Will Wettersten',
     username: 'wbw20',
-    password: 'kitchin',
-    id: 'dsdgfddsfds'
+    password: 'kitchin'
   }).save();
 
   res.render(__dirname + '/views/new.coffee');

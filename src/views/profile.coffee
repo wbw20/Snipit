@@ -12,6 +12,49 @@ html ->
         h1 @user.username
       div name: 'avatarBox', style: 'float: left', ->
         img src: 'silhouette.png'
+    div id: 'contentTable', ->
+      coffeescript ->
+        require ['dojo/_base/lang', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore', 
+        'dojo/dom', 'dojo/domReady!'], (lang, DataGrid, ItemFileWriteStore, dom) ->
+          dojo.xhrGet {
+            url: 'uploads',
+            handleAs: 'text',
+            load: (uploadata) ->
+              console.log uploadata
+
+              store = new ItemFileWriteStore { data: uploadata }
+
+              layout = [[ {'name': 'Name', 'field': 'name', 'width': '100px'},
+                          {'name': 'Thumbnail', 'field': 'thumbnail', 'width': '200px'},
+                          {'name': 'Description', 'field': 'description', 'width': '100px'} ]]
+              grid = new DataGrid {
+                id: 'grid',
+                store: store,
+                structure: layout,
+                rowSelector: '20px'
+              }
+
+              grid.placeAt 'contentTable'
+              grid.startup ''
+          }
+     
+      ###     
+      table ->
+        for video in @uploads 
+          tr -> 
+            td -> 
+              a ->
+                video.selectedValues.name
+            #td -> a video.selectedValues.thumbnail
+            #td -> a video.selectedValues.description
+            td -> 
+              a -> 
+                video.selectedValues.createdAt.toString ''
+            td -> 
+              a -> 
+                video.selectedValues.updatedAt.toString ''
+      ###
+                                
     div name: 'tabContainer', style: 'width: 60%', ->
       div id: 'tcl-prog'
       coffeescript ->
@@ -23,7 +66,7 @@ html ->
 
             cp1 = new ContentPane {
               title: 'uploads',
-              content: 'put uploads here'
+              content: dojo.byId 'contentTable'
             }
             tc.addChild cp1
  
@@ -33,4 +76,4 @@ html ->
             }
             tc.addChild cp2
 
-            tc.startup
+            tc.startup ''
