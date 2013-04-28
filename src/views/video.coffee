@@ -48,8 +48,7 @@ html ->
     div id: 'video', ->
 	  div class: 'flowplayer', 'data-swf': 'flowplayer/flowplayer.swf', 'data-ratio': '0.667', ->
 	    video ->
-	      source type: 'video/mp4', src: 'http://stream.flowplayer.org/bauhaus/624x260.mp4'   
-	      #source type: 'video/mp4', src: 'test.flv'
+	      source type: 'video/webm', src: 'test.webm'
 	      
 	      
 	      
