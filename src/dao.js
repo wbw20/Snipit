@@ -12,8 +12,6 @@ module.exports = {
 
   createForeignKeys: function(models) {
 
-<<<<<<< HEAD
-=======
     /* Entity Foreign keys */
     Video.belongsTo(User, {foreignKey: 'uploader'});
     Playlist.belongsTo(User, {foreignKey: 'creator'});
@@ -50,6 +48,5 @@ module.exports = {
     /* Like/Dislike */
     LikeDislike.belongsTo(User);
     LikeDislike.belongsTo(Video);
->>>>>>> master
   }
 }
