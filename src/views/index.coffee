@@ -69,9 +69,9 @@ html ->
 
     div id: 'main', class: 'main', ->
       section name: 'search', ->
-        div name: 'spacer', style: 'height: 50px'
+        #div name: 'spacer', style: 'height: 50px'
         img src: 'logo.jpg'
-        div name: 'spacer', style: 'height: 20px'
+        #div name: 'spacer', style: 'height: 20px'
         div class: 'block', id: 'searchContainer', ->
           coffeescript ->
             require ['dojo/ready', 'dojo/dom-style', 'dijit/form/TextBox'], (ready, domstyle,  TextBox) ->
@@ -91,16 +91,12 @@ html ->
                   }, {
                     name: 'Our Favorites'
                   }]
-      div name: 'spacer', style: 'height: 60px'
-      for sec in @videos
+
+      #div name: 'spacer', style: 'height: 60px'
+      for sec in sections
         section name: sec.name, ->
-          div name: 'spacer', style: 'height: 40px', ->
-          div class: 'videocontainer', ->
-            span class: 'videobartitle', ->
-              sec.name
-            div class: 'videobar', ->
-              for thumbnail in sec.content
-                img src: 'photos/thumbnail/' + thumbnail.id + '.jpg', class: 'thumbnail', alt: 'play.png'
+          #div name: 'spacer', style: 'height: 40px'
+          div class: 'videobar'
 
       div name: 'footer', style: 'float: bottom', ->
         span 'copyright 2013 Snipit'

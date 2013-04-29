@@ -11,15 +11,6 @@ module.exports = {
   ),
 
   createForeignKeys: function(models) {
-    var User = models.User;
-    var Video = models.Video;
-    var Tag = models.Tag;
-    var Playlist = models.Playlist;
-    var Group = models.Group;
-    var Message = models.Message;
-    var Comment = models.Comment;
-    var LikeDislike = models.LikeDislike;
-
     /* Entity Foreign keys */
     Video.belongsTo(User, {foreignKey: 'uploader'});
     Playlist.belongsTo(User, {foreignKey: 'creator'});

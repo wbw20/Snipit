@@ -2,28 +2,21 @@ body {
   background-color: #D4E7F3;
   font-family: Arial,sans-serif;
   text-align: center;
+  margin: 0;
 }
 div.block {
 }
 div.bar {
-  position: fixed;
   height: 37px;
-  left: 0;
-  right: 0;
-  top: 0;
   background-color: #000000;
 }
 div.loginBox {
   color: #9AB8E4;
   font-weight: bold;
-  display: inline-block;
   height: 31px;
-  width: 200px;
-  line-height: 29px;
-  position: relative;
-  top: 5px;
-  left: 30%;
-  vertical-align: top;
+  float: right;
+  margin-right: 10%;
+  margin-top: 2px;
 }
 span.login {
   padding-left: 5px;
@@ -33,12 +26,8 @@ div.loginDropdown {
 }
 div.main {
   background-color: #C6E2FF;
-  border: 2px solid transparent;
-  border-left-color: #B8CCFF;
-  border-right-color: #B8CCFF;
-  width: 1100px;
-  height: 100%;
   margin: 0 auto;
+  width: 1000px;
 }
 img.thumbnail {
   float: left;
@@ -51,8 +40,8 @@ div.videobar {
   width: 85%;
   height: 200px;
   background-color: #DBDBDB;
+  margin: 30px auto;
   border: 2px solid #B8CCFF;
-  margin: 0 auto;
 }
 div.videocontainer {
   width: 92%;
@@ -64,6 +53,15 @@ span.videobartitle {
   right: 35%;
   font-size: 17pt;
 }
+#searchContainer {
+  padding: 20px 0;
+}
 .hidden {
   display: none;
+}
+.flowplayer {
+	width: 50% !important;
+}
+.flowplayer a {
+  display: none !important;
 }
