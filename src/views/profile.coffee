@@ -20,42 +20,27 @@ html ->
             url: 'uploads',
             handleAs: 'text',
             load: (uploadata) ->
-              console.log uploadata
-
-              store = new ItemFileWriteStore { data: uploadata }
-
-              layout = [[ {'name': 'Name', 'field': 'name', 'width': '100px'},
-                          {'name': 'Thumbnail', 'field': 'thumbnail', 'width': '200px'},
-                          {'name': 'Description', 'field': 'description', 'width': '100px'} ]]
-              grid = new DataGrid {
-                id: 'grid',
-                store: store,
-                structure: layout,
-                rowSelector: '20px'
-              }
-
-              grid.placeAt 'contentTable'
-              grid.startup ''
           }
-     
-      ###     
-      table ->
-        for video in @uploads 
-          tr -> 
+ 
+      table class: 'profileTable', ->
+        for video in @uploads
+          tr class: 'profileRow', ->
             td -> 
               a ->
-                video.selectedValues.name
-            #td -> a video.selectedValues.thumbnail
-            #td -> a video.selectedValues.description
-            td -> 
-              a -> 
-                video.selectedValues.createdAt.toString ''
-            td -> 
-              a -> 
-                video.selectedValues.updatedAt.toString ''
-      ###
-                                
-    div name: 'tabContainer', style: 'width: 60%', ->
+                img src: 'Biff-300x208.jpg', class: 'thumbnailLarge'
+            td class: 'profileColDesc', ->
+              div style: 'font-size: 40px; font-style: bold', ->
+                video.selectedValues.name.toString()
+              div style: 'position: relative; left: 40px', ->
+                'upload-time: ' + video.selectedValues.createdAt.toString()
+              div style: 'position: relative; left: 40px', ->
+                'uploader: ' + video.selectedValues.uploader.toString()
+              div ->
+                'likes/dislikes' #TODO access from database
+              div ->
+                'Description...' #TODO put in database
+
+    div name: 'tabContainer', style: 'width: 60%; margin: 0 auto', ->
       div id: 'tcl-prog'
       coffeescript ->
         require ["dojo/ready", "dijit/layout/TabContainer", "dijit/layout/ContentPane"], (ready, TabContainer, ContentPane) ->

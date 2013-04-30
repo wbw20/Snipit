@@ -52,10 +52,31 @@ div.videocontainer {
   height: 240px;
   margin: 0 auto;
 }
+img.thumbnailLarge {
+    padding: 20px;
+    width: 300;
+    height: 208;
+}
+img.thumbnailSmall {
+    width: 200;
+    height: 108;
+}
 span.videobartitle {
   position: relative;
   right: 35%;
   font-size: 17pt;
+}
+table.profileTable {
+    width: 100%;
+}
+tr.profileRow {
+  width: 100%;
+  height: 188px;
+}
+td.profileColDesc {
+    padding: 30px;
+    width: 100%;
+    height: 100%;
 }
 #searchContainer {
   padding: 20px 0;

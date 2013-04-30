@@ -53,8 +53,15 @@ app.get('/', function(req, res) {
 });
 
 app.get('/profile', function(req, res) {
-  res.render(__dirname + '/views/profile.coffee', {
-    user: req.user
+  models.Video.findAll({
+      where: {
+        uploader: req.user.id
+      }
+    }).success(function(results) {
+      res.render(__dirname + '/views/profile.coffee', {
+        user: req.user,
+        uploads: results
+    });
   });
 });
 
