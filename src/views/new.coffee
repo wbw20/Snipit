@@ -32,12 +32,35 @@ html ->
             td ->
               div id: 'confirmemail'
 
+      div id: 'submitcontainer'
+
       coffeescript ->
-        require ['dojo/ready', 'dojo/dom-style', 'dijit/form/TextBox'], (ready, domstyle,  TextBox) ->
+        require ['dojo/ready', 'dojo/dom-style', 'dijit/form/TextBox', 'dijit/form/Button', 'dijit/form/ValidationTextBox', 'dijit/Tooltip', 'dojox/validate/web'], (ready, domstyle,  TextBox, Button, ValidationTextBox, Tooltip) ->
           ready () ->
-            username = new TextBox {
-              placeHolder: 'Username'
+            username = new ValidationTextBox {
+              id: 'username',
+              placeHolder: 'Username',
+              takenMessage: new Tooltip {
+                label: 'fuck you',
+                connectId: 'username'
+              }
+              validator: () ->
+                data = dojo.xhrGet {
+                  url: '/user?username=' + username.value,
+                  handleAs: 'text'
+                }
+
+                data.then (dojo.hitch this, (response) ->
+                  console.log response
+
+                  if response == 'taken'
+                    this.displayMessage()
+                )
+
+                return false if data == 'taken'
+                return true
             }
+
             (dojo.byId 'username').appendChild username.domNode
             domstyle.set username.domNode, 'width', '20.35em'
 
@@ -59,8 +82,9 @@ html ->
             (dojo.byId 'password').appendChild password.domNode
             domstyle.set password.domNode, 'width', '20.35em'
 
-            email = new TextBox {
+            email = new ValidationTextBox {
             placeHolder: 'Email Address'
+            validator: dojox.validate.isEmailAddress
             }
             (dojo.byId 'email').appendChild email.domNode
             domstyle.set email.domNode, 'width', '20.35em'
@@ -71,5 +95,14 @@ html ->
             (dojo.byId 'confirmemail').appendChild confirmemail.domNode
             domstyle.set confirmemail.domNode, 'width', '20.35em'
 
-        p ->
-          input type: 'submit', style: 'float: left', value: 'Create'
+            dojo.connect password, 'onChange', () ->
+              (domstyle.set (dojo.byId 'check'), 'display', 'inline-block') if passwordcheck password.value
+
+            passwordcheck = (password) ->
+              return false if password.length<8 || password.length>18
+              return true
+
+            submit = new Button {
+              label: 'Join'
+            }
+            (dojo.byId 'submitcontainer').appendChild submit.domNode

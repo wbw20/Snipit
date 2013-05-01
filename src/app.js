@@ -128,4 +128,19 @@ app.get('/logout', function (req, res) {
     return res.redirect('/');
 });
 
+app.get('/user', function (req, res) {
+    console.log (req.query);
+    models.User.find({
+        where: {
+            username: req.query['username']
+        }
+    }).success(function(theUserWeFound) {
+        if(theUserWeFound){
+            res.send('taken');
+        } else {
+            res.send(200);
+        }
+    });
+});
+
 app.listen(8080);
