@@ -116,8 +116,9 @@ app.get('/video', function(req, res) {
             user: req.user,
             vid: video.id,
             vname: video.name,
-            comments: comments.selectedValues
+            comments: comments
           });
+          console.log(comments[0].selectedValues.id);
       });
   });
   

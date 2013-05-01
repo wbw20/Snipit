@@ -111,11 +111,11 @@ html ->
 
             
 	      h2 'Comments'
-	      div id: 'comments', class: 'videobar', ->
-	        coffeescript ->
-	          alert @comments
-	          for comment in @comments
-	            alert "Found a comment!"
+	      div id: 'comment-container', class: 'videobar', ->
+	        for i in @comments
+	          div id: 'comment' + i.id, ->
+	            a i.user, href: '#'
+	            p i.comment
 	      
 	      
       
