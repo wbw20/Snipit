@@ -45,6 +45,8 @@ html ->
                 
                 register_button = new Button {
                   label: 'Register'
+                  onClick: () ->
+                    window.location = '/new';
                 }
 
                 (dojo.byId 'signinBox').appendChild login_button.domNode
