@@ -76,8 +76,11 @@ html ->
             (dojo.byId 'last').appendChild last.domNode
             domstyle.set last.domNode, 'width', '10em'
 
-            password = new TextBox {
+            password = new ValidationTextBox {
             placeHolder: 'Password'
+            validator: () ->
+              return password.value.length>=8 && password.value.length<=18
+            invalidMessage: "Must be between 8 and 18 characters"
             }
             (dojo.byId 'password').appendChild password.domNode
             domstyle.set password.domNode, 'width', '20.35em'
@@ -85,22 +88,19 @@ html ->
             email = new ValidationTextBox {
             placeHolder: 'Email Address'
             validator: dojox.validate.isEmailAddress
+            invalidMessage: 'Invalid email address'
             }
             (dojo.byId 'email').appendChild email.domNode
             domstyle.set email.domNode, 'width', '20.35em'
 
-            confirmemail = new TextBox {
+            confirmemail = new ValidationTextBox {
             placeHolder: 'Confirm Email Address'
+            validator: () ->
+              return email.value==confirmemail.value
+            invalidMessage: 'Does not match'
             }
             (dojo.byId 'confirmemail').appendChild confirmemail.domNode
             domstyle.set confirmemail.domNode, 'width', '20.35em'
-
-            dojo.connect password, 'onChange', () ->
-              (domstyle.set (dojo.byId 'check'), 'display', 'inline-block') if passwordcheck password.value
-
-            passwordcheck = (password) ->
-              return false if password.length<8 || password.length>18
-              return true
 
             submit = new Button {
               label: 'Join'
