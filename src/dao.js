@@ -41,11 +41,11 @@ module.exports = {
     Message.belongsTo(User, {foreignKey: 'recipient'});
 
     /* Comments */
-    Comment.belongsTo(User);
-    Comment.belongsTo(Video);
+    Comment.belongsTo(User, {foreignKey: 'user'});
+    Comment.belongsTo(Video, {foreignKey: 'video'});
 
     /* Like/Dislike */
-    LikeDislike.belongsTo(User);
-    LikeDislike.belongsTo(Video);
+    LikeDislike.belongsTo(User, {foreignKey: 'user'});
+    LikeDislike.belongsTo(Video, {foreignKey: 'video'});
   }
 }

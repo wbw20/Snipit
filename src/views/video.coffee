@@ -1,6 +1,7 @@
 doctype 5
 html ->
   head ->
+    title @vname + ' - SnipIt'
     link rel: 'stylesheet', type: 'text/css', href: 'style.css'
     link rel: 'stylesheet', type: 'text/css', href: 'dijit/themes/claro/claro.css'
     link rel: 'stylesheet', type: 'text/css', href: 'flowplayer/skin/minimalist.css'
@@ -85,7 +86,7 @@ html ->
 
     div id: 'container', ->
       div id: 'main', ->
-        h1 'Video Name: ' + ' Video ID: ' + @vid
+        h1 @vname
         div id: 'video', ->
 	        div class: 'flowplayer', 'data-swf': 'flowplayer/flowplayer.swf', 'data-ratio': '0.667', ->
 	          video ->
@@ -111,7 +112,10 @@ html ->
             
 	      h2 'Comments'
 	      div id: 'comments', class: 'videobar', ->
-	    
+	        coffeescript ->
+	          alert @comments
+	          for comment in @comments
+	            alert "Found a comment!"
 	      
 	      
       

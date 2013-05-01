@@ -105,14 +105,24 @@ app.get('/new', function(req, res) {
 
 app.get('/video', function(req, res) {
   var url_str = url.parse(req.url, true).query;
-  //models.Video.query({where : {id: url_str.v}
-  //}).success(function(video) {
-	  res.render(__dirname + '/views/video.coffee', {
-        user: req.user,
-        vid: url_str.v
-        //vid: video
-    });
-  //};
+  
+  // get video
+  models.Video.find({where : {id: url_str.v}
+    }).success(function(video) {
+	    // get comments
+      models.Comment.findAll({where : {video: video.id}
+        }).success(function(comments) {
+          res.render(__dirname + '/views/video.coffee', {
+            user: req.user,
+            vid: video.id,
+            vname: video.name,
+            comments: comments.selectedValues
+          });
+      });
+  });
+  
+  
+
 });
 
 app.post('/login', function (req, res) {
