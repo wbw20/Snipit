@@ -63,9 +63,23 @@ app.get('/snip', function(req, res) {
 });
 
 app.post('/snip', function(req, res) {
-  util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/delta.mpg', 3000000, 6000000]);
+  var id = util.uuid();
+
+  util.spawn('java', ['-jar', '../opt/downloader.jar', req.body.url, '../data/videos/raw/' + id + '.mp4']).stdout.on('data', function(words) {console.log(words.toString())}).on('end', function(code) {
+      //put new video in db
+      models.Video.build({
+        name: req.body.name,
+        file: '../data/videos/snipped/' + id + '.mpg'
+      });
+
+      // snip
+      util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/raw/' + id + '.mp4', req.body.start, req.body.end, '../data/videos/snipped/' + id + '.mpg']).stdout.on('data', function(data) {
+        console.log(data.toString());
+      });
+    });
+
   res.render(__dirname + '/views/snip.coffee', {
-    user: req.user,
+    user: req.user
   });
 });
 

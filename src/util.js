@@ -2,10 +2,14 @@ var child = require('child_process');
 var fs = require('fs');
 
 module.exports = {
-  spawn: function(process, args) {
-    return child.spawn(process, args).stdout.on('data', function(data) {
-      console.log(data);
-    });;
+  spawn: function(process, args, onData, onEnd) {
+    return child.spawn(process, args);
+  },
+  uuid: function() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+      return v.toString(16);
+    });
   },
   getPopular: function() {
     /* fake data for now */
