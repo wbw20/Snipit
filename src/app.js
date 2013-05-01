@@ -70,7 +70,7 @@ app.post('/snip', function(req, res) {
       models.Video.build({
         name: req.body.name,
         file: '../data/videos/snipped/' + id + '.mpg'
-      });
+      }).save();
 
       // snip
       util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/raw/' + id + '.mp4', req.body.start, req.body.end, '../data/videos/snipped/' + id + '.mpg']).stdout.on('data', function(data) {

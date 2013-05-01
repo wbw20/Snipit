@@ -47,5 +47,10 @@ html ->
                 'End (ms)'
               input name: 'end'
               input name: 'url', id: 'url', style: 'display: none'
+          tr ->
+            td ->
+              label for: 'name', ->
+                'Name this snip! '
+              input name: 'name', style: 'padding-right: 20px'
             td ->
               input type: 'submit', style: 'margin-left: auto; margin-right: auto;'
