@@ -112,5 +112,3 @@ html ->
                 for thumbnail in sec.content
                   img src: 'photos/thumbnail/' + thumbnail.id + '.jpg', class: 'thumbnail', alt: 'play.png'
 
-        div id: 'footer', ->
-          span 'copyright 2013 Snipit'

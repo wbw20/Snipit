@@ -17,6 +17,9 @@ body {
 h1 {
 	margin: 60px;
 }
+h2 {
+  text-align: left;
+}
 #container, #nav ul {
 	margin: 0 auto;
 	width: 900px;
@@ -53,12 +56,6 @@ h1 {
 	color: white;
 	font-weight: bold;
 }
-
-#main {
-	
-}
-
-
 img.thumbnail {
   float: left;
   height: 120px;
@@ -66,6 +63,16 @@ img.thumbnail {
   padding: 5px;
   padding-top: 30px;
 }
+
+/* VIDEO PAGE */
+#comments {
+  text-align: left;
+}
+#video-stats span {
+  float: right;
+}
+
+
 div.videobar {
   width: 85%;
   height: 200px;
