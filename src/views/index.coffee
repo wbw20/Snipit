@@ -106,7 +106,7 @@ html ->
         for sec in @videos
           section name: sec.name, ->
             div class: 'videocontainer', ->
-              span class: 'videobartitle', ->
+              h2 ->
                 sec.name
               div class: 'videobar', ->
                 for thumbnail in sec.content

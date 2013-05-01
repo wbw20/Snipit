@@ -89,7 +89,7 @@ html ->
         div id: 'video', ->
 	        div class: 'flowplayer', 'data-swf': 'flowplayer/flowplayer.swf', 'data-ratio': '0.667', ->
 	          video ->
-	            source type: 'video/webm', src: 'test.webm'
+	            source type: 'video/webm', src: 'videos/' + @vid + '.webm'
 	      div id: 'video-stats', ->
 	        span id: 'dislike'
 	        span id: 'like'
@@ -110,7 +110,7 @@ html ->
 
             
 	      h2 'Comments'
-	      div id: 'comments'
+	      div id: 'comments', class: 'videobar', ->
 	    
 	      
 	      
