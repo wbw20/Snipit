@@ -105,6 +105,7 @@ app.get('/new', function(req, res) {
 
 app.get('/video', function(req, res) {
   var url_str = url.parse(req.url, true).query;
+  var chainer = new Sequelize.Utils.QueryChainer();
   
   // get video
   models.Video.find({where : {id: url_str.v}
@@ -112,6 +113,13 @@ app.get('/video', function(req, res) {
 	    // get comments
       models.Comment.findAll({where : {video: video.id}
         }).success(function(comments) {
+          comments.forEach(function(theComment) {
+            chainer.add(theComment.getUsers({where: 'id' = theComment.user }).error(errorHandler).success(function(username) 
+            {                
+                theComment.username = username;                   
+            }));
+          }
+        
           res.render(__dirname + '/views/video.coffee', {
             user: req.user,
             vid: video.id,
@@ -121,7 +129,7 @@ app.get('/video', function(req, res) {
           console.log(comments[0].selectedValues.id);
       });
   });
-  
+
   
 
 });
