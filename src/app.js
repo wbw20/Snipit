@@ -56,8 +56,10 @@ app.get('/profile', function(req, res) {
   models.Video.findAll({
       where: {
         uploader: req.user.id
-      }
+      },
+        include: [models.User]
     }).success(function(results) {
+      console.log(results)
       res.render(__dirname + '/views/profile.coffee', {
         user: req.user,
         uploads: results

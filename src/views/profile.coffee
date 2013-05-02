@@ -45,7 +45,7 @@ html ->
                 img src: 'Biff-300x208.jpg', class: 'thumbnailLarge'
             td class: 'profileColDesc', ->
               div class: 'title', ->
-                video.selectedValues.name.toString()
+                video.selectedValues.title.toString()
               div style: 'position: relative; left: 40px', ->
                 'Created on ' + video.selectedValues.createdAt.toString().slice(0,15)
               div ->
@@ -62,11 +62,11 @@ html ->
                 img src: 'Biff-300x208.jpg', class: 'thumbnailLarge'
             td class: 'profileColDesc', ->
               div class: 'title', ->
-                video.selectedValues.name.toString()
+                video.selectedValues.title.toString()
               div style: 'position: relative; left: 40px', ->
                 'Created on ' + video.selectedValues.createdAt.toString()
               div style: 'position: relative; left: 40px', ->
-                'Uploaded by ' + video.selectedValues.uploader.toString()
+                #'Uploaded by ' + video.selectedValues.
               div ->
                 'Likes | Dislikes'
               div ->
