@@ -7,6 +7,7 @@ var url = require('url');
 var dao = require('./dao');
 var util = require('./util');
 var models = require('./models');
+var Sequelize = require('sequelize');
 
 
 /* BEGIN MAIN ROUTINE */
@@ -111,22 +112,15 @@ app.get('/video', function(req, res) {
   models.Video.find({where : {id: url_str.v}
     }).success(function(video) {
 	    // get comments
-      models.Comment.findAll({where : {video: video.id}
+      models.Comment.findAll({where : {video: video.id}, include: [models.User] 
         }).success(function(comments) {
-          comments.forEach(function(theComment) {
-            chainer.add(theComment.getUsers({where: 'id' = theComment.user }).error(errorHandler).success(function(username) 
-            {                
-                theComment.username = username;                   
-            }));
-          }
-        
           res.render(__dirname + '/views/video.coffee', {
             user: req.user,
             vid: video.id,
             vname: video.name,
             comments: comments
           });
-          console.log(comments[0].selectedValues.id);
+          console.log(comments);
       });
   });
 
