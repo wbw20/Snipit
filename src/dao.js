@@ -11,19 +11,10 @@ module.exports = {
   ),
 
   createForeignKeys: function(models) {
-    var User = models.User;
-    var Video = models.Video;
-    var Tag = models.Tag;
-    var Playlist = models.Playlist;
-    var Group = models.Group;
-    var Message = models.Message;
-    var Comment = models.Comment;
-    var LikeDislike = models.LikeDislike;
-
     /* Entity Foreign keys */
-    Video.belongsTo(User);
-    Playlist.belongsTo(User);
-    Group.belongsTo(User);
+    Video.belongsTo(User, {foreignKey: 'uploader'});
+    Playlist.belongsTo(User, {foreignKey: 'creator'});
+    Group.belongsTo(User, {foreignKey: 'owner'});
 
     /* Playlist Member */
     Playlist.hasMany(Video, {joinTableName: 'video_to_playlist'});
@@ -50,11 +41,11 @@ module.exports = {
     Message.belongsTo(User, {foreignKey: 'recipient'});
 
     /* Comments */
-    Comment.belongsTo(User);
-    Comment.belongsTo(Video);
+    Comment.belongsTo(User, {foreignKey: 'user'});
+    Comment.belongsTo(Video, {foreignKey: 'video'});
 
     /* Like/Dislike */
-    LikeDislike.belongsTo(User);
-    LikeDislike.belongsTo(Video);
+    LikeDislike.belongsTo(User, {foreignKey: 'user'});
+    LikeDislike.belongsTo(Video, {foreignKey: 'video'});
   }
 }

@@ -1,44 +1,60 @@
 body {
-  background-color: #D4E7F3;
   font-family: Arial,sans-serif;
   text-align: center;
+  margin: 0;
+  
+  /* gradient background */
+  background: #cfe7fa; /* Old browsers */
+  background: -moz-linear-gradient(top,  #cfe7fa 0%, #6393c1 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cfe7fa), color-stop(100%,#6393c1)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #cfe7fa 0%,#6393c1 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #cfe7fa 0%,#6393c1 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #cfe7fa 0%,#6393c1 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #cfe7fa 0%,#6393c1 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cfe7fa', endColorstr='#6393c1',GradientType=0 ); /* IE6-9 */
+
 }
-div.block {
+h1 {
+	margin: 60px;
 }
-div.bar {
-  position: fixed;
-  height: 37px;
-  left: 0;
-  right: 0;
-  top: 0;
-  background-color: #000000;
+h2 {
+  text-align: left;
 }
-div.loginBox {
-  color: #9AB8E4;
-  font-weight: bold;
-  display: inline-block;
-  height: 31px;
-  width: 200px;
-  line-height: 29px;
-  position: relative;
-  top: 5px;
-  left: 30%;
-  vertical-align: top;
+#container, #nav ul {
+	margin: 0 auto;
+	width: 900px;
 }
-span.login {
-  padding-left: 5px;
+#nav {
+
+	/* gradient background */
+	background: #4c4c4c; /* Old browsers */
+	background: -moz-linear-gradient(top,  #4c4c4c 0%, #595959 12%, #2b2b2b 82%, #131313 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4c4c4c), color-stop(12%,#595959), color-stop(82%,#2b2b2b), color-stop(100%,#131313)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #4c4c4c 0%,#595959 12%,#2b2b2b 82%,#131313 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #4c4c4c 0%,#595959 12%,#2b2b2b 82%,#131313 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #4c4c4c 0%,#595959 12%,#2b2b2b 82%,#131313 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #4c4c4c 0%,#595959 12%,#2b2b2b 82%,#131313 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313',GradientType=0 ); /* IE6-9 */
+
+	box-shadow: 0px 2px 4px #888888;
+	text-transform: lowercase;
+	color: white;
 }
-div.loginDropdown {
-  float: left;
+#nav ul {
+	padding: 0;
+	display: inline-block;
 }
-div.main {
-  background-color: #C6E2FF;
-  border: 2px solid transparent;
-  border-left-color: #B8CCFF;
-  border-right-color: #B8CCFF;
-  width: 1100px;
-  height: 100%;
-  margin: 0 auto;
+#nav ul li {
+	list-style-type: none;
+	display: inline;
+}
+#nav li div {
+	display: block;
+	float: right;
+	padding: 5px;
+	text-decoration: none;
+	color: white;
+	font-weight: bold;
 }
 img.thumbnail {
   float: left;
@@ -47,8 +63,19 @@ img.thumbnail {
   padding: 5px;
   padding-top: 30px;
 }
+
+/* VIDEO PAGE */
+#comment-container {
+  padding: 15px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+#video-stats span {
+  float: right;
+}
+
+
 div.videobar {
-  width: 85%;
   height: 200px;
   background-color: #DBDBDB;
   border: 2px solid #B8CCFF;
@@ -59,11 +86,15 @@ div.videocontainer {
   height: 240px;
   margin: 0 auto;
 }
-span.videobartitle {
-  position: relative;
-  right: 35%;
-  font-size: 17pt;
+#searchContainer {
+  padding: 20px 0;
 }
 .hidden {
   display: none;
+}
+.flowplayer {
+	width: 60% !important;
+}
+.flowplayer a {
+  display: none !important;
 }
