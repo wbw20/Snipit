@@ -34,7 +34,7 @@ html ->
 
           tr ->
             td ->
-              div id: 'confirmemail'
+              div id: 'confirmEmail'
         div id: 'enabledContainer', style: 'display: none'
         div id: 'disabledContainer'
 
@@ -113,14 +113,14 @@ html ->
             (dojo.byId 'email').appendChild email.domNode
             domstyle.set email.domNode, 'width', '20.35em'
 
-            confirmemail = new ValidationTextBox {
+            confirmEmail = new ValidationTextBox {
             placeHolder: 'Confirm Email Address'
             validator: () ->
-              return email.value==confirmemail.value
+              return email.value==confirmEmail.value
             invalidMessage: 'Emails must match'
             }
-            (dojo.byId 'confirmemail').appendChild confirmemail.domNode
-            domstyle.set confirmemail.domNode, 'width', '20.35em'
+            (dojo.byId 'confirmEmail').appendChild confirmEmail.domNode
+            domstyle.set confirmEmail.domNode, 'width', '20.35em'
 
             submitEnabled = new Button {
               id: 'submitEnabled',
@@ -139,7 +139,7 @@ html ->
             checkForm = () ->
               console.log 'checking'
 
-              if password.isValid()
+              if password.isValid() && confirmPassword.isValid() && email.isValid() && confirmEmail.isValid()
                 dojo.style 'enabledContainer', 'display', ''
                 dojo.style 'disabledContainer', 'display', 'none'
               else
@@ -147,6 +147,9 @@ html ->
                 dojo.style 'disabledContainer', 'display', ''
 
             dojo.connect password, 'onChange', checkForm
+            dojo.connect confirmPassword, 'onChange', checkForm
+            dojo.connect email, 'onChange', checkForm
+            dojo.connect confirmEmail, 'onChange', checkForm
 
             (dojo.byId 'enabledContainer').appendChild submitEnabled.domNode
             (dojo.byId 'disabledContainer').appendChild submitDisabled.domNode
