@@ -15,25 +15,31 @@ module.exports = {
   
   /* grab 4 videos with most views */
   getPopular: function(callback) {
-    var toReturn = new Array();
-      
-    // look at video views table, count by video, display 4 with highest count
-    models.Video.findAll({order: 'createdAt DESC', limit: 4
-      }).success(function(video) {
-          
-        for (var i = 0; i < 4; i++) {
-          if (typeof(video[i]) != "undefined") {
-            toReturn[i] = {  
-               name:      video[i].selectedValues.name,
-               id:        video[i].selectedValues.id
-               //thumbnail: fs.readFileSync('../data/photos/thumbnail/' + results[i].id + '.jpg')
-            };
-          }
-        }
-         
-        callback(toReturn); 
-    });
     
+      /* fake data for now */
+      var results = [{
+                       name: "video 1",
+                       id:   "Aabc50a0-a460-11e2-9e96-0800200c9a66",
+                     }, {
+                       name: "video 2",
+                       id:   "Babc50a0-a460-11e2-9e96-0800200c9a66",
+                     }, {
+                       name: "video 3",
+                       id:   "Cabc50a0-a460-11e2-9e96-0800200c9a66",
+                     }, {
+                       name: "video 4",
+                       id:   "Dabc50a0-a460-11e2-9e96-0800200c9a66",
+                     }];
+                      
+      var toReturn = new Array();
+      for (var i = 0; i < results.length; i++) {
+        toReturn[i] = {
+                        name:      results[i].name,
+                        id:        results[i].id
+                        //thumbnail: fs.readFileSync('../data/photos/thumbnail/' + results[i].id + '.jpg')
+                      };
+      }
+
     return toReturn;
   },
   
