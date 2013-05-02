@@ -45,7 +45,7 @@ html ->
                 }
                 
                 register_button = new Button {
-                  label: 'Register'
+                  label: 'Sign Up'
                   onClick: () ->
                     window.location = '/new';
                 }
