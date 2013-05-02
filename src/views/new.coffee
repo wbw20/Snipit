@@ -117,7 +117,7 @@ html ->
             placeHolder: 'Confirm Email Address'
             validator: () ->
               return email.value==confirmemail.value
-            invalidMessage: 'Does not match'
+            invalidMessage: 'Emails must match'
             }
             (dojo.byId 'confirmemail').appendChild confirmemail.domNode
             domstyle.set confirmemail.domNode, 'width', '20.35em'
