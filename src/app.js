@@ -124,12 +124,6 @@ app.post('/snip', function(req, res) {
 });
 
 app.get('/new', function(req, res) {
-  var will = models.User.build({
-    name: 'Will Wettersten',
-    username: 'wbw20',
-    password: 'kitchin'
-  }).save();
-
   res.render(__dirname + '/views/new.coffee');
 });
 
@@ -152,9 +146,17 @@ app.get('/video', function(req, res) {
           console.log(comments);
       });
   });
+});
 
-  
+app.post('/new', function (req, res) {
+    models.User.build({
+        name: req.body.first + ' ' + req.body.last,
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email
+    }).save();
 
+    res.render(__dirname + '/views/new.coffee');
 });
 
 app.post('/login', function (req, res) {
@@ -182,6 +184,21 @@ app.get('/logout', function (req, res) {
     });
 
     return res.redirect('/');
+});
+
+app.get('/user', function (req, res) {
+    console.log (req.query);
+    models.User.find({
+        where: {
+            username: req.query['username']
+        }
+    }).success(function(theUserWeFound) {
+        if(theUserWeFound){
+            res.send('taken');
+        } else {
+            res.send(200);
+        }
+    });
 });
 
 app.listen(8080);

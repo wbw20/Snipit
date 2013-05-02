@@ -6,5 +6,6 @@ module.exports = User = connection.define('user', {
         name      : { type: Sequalize.STRING, allowNull: false },
         username  : { type: Sequalize.STRING, allowNull: false },
         password  : { type: Sequalize.STRING, allowNull: false },
+        email     : { type: Sequalize.STRING, allowNull: false },
         age       : { type: Sequalize.INTEGER }
 });
