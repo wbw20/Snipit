@@ -1,5 +1,6 @@
 var child = require('child_process');
 var fs = require('fs');
+var models = require('./models');
 
 module.exports = {
   spawn: function(process, args) {
@@ -7,7 +8,12 @@ module.exports = {
       console.log(data);
     });;
   },
+  
+  /* grab 4 videos with most views */
   getPopular: function() {
+  
+  
+  
     /* fake data for now */
     var results = [{
                      name: "video 1",
@@ -21,9 +27,6 @@ module.exports = {
                    }, {
                      name: "video 4",
                      id:   "Dabc50a0-a460-11e2-9e96-0800200c9a66",
-                   }, {
-                     name: "video 5",
-                     id:   "Eabc50a0-a460-11e2-9e96-0800200c9a66",
                    }];
                     
     var toReturn = new Array();
@@ -36,5 +39,28 @@ module.exports = {
     }
 
     return toReturn;
+  },
+  
+  /* grab 4 videos created most recently */
+  getRecent: function() {
+      var toReturn = new Array();
+      
+      models.Video.findAll({order: 'createdAt DESC', limit: 4
+        }).success(function(video) {
+
+          for (var i = 0; i < 4; i++) {
+            if (typeof(video[i]) != "undefined") {
+              toReturn[i] = {  
+                  name:      video[i].selectedValues.name,
+                  id:        video[i].selectedValues.id
+                  //thumbnail: fs.readFileSync('../data/photos/thumbnail/' + results[i].id + '.jpg')
+              };
+            }
+          }
+
+      });
+  
+    return toReturn;
   }
+  
 }

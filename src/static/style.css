@@ -19,6 +19,7 @@ h1 {
 }
 h2 {
   text-align: left;
+  margin-bottom: 10px;
 }
 #container, #nav ul {
 	margin: 0 auto;
@@ -58,10 +59,9 @@ h2 {
 }
 img.thumbnail {
   float: left;
-  height: 120px;
-  width: 160px;
-  padding: 5px;
-  padding-top: 30px;
+  height: 143px;
+  width: 196px;
+  padding: 20px 5px;
 }
 
 /* VIDEO PAGE */
@@ -75,16 +75,16 @@ img.thumbnail {
 }
 
 
-div.videobar {
-  height: 200px;
+.contentbar {
   background-color: #DBDBDB;
   border: 2px solid #B8CCFF;
   margin: 0 auto;
 }
-div.videocontainer {
+.videocontainer {
   width: 92%;
   height: 240px;
   margin: 0 auto;
+  margin-bottom: 20px;
 }
 #searchContainer {
   padding: 20px 0;
@@ -97,4 +97,13 @@ div.videocontainer {
 }
 .flowplayer a {
   display: none !important;
+}
+
+/* Clearfix hack. Do not touch. */
+.clearfix:before, .clearfix:after {
+  content: " ";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
 }

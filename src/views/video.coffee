@@ -111,7 +111,7 @@ html ->
 
             
 	      h2 'Comments'
-	      div id: 'comment-container', class: 'videobar', ->
+	      div id: 'comment-container', class: 'contentbar', ->
 	        for i in @comments
 	          div id: 'comment' + i.id, ->
 	            a href: '#', ->

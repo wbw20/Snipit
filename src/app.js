@@ -7,7 +7,6 @@ var url = require('url');
 var dao = require('./dao');
 var util = require('./util');
 var models = require('./models');
-var Sequelize = require('sequelize');
 
 
 /* BEGIN MAIN ROUTINE */
@@ -49,6 +48,9 @@ app.get('/', function(req, res) {
     videos: [{
       name: 'Popular',
       content: util.getPopular()
+    }, {
+      name: 'Recent',
+      content: util.getRecent()
     }]
   });
 });
@@ -106,7 +108,6 @@ app.get('/new', function(req, res) {
 
 app.get('/video', function(req, res) {
   var url_str = url.parse(req.url, true).query;
-  var chainer = new Sequelize.Utils.QueryChainer();
   
   // get video
   models.Video.find({where : {id: url_str.v}
@@ -120,7 +121,6 @@ app.get('/video', function(req, res) {
             vname: video.name,
             comments: comments
           });
-          console.log(comments);
       });
   });
 

@@ -109,7 +109,8 @@ html ->
             div class: 'videocontainer', ->
               h2 ->
                 sec.name
-              div class: 'videobar', ->
+              div class: 'contentbar clearfix', ->
                 for thumbnail in sec.content
-                  img src: 'photos/thumbnail/' + thumbnail.id + '.jpg', class: 'thumbnail', alt: 'play.png'
+                  #a href: 'video?v=' + thumbnail.id, -> # adding this line breaks the loop, but only for the Recent section... wat
+                    img src: 'photos/thumbnail/' + thumbnail.id + '.jpg', class: 'thumbnail'
 

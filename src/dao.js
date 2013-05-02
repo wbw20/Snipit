@@ -25,8 +25,8 @@ module.exports = {
     Group.hasMany(User, {joinTableName: 'user_to_group'});
 
     /* Video View */
-    User.hasMany(Video, {joinTableName: 'user_to_video_view'});
-    Video.hasMany(User, {joinTableName: 'user_to_video_view'});
+    User.hasMany(Video, {joinTableName: 'user_to_video_views'});
+    Video.hasMany(User, {joinTableName: 'user_to_video_views'});
 
     /* Video Favorite */
     User.hasMany(Video, {joinTableName: 'user_to_video_favorite'});
