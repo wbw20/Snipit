@@ -90,19 +90,42 @@ app.get('/snip', function(req, res) {
 });
 
 app.post('/snip', function(req, res) {
-  util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/delta.mpg', 3000000, 6000000]);
+  var id = util.uuid();
+  var converter;
+  var downloader;
+
+  // snip
+  //var convert = function() {
+
+  //}
+
+  downloader = util.spawn('java', ['-jar', '../opt/downloader.jar', req.body.url, '../data/videos/raw/' + id + '.mp4']);
+    downloader.on('close', function(code) {
+      //put new video in db
+      models.Video.build({
+        name: req.body.name,
+        file: '../data/videos/snipped/' + id + '.mpg'
+      }).save();
+
+        converter = util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/raw/' + id + '.mp4', req.body.start, req.body.end, '../data/videos/snipped/' + id + '.mpg']);
+        converter.stdout.on('data', function (data) {
+            console.log(data.toString());
+        });
+        converter.stderr.on('data', function (data) {
+        });
+        converter.on('close', function(code) {
+            console.log('OVER!');
+            converter.kill();
+            downloader.kill();
+        });
+    });
+
   res.render(__dirname + '/views/snip.coffee', {
-    user: req.user,
+    user: req.user
   });
 });
 
 app.get('/new', function(req, res) {
-  var will = models.User.build({
-    name: 'Will Wettersten',
-    username: 'wbw20',
-    password: 'kitchin'
-  }).save();
-
   res.render(__dirname + '/views/new.coffee');
 });
 
@@ -123,9 +146,17 @@ app.get('/video', function(req, res) {
           });
       });
   });
+});
 
-  
+app.post('/new', function (req, res) {
+    models.User.build({
+        name: req.body.first + ' ' + req.body.last,
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email
+    }).save();
 
+    res.render(__dirname + '/views/new.coffee');
 });
 
 app.post('/login', function (req, res) {
@@ -153,6 +184,21 @@ app.get('/logout', function (req, res) {
     });
 
     return res.redirect('/');
+});
+
+app.get('/user', function (req, res) {
+    console.log (req.query);
+    models.User.find({
+        where: {
+            username: req.query['username']
+        }
+    }).success(function(theUserWeFound) {
+        if(theUserWeFound){
+            res.send('taken');
+        } else {
+            res.send(200);
+        }
+    });
 });
 
 app.listen(8080);
