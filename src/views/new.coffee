@@ -26,6 +26,10 @@ html ->
 
           tr ->
             td ->
+              div id: 'confirmPassword'
+
+          tr ->
+            td ->
               div id: 'email'
 
           tr ->
@@ -88,8 +92,19 @@ html ->
             (dojo.byId 'password').appendChild password.domNode
             domstyle.set password.domNode, 'width', '20.35em'
 
+            confirmPassword = new ValidationTextBox {
+            name: 'confirmPassword',
+            type: 'password',
+            placeHolder: 'Confirm Password',
+            validator: () ->
+              return password.value == confirmPassword.value
+            invalidMessage: "Passwords must match"
+            }
+            (dojo.byId 'confirmPassword').appendChild confirmPassword.domNode
+            domstyle.set confirmPassword.domNode, 'width', '20.35em'
+
             email = new ValidationTextBox {
-              name: 'email',
+            name: 'email',
             placeHolder: 'Email Address'
             validator: dojox.validate.isEmailAddress
             invalidMessage: 'Invalid email address'
