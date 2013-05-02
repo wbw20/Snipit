@@ -62,11 +62,16 @@ app.get('/profile', function(req, res) {
   // get user specified in GET string
   models.User.find({where : {id: url_str.u}
     }).success(function(found) {
-        res.render(__dirname + '/views/profile.coffee', {
-          user: req.user,
-          uid: found.id,
-          username: found.username,
-          name: found.name
+        // get user's uploaded videos
+        models.Video.findAll({where : {uploader: found.id}
+          }).success(function(videos) {
+          res.render(__dirname + '/views/profile.coffee', {
+            user: req.user,
+            uid: found.id,
+            username: found.username,
+            name: found.name,
+            uploads: videos
+          });
         });
   });
 });

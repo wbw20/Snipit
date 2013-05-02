@@ -84,8 +84,8 @@ html ->
       div id: 'main', ->
         h2 @username
 
-        table ->
         ###
+        table ->
           for video in @uploads 
             tr -> 
               td -> 
