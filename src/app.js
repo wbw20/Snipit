@@ -185,12 +185,14 @@ app.post('/login', function (req, res) {
         password: req.body.password
       }
     }).success(function(theUserWeFound) {
+      //authenticate the user
       if (theUserWeFound) {
         new Cookies(req, res, keygrip).set('login', req.body.username, {signed: true});
-        res.send(200); //authenticate the user
+          return res.redirect('/');
+      //or don't
       } else {
         res.send('invalid login');
-        res.send(401);//or don't
+        res.send(401);
       }
     });
 });
