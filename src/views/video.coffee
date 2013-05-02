@@ -91,7 +91,11 @@ html ->
 	        div class: 'flowplayer', 'data-swf': 'flowplayer/flowplayer.swf', 'data-ratio': '0.667', ->
 	          video ->
 	            source type: 'video/webm', src: 'videos/' + @vid + '.webm'
-	      div id: 'video-stats', ->
+	      div id: 'video-stats', class: 'clearfix', ->
+	        span id: 'creator', ->
+	          text 'Created by '
+	          a href: 'profile?u=' + @uploader.id, ->
+	            @uploader.username
 	        span id: 'dislike'
 	        span id: 'like'
 	        coffeescript ->

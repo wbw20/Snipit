@@ -143,7 +143,7 @@ app.get('/video', function(req, res) {
   var url_str = url.parse(req.url, true).query;
   
   // get video
-  models.Video.find({where : {id: url_str.v}
+  models.Video.find({where : {id: url_str.v}, include: [models.User]
     }).success(function(video) {
 	    // get comments
       models.Comment.findAll({where : {video: video.id}, include: [models.User] 
@@ -152,9 +152,10 @@ app.get('/video', function(req, res) {
             user: req.user,
             vid: video.id,
             vname: video.name,
+            uploader: video.user,
             comments: comments
           });
-          console.log(comments);
+          console.log(video);
       });
   });
 });

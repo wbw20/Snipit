@@ -82,9 +82,10 @@ html ->
 
     div id: 'container', ->
       div id: 'main', ->
-     
-        ###     
+        h2 @username
+
         table ->
+        ###
           for video in @uploads 
             tr -> 
               td -> 
