@@ -35,6 +35,8 @@ html ->
           tr ->
             td ->
               div id: 'confirmemail'
+        div id: 'enabledContainer', style: 'display: none'
+        div id: 'disabledContainer'
 
       coffeescript ->
         require ['dojo/ready', 'dojo/dom-style', 'dijit/form/TextBox', 'dijit/form/Button', 'dijit/form/ValidationTextBox', 'dijit/Tooltip', 'dojox/validate/web'], (ready, domstyle,  TextBox, Button, ValidationTextBox, Tooltip) ->
@@ -54,7 +56,6 @@ html ->
                 }
 
                 data.then (dojo.hitch this, (response) ->
-                  console.log response
 
                   if response == 'taken'
                     this.displayMessage()
@@ -86,7 +87,6 @@ html ->
               type: 'password',
               placeHolder: 'Password',
               validator: () ->
-                console.log password.value
                 return password.value == '' || password.value.length>=8 && password.value.length<=18
               invalidMessage: "Must be between 8 and 18 characters"
             }
@@ -122,8 +122,31 @@ html ->
             (dojo.byId 'confirmemail').appendChild confirmemail.domNode
             domstyle.set confirmemail.domNode, 'width', '20.35em'
 
-            submit = new Button {
+            submitEnabled = new Button {
+              id: 'submitEnabled',
+              disabled: false,
               label: 'Join',
               type: 'Submit'
             }
-            (dojo.byId 'newuserform').appendChild submit.domNode
+
+            submitDisabled = new Button {
+              id: 'submitDisabled',
+              disabled: true,
+              label: 'Join',
+              type: 'Submit'
+              }
+
+            checkForm = () ->
+              console.log 'checking'
+
+              if password.isValid()
+                dojo.style 'enabledContainer', 'display', ''
+                dojo.style 'disabledContainer', 'display', 'none'
+              else
+                dojo.style 'enabledContainer', 'display', 'none'
+                dojo.style 'disabledContainer', 'display', ''
+
+            dojo.connect password, 'onChange', checkForm
+
+            (dojo.byId 'enabledContainer').appendChild submitEnabled.domNode
+            (dojo.byId 'disabledContainer').appendChild submitDisabled.domNode

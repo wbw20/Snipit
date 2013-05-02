@@ -92,12 +92,6 @@ app.post('/snip', function(req, res) {
 });
 
 app.get('/new', function(req, res) {
-  var will = models.User.build({
-    name: 'Will Wettersten',
-    username: 'wbw20',
-    password: 'kitchin'
-  }).save();
-
   res.render(__dirname + '/views/new.coffee');
 });
 
