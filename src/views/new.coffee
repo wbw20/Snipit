@@ -139,7 +139,7 @@ html ->
             checkForm = () ->
               console.log 'checking'
 
-              if password.isValid() && confirmPassword.isValid() && email.isValid() && confirmEmail.isValid()
+              if password.isValid() && confirmPassword.isValid() && email.isValid() && confirmEmail.isValid() && password.value
                 dojo.style 'enabledContainer', 'display', ''
                 dojo.style 'disabledContainer', 'display', 'none'
               else
