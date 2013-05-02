@@ -80,6 +80,17 @@ img.thumbnail {
   float: left !important;
 }
 
+/* PROFILE PAGE */
+#user-info {
+  text-align: left;
+}
+dt {
+  font-weight: bold;
+  display: inline-block;
+}
+dd {
+  display: inline-block;
+}
 
 .contentbar {
   background-color: #DBDBDB;

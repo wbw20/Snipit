@@ -83,6 +83,12 @@ html ->
     div id: 'container', ->
       div id: 'main', ->
         h2 @username
+        dl id: 'user-info', ->
+          dt 'Full name:'
+          dd @name
+          br ->
+          dt 'Age:'
+          dd @age
 
         ###
         table ->
@@ -117,7 +123,7 @@ html ->
               tc.addChild cp1
    
               cp2 = new ContentPane {
-                title: 'videos',
+                title: 'favorites',
                 content: 'put videos here'
               }
               tc.addChild cp2
