@@ -101,6 +101,16 @@ app.get('/new', function(req, res) {
   res.render(__dirname + '/views/new.coffee');
 });
 
+app.post('/new', function (req, res) {
+    models.User.build({
+        first: req.body.first,
+        last:req.body.last,
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email
+    }).save()
+});
+
 app.post('/login', function (req, res) {
     models.User.find({
       where: {

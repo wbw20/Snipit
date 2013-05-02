@@ -9,7 +9,7 @@ html ->
     div name: 'main', class: 'main', style:'text-align: center', ->
       div name: 'spacer', style: 'height: 50px'
       img src: 'join.png'
-      form method: 'post', ->
+      form id: 'newuserform', method: 'post', ->
         table style: 'margin: auto', ->
           tr ->
             td ->
@@ -32,12 +32,11 @@ html ->
             td ->
               div id: 'confirmemail'
 
-      div id: 'submitcontainer'
-
       coffeescript ->
         require ['dojo/ready', 'dojo/dom-style', 'dijit/form/TextBox', 'dijit/form/Button', 'dijit/form/ValidationTextBox', 'dijit/Tooltip', 'dojox/validate/web'], (ready, domstyle,  TextBox, Button, ValidationTextBox, Tooltip) ->
           ready () ->
             username = new ValidationTextBox {
+              name: 'username'
               id: 'username',
               placeHolder: 'Username',
               takenMessage: new Tooltip {
@@ -65,18 +64,21 @@ html ->
             domstyle.set username.domNode, 'width', '20.35em'
 
             first = new TextBox {
+              name: 'first',
             placeHolder: 'First Name'
             }
             (dojo.byId 'first').appendChild first.domNode
             domstyle.set first.domNode, 'width', '10em'
 
             last = new TextBox {
+              name: 'last',
             placeHolder: 'Last Name'
             }
             (dojo.byId 'last').appendChild last.domNode
             domstyle.set last.domNode, 'width', '10em'
 
             password = new ValidationTextBox {
+              name: 'password'
             placeHolder: 'Password'
             validator: () ->
               return password.value.length>=8 && password.value.length<=18
@@ -86,6 +88,7 @@ html ->
             domstyle.set password.domNode, 'width', '20.35em'
 
             email = new ValidationTextBox {
+              name: 'email'
             placeHolder: 'Email Address'
             validator: dojox.validate.isEmailAddress
             invalidMessage: 'Invalid email address'
@@ -103,6 +106,7 @@ html ->
             domstyle.set confirmemail.domNode, 'width', '20.35em'
 
             submit = new Button {
-              label: 'Join'
+              label: 'Join',
+              type: 'Submit'
             }
-            (dojo.byId 'submitcontainer').appendChild submit.domNode
+            (dojo.byId 'newuserform').appendChild submit.domNode
