@@ -78,17 +78,18 @@ html ->
             domstyle.set last.domNode, 'width', '10em'
 
             password = new ValidationTextBox {
-              name: 'password'
-            placeHolder: 'Password'
-            validator: () ->
-              return password.value.length>=8 && password.value.length<=18
-            invalidMessage: "Must be between 8 and 18 characters"
+              name: 'password',
+              type: 'password',
+              placeHolder: 'Password',
+              validator: () ->
+                return password.value.length>=8 && password.value.length<=18
+              invalidMessage: "Must be between 8 and 18 characters"
             }
             (dojo.byId 'password').appendChild password.domNode
             domstyle.set password.domNode, 'width', '20.35em'
 
             email = new ValidationTextBox {
-              name: 'email'
+              name: 'email',
             placeHolder: 'Email Address'
             validator: dojox.validate.isEmailAddress
             invalidMessage: 'Invalid email address'
