@@ -45,6 +45,7 @@ app.configure(function() {
 app.get('/', function(req, res) {
   res.render(__dirname + '/views/index.coffee', {
     user: req.user,
+    // breaks on refresh!
     videos: [{
       name: 'Popular',
       content: util.getPopular()
@@ -56,8 +57,17 @@ app.get('/', function(req, res) {
 });
 
 app.get('/profile', function(req, res) {
-  res.render(__dirname + '/views/profile.coffee', {
-    user: req.user
+  var url_str = url.parse(req.url, true).query;
+  
+  // get user specified in GET string
+  models.User.find({where : {id: url_str.u}
+    }).success(function(found) {
+        res.render(__dirname + '/views/profile.coffee', {
+          user: req.user,
+          uid: found.id,
+          username: found.username,
+          name: found.name
+        });
   });
 });
 
@@ -144,6 +154,7 @@ app.get('/video', function(req, res) {
             vname: video.name,
             comments: comments
           });
+          console.log(comments);
       });
   });
 });

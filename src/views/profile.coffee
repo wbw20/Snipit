@@ -1,5 +1,6 @@
 html ->
   head ->
+    title @username + '\'s Profile'
     link rel: 'stylesheet', type: 'text/css', href: 'style.css'
     link rel: 'stylesheet', type: 'text/css', href: 'dijit/themes/claro/claro.css'
     script src: 'dojo/dojo.js'
@@ -9,7 +10,7 @@ html ->
     div name: 'spacer', style: 'height: 50px'
     div style: 'width: 100%; overflow: hidden', ->
       div style: 'width: 60%; float: left', ->
-        h1 @user.username
+        h1 @username
       div name: 'avatarBox', style: 'float: left', ->
         img src: 'silhouette.png'
     div id: 'contentTable', ->

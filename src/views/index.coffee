@@ -45,7 +45,7 @@ html ->
                 }
                 
                 register_button = new Button {
-                  label: 'Sign Up'
+                  label: 'Register'
                   onClick: () ->
                     window.location = '/new';
                 }
@@ -97,20 +97,14 @@ html ->
 
                     searchBox = new TextBox
                     (dojo.byId 'searchContainer').appendChild searchBox.domNode
-        sections = [{
-                      name: 'Popular'
-                    }, {
-                      name: 'Recent'
-                    }, {
-                      name: 'Our Favorites'
-                    }]
+
         for sec in @videos
           section name: sec.name, ->
             div class: 'videocontainer', ->
               h2 ->
                 sec.name
               div class: 'contentbar clearfix', ->
-                for thumbnail in sec.content
-                  #a href: 'video?v=' + thumbnail.id, -> # adding this line breaks the loop, but only for the Recent section... wat
-                    img src: 'photos/thumbnail/' + thumbnail.id + '.jpg', class: 'thumbnail'
+                  for vid in sec.content
+                    a href: 'video?v=' + vid.id, ->
+                      img src: 'photos/thumbnail/' + vid.id + '.jpg', class: 'thumbnail', alt: vid.name
 

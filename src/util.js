@@ -16,8 +16,6 @@ module.exports = {
   /* grab 4 videos with most views */
   getPopular: function() {
   
-  
-  
     /* fake data for now */
     var results = [{
                      name: "video 1",
@@ -47,24 +45,24 @@ module.exports = {
   
   /* grab 4 videos created most recently */
   getRecent: function() {
-      var toReturn = new Array();
+    var toReturn = new Array();
       
-      models.Video.findAll({order: 'createdAt DESC', limit: 4
-        }).success(function(video) {
-
-          for (var i = 0; i < 4; i++) {
-            if (typeof(video[i]) != "undefined") {
-              toReturn[i] = {  
-                  name:      video[i].selectedValues.name,
-                  id:        video[i].selectedValues.id
-                  //thumbnail: fs.readFileSync('../data/photos/thumbnail/' + results[i].id + '.jpg')
-              };
-            }
+    models.Video.findAll({order: 'createdAt DESC', limit: 4
+      }).success(function(video) {
+          
+        for (var i = 0; i < 4; i++) {
+          if (typeof(video[i]) != "undefined") {
+            toReturn[i] = {  
+               name:      video[i].selectedValues.name,
+               id:        video[i].selectedValues.id
+               //thumbnail: fs.readFileSync('../data/photos/thumbnail/' + results[i].id + '.jpg')
+            };
           }
-
-      });
-  
-    return toReturn;
+        }
+          
+    });
+      
+    return toReturn; 
   }
   
 }

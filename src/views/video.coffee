@@ -114,7 +114,7 @@ html ->
 	      div id: 'comment-container', class: 'contentbar', ->
 	        for i in @comments
 	          div id: 'comment' + i.id, ->
-	            a href: '#', ->
+	            a href: 'profile?u='+ i.user.id, ->
 	              i.user.username
 	            p i.comment
 	      
