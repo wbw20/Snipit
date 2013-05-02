@@ -103,12 +103,13 @@ app.get('/new', function(req, res) {
 
 app.post('/new', function (req, res) {
     models.User.build({
-        first: req.body.first,
-        last:req.body.last,
+        name: req.body.first + ' ' + req.body.last,
         username: req.body.username,
         password: req.body.password,
         email: req.body.email
-    }).save()
+    }).save();
+
+    res.render(__dirname + '/views/new.coffee');
 });
 
 app.post('/login', function (req, res) {
