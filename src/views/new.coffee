@@ -86,7 +86,8 @@ html ->
               type: 'password',
               placeHolder: 'Password',
               validator: () ->
-                return password.value.length>=8 && password.value.length<=18
+                console.log password.value
+                return password.value == '' || password.value.length>=8 && password.value.length<=18
               invalidMessage: "Must be between 8 and 18 characters"
             }
             (dojo.byId 'password').appendChild password.domNode
@@ -97,7 +98,7 @@ html ->
             type: 'password',
             placeHolder: 'Confirm Password',
             validator: () ->
-              return password.value == confirmPassword.value
+              return password.value == '' || password.value == confirmPassword.value
             invalidMessage: "Passwords must match"
             }
             (dojo.byId 'confirmPassword').appendChild confirmPassword.domNode
