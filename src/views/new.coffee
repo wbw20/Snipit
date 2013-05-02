@@ -45,10 +45,7 @@ html ->
               name: 'username'
               id: 'username',
               placeHolder: 'Username',
-              takenMessage: new Tooltip {
-                label: 'fuck you',
-                connectId: 'username'
-              }
+              invalidMessage: 'Taken',
               validator: () ->
                 data = dojo.xhrGet {
                   url: '/user?username=' + username.value,
@@ -56,12 +53,10 @@ html ->
                 }
 
                 data.then (dojo.hitch this, (response) ->
-
                   if response == 'taken'
-                    this.displayMessage()
+                    this.set('state', 'error')
+                    this.displayMessage("Username Taken")
                 )
-
-                return false if data == 'taken'
                 return true
             }
 
@@ -137,15 +132,15 @@ html ->
               }
 
             checkForm = () ->
-              console.log 'checking'
-
-              if password.isValid() && confirmPassword.isValid() && email.isValid() && confirmEmail.isValid() && password.value
+              if password.isValid() && confirmPassword.isValid() && email.isValid() && confirmEmail.isValid() && username.isValid() && password.value
                 dojo.style 'enabledContainer', 'display', ''
                 dojo.style 'disabledContainer', 'display', 'none'
               else
                 dojo.style 'enabledContainer', 'display', 'none'
                 dojo.style 'disabledContainer', 'display', ''
 
+
+            dojo.connect username, 'onChange', checkForm
             dojo.connect password, 'onChange', checkForm
             dojo.connect confirmPassword, 'onChange', checkForm
             dojo.connect email, 'onChange', checkForm
