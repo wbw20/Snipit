@@ -26,8 +26,8 @@ module.exports = {
     Group.hasMany(User, {joinTableName: 'user_to_group'});
 
     /* Video View */
-    User.hasMany(Video, {joinTableName: 'user_to_video_view'});
-    Video.hasMany(User, {joinTableName: 'user_to_video_view'});
+    User.hasMany(Video, {joinTableName: 'user_to_video_views'});
+    Video.hasMany(User, {joinTableName: 'user_to_video_views'});
 
     /* Video Favorite */
     User.hasMany(Video, {joinTableName: 'user_to_video_favorite'});
@@ -42,11 +42,16 @@ module.exports = {
     Message.belongsTo(User, {foreignKey: 'recipient'});
 
     /* Comments */
-    Comment.belongsTo(User);
-    Comment.belongsTo(Video);
+    Comment.belongsTo(User, {foreignKey: 'user'});
+    Comment.belongsTo(Video, {foreignKey: 'video'});
 
     /* Like/Dislike */
+<<<<<<< HEAD
     LikeDislike.belongsTo(User);
     LikeDislike.belongsTo(Video);
+=======
+    LikeDislike.belongsTo(User, {foreignKey: 'user'});
+    LikeDislike.belongsTo(Video, {foreignKey: 'video'});
+>>>>>>> dff055b73f6beddbef2a96ae9c6f0bda446434f0
   }
 }

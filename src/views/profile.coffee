@@ -1,5 +1,6 @@
 html ->
   head ->
+    title @username + '\'s Profile'
     link rel: 'stylesheet', type: 'text/css', href: 'style.css'
     link rel: 'stylesheet', type: 'text/css', href: 'dijit/themes/claro/claro.css'
     script src: 'dojo/dojo.js'

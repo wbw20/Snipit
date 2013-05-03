@@ -45,25 +45,35 @@ app.configure(function() {
 app.get('/', function(req, res) {
   res.render(__dirname + '/views/index.coffee', {
     user: req.user,
+    // breaks on refresh!
     videos: [{
       name: 'Popular',
       content: util.getPopular()
+    }, {
+      name: 'Recent',
+      content: util.getRecent()
     }]
   });
 });
 
 app.get('/profile', function(req, res) {
-  models.Video.findAll({
-      where: {
-        uploader: req.user.id
-      },
-        include: [models.User]
-    }).success(function(results) {
-      console.log(results)
-      res.render(__dirname + '/views/profile.coffee', {
-        user: req.user,
-        uploads: results
-    });
+
+   var url_str = url.parse(req.url, true).query;
+
+  // get user specified in GET string
+  models.User.find({where : {id: url_str.u}
+    }).success(function(found) {
+        // get user's uploaded videos
+        models.Video.findAll({where : {uploader: found.id}
+          }).success(function(videos) {
+          res.render(__dirname + '/views/profile.coffee', {
+            user: req.user,
+            uid: found.id,
+            username: found.username,
+            name: found.name,
+            uploads: videos
+          });
+        });
   });
 });
 
@@ -96,32 +106,75 @@ app.get('/snip', function(req, res) {
 });
 
 app.post('/snip', function(req, res) {
-  util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/delta.mpg', 3000000, 6000000]);
+  var id = util.uuid();
+  var converter;
+  var downloader;
+
+  // snip
+  //var convert = function() {
+
+  //}
+
+  downloader = util.spawn('java', ['-jar', '../opt/downloader.jar', req.body.url, '../data/videos/raw/' + id + '.mp4']);
+    downloader.on('close', function(code) {
+      //put new video in db
+      models.Video.build({
+        name: req.body.name,
+        file: '../data/videos/snipped/' + id + '.mpg'
+      }).save();
+
+        converter = util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/raw/' + id + '.mp4', req.body.start, req.body.end, '../data/videos/snipped/' + id + '.mpg']);
+        converter.stdout.on('data', function (data) {
+            console.log(data.toString());
+        });
+        converter.stderr.on('data', function (data) {
+        });
+        converter.on('close', function(code) {
+            console.log('OVER!');
+            converter.kill();
+            downloader.kill();
+        });
+    });
+
   res.render(__dirname + '/views/snip.coffee', {
-    user: req.user,
+    user: req.user
   });
 });
 
 app.get('/new', function(req, res) {
-  var will = models.User.build({
-    name: 'Will Wettersten',
-    username: 'wbw20',
-    password: 'kitchin'
-  }).save();
-
   res.render(__dirname + '/views/new.coffee');
 });
 
 app.get('/video', function(req, res) {
   var url_str = url.parse(req.url, true).query;
-  //models.Video.query({where : {id: url_str.v}
-  //}).success(function(video) {
-	  res.render(__dirname + '/views/video.coffee', {
-        user: req.user,
-        vid: url_str.v
-        //vid: video
-    });
-  //};
+
+  // get video
+  models.Video.find({where : {id: url_str.v}, include: [models.User]
+    }).success(function(video) {
+	    // get comments
+      models.Comment.findAll({where : {video: video.id}, include: [models.User]
+        }).success(function(comments) {
+          res.render(__dirname + '/views/video.coffee', {
+            user: req.user,
+            vid: video.id,
+            vname: video.name,
+            uploader: video.user,
+            comments: comments
+          });
+          console.log(video);
+      });
+  });
+});
+
+app.post('/new', function (req, res) {
+    models.User.build({
+        name: req.body.first + ' ' + req.body.last,
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email
+    }).save();
+
+    res.render(__dirname + '/views/new.coffee');
 });
 
 app.post('/login', function (req, res) {
@@ -149,6 +202,21 @@ app.get('/logout', function (req, res) {
     });
 
     return res.redirect('/');
+});
+
+app.get('/user', function (req, res) {
+    console.log (req.query);
+    models.User.find({
+        where: {
+            username: req.query['username']
+        }
+    }).success(function(theUserWeFound) {
+        if(theUserWeFound){
+            res.send('taken');
+        } else {
+            res.send(200);
+        }
+    });
 });
 
 app.listen(8080);

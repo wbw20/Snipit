@@ -9,7 +9,7 @@ html ->
     div name: 'main', class: 'main', style:'text-align: center', ->
       div name: 'spacer', style: 'height: 50px'
       img src: 'join.png'
-      form method: 'post', ->
+      form id: 'newuserform', method: 'post', ->
         table style: 'margin: auto', ->
           tr ->
             td ->
@@ -26,50 +26,125 @@ html ->
 
           tr ->
             td ->
+              div id: 'confirmPassword'
+
+          tr ->
+            td ->
               div id: 'email'
 
           tr ->
             td ->
-              div id: 'confirmemail'
+              div id: 'confirmEmail'
+        div id: 'enabledContainer', style: 'display: none'
+        div id: 'disabledContainer'
 
       coffeescript ->
-        require ['dojo/ready', 'dojo/dom-style', 'dijit/form/TextBox'], (ready, domstyle,  TextBox) ->
+        require ['dojo/ready', 'dojo/dom-style', 'dijit/form/TextBox', 'dijit/form/Button', 'dijit/form/ValidationTextBox', 'dijit/Tooltip', 'dojox/validate/web'], (ready, domstyle,  TextBox, Button, ValidationTextBox, Tooltip) ->
           ready () ->
-            username = new TextBox {
-              placeHolder: 'Username'
+            username = new ValidationTextBox {
+              name: 'username'
+              id: 'username',
+              placeHolder: 'Username',
+              invalidMessage: 'Taken',
+              validator: () ->
+                data = dojo.xhrGet {
+                  url: '/user?username=' + username.value,
+                  handleAs: 'text'
+                }
+
+                data.then (dojo.hitch this, (response) ->
+                  if response == 'taken'
+                    this.set('state', 'error')
+                    this.displayMessage("Username Taken")
+                )
+                return true
             }
+
             (dojo.byId 'username').appendChild username.domNode
             domstyle.set username.domNode, 'width', '20.35em'
 
             first = new TextBox {
+              name: 'first',
             placeHolder: 'First Name'
             }
             (dojo.byId 'first').appendChild first.domNode
             domstyle.set first.domNode, 'width', '10em'
 
             last = new TextBox {
+              name: 'last',
             placeHolder: 'Last Name'
             }
             (dojo.byId 'last').appendChild last.domNode
             domstyle.set last.domNode, 'width', '10em'
 
-            password = new TextBox {
-            placeHolder: 'Password'
+            password = new ValidationTextBox {
+              name: 'password',
+              type: 'password',
+              placeHolder: 'Password',
+              validator: () ->
+                return password.value == '' || password.value.length>=8 && password.value.length<=18
+              invalidMessage: "Must be between 8 and 18 characters"
             }
             (dojo.byId 'password').appendChild password.domNode
             domstyle.set password.domNode, 'width', '20.35em'
 
-            email = new TextBox {
+            confirmPassword = new ValidationTextBox {
+            name: 'confirmPassword',
+            type: 'password',
+            placeHolder: 'Confirm Password',
+            validator: () ->
+              return password.value == '' || password.value == confirmPassword.value
+            invalidMessage: "Passwords must match"
+            }
+            (dojo.byId 'confirmPassword').appendChild confirmPassword.domNode
+            domstyle.set confirmPassword.domNode, 'width', '20.35em'
+
+            email = new ValidationTextBox {
+            name: 'email',
             placeHolder: 'Email Address'
+            validator: dojox.validate.isEmailAddress
+            invalidMessage: 'Invalid email address'
             }
             (dojo.byId 'email').appendChild email.domNode
             domstyle.set email.domNode, 'width', '20.35em'
 
-            confirmemail = new TextBox {
+            confirmEmail = new ValidationTextBox {
             placeHolder: 'Confirm Email Address'
+            validator: () ->
+              return email.value==confirmEmail.value
+            invalidMessage: 'Emails must match'
             }
-            (dojo.byId 'confirmemail').appendChild confirmemail.domNode
-            domstyle.set confirmemail.domNode, 'width', '20.35em'
+            (dojo.byId 'confirmEmail').appendChild confirmEmail.domNode
+            domstyle.set confirmEmail.domNode, 'width', '20.35em'
 
-        p ->
-          input type: 'submit', style: 'float: left', value: 'Create'
+            submitEnabled = new Button {
+              id: 'submitEnabled',
+              disabled: false,
+              label: 'Join',
+              type: 'Submit'
+            }
+
+            submitDisabled = new Button {
+              id: 'submitDisabled',
+              disabled: true,
+              label: 'Join',
+              type: 'Submit'
+              }
+
+            checkForm = () ->
+              if password.isValid() && confirmPassword.isValid() && email.isValid() && confirmEmail.isValid() && username.isValid() && password.value
+                dojo.style 'enabledContainer', 'display', ''
+                dojo.style 'disabledContainer', 'display', 'none'
+              else
+                dojo.style 'enabledContainer', 'display', 'none'
+                dojo.style 'disabledContainer', 'display', ''
+
+
+            dojo.connect username, 'onChange', checkForm
+            dojo.connect password, 'onChange', checkForm
+            dojo.connect confirmPassword, 'onChange', checkForm
+            dojo.connect email, 'onChange', checkForm
+            dojo.connect confirmEmail, 'onChange', checkForm
+
+            (dojo.byId 'enabledContainer').appendChild submitEnabled.domNode
+            (dojo.byId 'disabledContainer').appendChild submitDisabled.domNode
