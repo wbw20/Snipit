@@ -43,16 +43,17 @@ app.configure(function() {
 });
 
 app.get('/', function(req, res) {
-  res.render(__dirname + '/views/index.coffee', {
-    user: req.user,
-    // breaks on refresh!
-    videos: [{
-      name: 'Popular',
-      content: util.getPopular()
-    }, {
-      name: 'Recent',
-      content: util.getRecent()
-    }]
+  util.getRecent(function(recent) {
+    res.render(__dirname + '/views/index.coffee', {
+      user: req.user,
+      videos: [{
+        name: 'Popular',
+        content: util.getPopular()
+      }, {
+        name: 'Recent',
+        content: recent
+      }]
+    });
   });
 });
 
@@ -71,6 +72,7 @@ app.get('/profile', function(req, res) {
             uid: found.id,
             username: found.username,
             name: found.name,
+            age: found.age,
             uploads: videos
           });
         });
