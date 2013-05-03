@@ -6,19 +6,93 @@ html ->
     script src: 'dojo/dojo.js'
 
   body class: 'claro', ->
-    div class: 'bar', ->
+    div id: 'nav', ->
+      ul ->
+        unless @user
+          li ->
+            div id: 'register'
+          li ->
+            div class: 'loginDropdown', id: 'signinBox'
+
+            coffeescript ->
+              require ['dojo/ready', 'dojo/on', 'dojo/parser', 'dijit/form/TextBox', 'dijit/form/Button', 'dijit/form/DropDownButton', 'dijit/TooltipDialog'], (ready, dojon, parser, TextBox, Button, DropDownButton, Dialog) ->
+                ready () ->
+                signinDialog = new Dialog {
+                  content: '<form id="signinform">' +
+                             '<label for="username">userame:</label> <input type="text" data-dojo-type="dijit/form/TextBox" id="username" name="username"><br><br>' +
+                             '<label for="password">password:</label> <input type="text" data-dojo-type="dijit/form/TextBox" id="password" name="password">' +
+                             '<button id="signinsubmit" type="submit" data-dojo-type="dijit/form/Button">Login</button>' +
+                           '</form>'
+                  onOpen: () ->
+                    dojo.connect (dojo.byId 'signinform'), "onsubmit", (event) ->
+                      dojo.stopEvent event
+                      dojo.xhrPost {
+                        url: 'login',
+                        form: (dojo.byId 'signinform'),
+                        load: (data) ->
+                          if data == 'invalid login'
+                            console.log 'FAIL'
+                          else
+                            location.reload(true)
+                        error: (error) ->
+                          console.log error
+                      }
+                }
+
+                login_button = new DropDownButton {
+                  label: 'Sign In'
+                  dropDown: signinDialog
+                }
+
+                register_button = new Button {
+                  label: 'Register'
+                  onClick: () ->
+                    window.location = '/new';
+                }
+
+                (dojo.byId 'signinBox').appendChild login_button.domNode
+                (dojo.byId 'register').appendChild register_button.domNode
+
+        if @user
+          li ->
+            span ->
+              'hello, ' + @user.username
+            img id: 'icon', src: 'icon.png'
+
+            coffeescript ->
+              require ['dojo/ready', 'dijit/TooltipDialog', 'dijit/popup', 'dojo/on', 'dojo/dom'], (ready, TooltipDialog, popup, dojon, dom) ->
+                ready () ->
+                  iconDialog = new TooltipDialog {
+                    id: 'iconDialog',
+                    style: 'width: 300px;',
+                    content: '<form action="logout">' +
+                                '<button id="logoutsubmit" type="submit" data-dojo-type="dijit/form/Button">Log out</button>' +
+                              '</form>',
+                    onMouseLeave: () ->
+                      popup.close iconDialog
+                  }
+
+                  dojon (dom.byId 'icon'), 'mouseover', () ->
+                    popup.open {
+                      popup: iconDialog,
+                      around: (dom.byId 'icon')
+                    }
+
     div name: 'spacer', style: 'height: 100px'
     div style: 'width: 100%; overflow: hidden', ->
       div style: 'width: 60%; float: left', ->
         h1 @user.username
       div name: 'avatarBox', style: 'width: 60%; float: left', ->
         img src: 'silhouette.png'
-      div name: 'infoBox', style: 'position: relative; bottom: -100px; left: -150px', ->
-        table ->
+      div name: 'infoBox', style: 'position: relative; bottom: -140px; left: -150px', ->
+        table style: 'font-size: 35px', ->
           tr ->
             td ->
               div name: 'age', ->
-                p @user.age
+                if (@user.age == null)
+                  p 'Age not given'
+                else
+                  p @user.age
           tr ->
             td ->
               div name: 'joinDate', ->
@@ -46,7 +120,7 @@ html ->
                 img src: 'Biff-300x208.jpg', class: 'thumbnailLarge'
             td class: 'profileColDesc', ->
               div class: 'title', ->
-                video.selectedValues.title.toString()
+                video.selectedValues.name.toString()
               div style: 'position: relative; left: 40px', ->
                 'Created on ' + video.selectedValues.createdAt.toString().slice(0,15)
               div ->
@@ -63,11 +137,11 @@ html ->
                 img src: 'Biff-300x208.jpg', class: 'thumbnailLarge'
             td class: 'profileColDesc', ->
               div class: 'title', ->
-                video.selectedValues.title.toString()
+                video.selectedValues.name.toString()
               div style: 'position: relative; left: 40px', ->
-                'Created on ' + video.selectedValues.createdAt.toString()
+                'Created on ' + video.selectedValues.createdAt.toString().slice(0,15)
               div style: 'position: relative; left: 40px', ->
-                #'Uploaded by ' + video.selectedValues.
+                'Uploaded by ' + @username
               div ->
                 'Likes | Dislikes'
               div ->
@@ -88,7 +162,7 @@ html ->
               div ->
                 'Num of Videos in Playlist Here' # + playlist.selectedValues.vidCount.toString()
               div style: 'position: relative; left: 40px', -> # Displays playlist creation date
-                'Created on ' # + playlist.selectedValues.createdAt.toString()
+                'Created on ' + playlist.selectedValues.createdAt.toString().slice(0,15)
 
     div name: 'tabContainer', style: 'width: 60%; margin: 0 auto', ->
       div id: 'tcl-prog'

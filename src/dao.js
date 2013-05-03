@@ -46,12 +46,7 @@ module.exports = {
     Comment.belongsTo(Video, {foreignKey: 'video'});
 
     /* Like/Dislike */
-<<<<<<< HEAD
-    LikeDislike.belongsTo(User);
-    LikeDislike.belongsTo(Video);
-=======
     LikeDislike.belongsTo(User, {foreignKey: 'user'});
     LikeDislike.belongsTo(Video, {foreignKey: 'video'});
->>>>>>> dff055b73f6beddbef2a96ae9c6f0bda446434f0
   }
 }

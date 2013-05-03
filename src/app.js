@@ -62,7 +62,7 @@ app.get('/profile', function(req, res) {
    var url_str = url.parse(req.url, true).query;
 
   // get user specified in GET string
-  models.User.find({where : {id: url_str.u}
+  models.User.find({where : {id: req.user.id}
     }).success(function(found) {
         // get user's uploaded videos
         models.Video.findAll({where : {uploader: found.id}
