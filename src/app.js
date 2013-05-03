@@ -124,7 +124,7 @@ app.post('/snip', function(req, res) {
         file: '../data/videos/snipped/' + id + '.mpg'
       }).save();
 
-        converter = util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/raw/' + id + '.mp4', req.body.start, req.body.end, '../data/videos/snipped/' + id + '.mpg']);
+        converter = util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/raw/' + id + '.mp4', req.body.start, req.body.end, '../data/videos/snipped/' + id + '.flv']);
         converter.stdout.on('data', function (data) {
             console.log(data.toString());
         });
