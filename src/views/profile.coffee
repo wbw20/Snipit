@@ -7,7 +7,7 @@ html ->
 
   body class: 'claro', ->
     div id: 'nav', ->
-      ul ->
+      ul -> # List containing navigation menu
         unless @user
           li ->
             div id: 'register'
@@ -102,16 +102,8 @@ html ->
               div name: 'aboutMe', ->
                 'About Me: ......'
 
+    # Videos the user has uploaded
     div id: 'uploadedVids', ->
-      coffeescript ->
-        require ['dojo/_base/lang', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore',
-        'dojo/dom', 'dojo/domReady!'], (lang, DataGrid, ItemFileWriteStore, dom) ->
-          dojo.xhrGet {
-            url: 'uploads',
-            handleAs: 'text',
-            load: (uploadata) ->
-          }
-
       table class: 'profileTable', ->
         for video in @uploads
           tr class: 'profileRow', ->
@@ -128,28 +120,30 @@ html ->
               div ->
                 'Description...' #TODO put in database
 
+    # Videos the user has favorited
     div id: 'favoriteVids', ->
       table class: 'profileTable', ->
-        for video in @uploads #TODO use @favorites
+        for video in @favorites
           tr class: 'profileRow', ->
             td ->
               a ->
                 img src: 'Biff-300x208.jpg', class: 'thumbnailLarge'
             td class: 'profileColDesc', ->
               div class: 'title', ->
-                video.selectedValues.name.toString()
+                video.videoName.toString()
               div style: 'position: relative; left: 40px', ->
-                'Created on ' + video.selectedValues.createdAt.toString().slice(0,15)
+                'Created on ' + video.createdAt.toString().slice(0,15)
               div style: 'position: relative; left: 40px', ->
-                'Uploaded by ' + @username
+                'Uploaded by '  + @user.uploaderName
               div ->
                 'Likes | Dislikes'
               div ->
                 'Description...'
 
+    # Playlists the user has made
     div id: 'playlists', ->
       table class: 'profileTable', ->
-        for playlist in @uploads # TODO make into @playlists
+        for playlist in @playlists
           tr class: 'profileRow', ->
             td style: 'padding: 20px', ->
                 img src: 'Biff-300x208.jpg', class: 'thumbnailSmall'
@@ -158,7 +152,7 @@ html ->
                   img src: 'testThumb2.jpg', class: 'thumbnailTiny'
             td class: 'profileColDesc', ->
               div class: 'title', -> # Displays playlist's title
-                'Playlist Title Here' # + playlist.selectedValues.playlistTitle.toString()
+                playlist.selectedValues.name.toString()
               div ->
                 'Num of Videos in Playlist Here' # + playlist.selectedValues.vidCount.toString()
               div style: 'position: relative; left: 40px', -> # Displays playlist creation date

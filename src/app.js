@@ -62,20 +62,33 @@ app.get('/profile', function(req, res) {
    var url_str = url.parse(req.url, true).query;
 
   // get user specified in GET string
-  models.User.find({where : {id: req.user.id}
-    }).success(function(found) {
-        // get user's uploaded videos
-        models.Video.findAll({where : {uploader: found.id}
-          }).success(function(videos) {
-          res.render(__dirname + '/views/profile.coffee', {
-            user: req.user,
-            uid: found.id,
-            username: found.username,
-            name: found.name,
-            age: found.age,
-            uploads: videos
+  models.User.find({where : {id: url_str.u}
+    }).success(function(userForPage) {
+       models.Playlist.findAll({where: {creator: userForPage.id}
+       }).success(function (playlistsForPage) {
+       // get user's uploaded videos
+          models.Video.findAll({where : {uploader: userForPage.id}
+            }).success(function(videos) {
+              dao.connection.query('select * from' +
+                                   '  (select *, V.name as videoName from ' +
+                                   '    user_to_video_favorites F, videos V, users U ' +
+                                   '    where F.videoId = V.id and F.userId = U.id and U.id  = ' + userForPage.id + ') X,' +
+                                   '  (select U.name as uploaderName' +
+                                   '    from users U' +
+                  '                     where UP.id = V.uploader) Y' +
+                                   '  where X.name = Y.uploaderName'
+              ).success(function (favoritesForPage) {
+                      console.log('favorites' + JSON.stringify(favoritesForPage))
+                res.render(__dirname + '/views/profile.coffee', {
+                  user: req.user,
+                  pageUser: userForPage,
+                  uploads: videos,
+                  playlists: playlistsForPage,
+                  favorites: favoritesForPage
+            });
           });
         });
+     });
   });
 });
 
