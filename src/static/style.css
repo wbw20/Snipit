@@ -52,7 +52,7 @@ h2 {
 	list-style-type: none;
 	display: inline;
 }
-#nav li div {
+#nav li {
 	display: block;
 	float: right;
 	padding: 5px;
