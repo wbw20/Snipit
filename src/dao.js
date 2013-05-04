@@ -11,6 +11,7 @@ module.exports = {
   ),
 
   createForeignKeys: function(models) {
+
     /* Entity Foreign keys */
     Video.belongsTo(User, {foreignKey: 'uploader'});
     Playlist.belongsTo(User, {foreignKey: 'creator'});

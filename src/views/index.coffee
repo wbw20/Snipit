@@ -29,7 +29,7 @@ html ->
                   label: 'Sign In'
                   dropDown: signinDialog
                 }
-                
+
                 register_button = new Button {
                   label: 'Register'
                   onClick: () ->
@@ -70,7 +70,7 @@ html ->
       div id: 'main', ->
         h1 ->
           img src: 'logo.png', alt: 'SnipIt video clip sharing'
-        
+
         section name: 'search', ->
           div class: 'block', id: 'searchContainer', ->
             coffeescript ->
@@ -84,13 +84,24 @@ html ->
                     searchBox = new TextBox
                     (dojo.byId 'searchContainer').appendChild searchBox.domNode
 
-        for sec in @videos
-          section name: sec.name, ->
-            div class: 'videocontainer', ->
-              h2 ->
-                sec.name
+                  searchBox = new TextBox
+                  domstyle.set searchBox.domNode, 'width', '30em'
+                  (dojo.byId 'searchContainer').appendChild searchBox.domNode
+      sections = [{
+                    name: 'Popular'
+                  }, {
+                    name: 'Recent'
+                  }, {
+                    name: 'Our Favorites'
+                  }]
+      div name: 'spacer', style: 'height: 60px'
+      for sec in @videos
+        section name: sec.name, ->
+          div class: 'videocontainer', ->
+            h2 ->
+              sec.name
               div class: 'contentbar clearfix', ->
-                  for vid in sec.content
-                    a href: 'video?v=' + vid.id, ->
-                      img src: 'photos/thumbnail/' + vid.id + '.jpg', class: 'thumbnail', alt: vid.name
+                for vid in sec.content
+                  a href: 'video?v=' + vid.id, ->
+                    img src: 'photos/thumbnail/' + vid.id + '.jpg', class: 'thumbnail', alt: vid.name
 

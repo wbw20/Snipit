@@ -119,14 +119,13 @@ html ->
                 (dojo.byId 'like').appendChild like_button.domNode
                 (dojo.byId 'dislike').appendChild dislike_button.domNode
 
-            
-	      h2 'Comments'
-	      div id: 'comment-container', class: 'contentbar', ->
-	        for i in @comments
-	          div id: 'comment' + i.id, ->
-	            a href: 'profile?u='+ i.user.id, ->
-	              i.user.username
-	            p i.comment
+    h2 'Comments'
+    div id: 'comment-container', class: 'contentbar', ->
+      for i in @comments
+        div id: 'comment' + i.id, ->
+          a href: 'profile?u='+ i.user.id, ->
+            i.user.username
+          p i.comment
 	      
 	      
       

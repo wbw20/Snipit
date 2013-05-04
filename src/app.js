@@ -58,10 +58,11 @@ app.get('/', function(req, res) {
 });
 
 app.get('/profile', function(req, res) {
-  var url_str = url.parse(req.url, true).query;
-  
+
+   var url_str = url.parse(req.url, true).query;
+
   // get user specified in GET string
-  models.User.find({where : {id: url_str.u}
+  models.User.find({where : {id: req.user.id}
     }).success(function(found) {
         // get user's uploaded videos
         models.Video.findAll({where : {uploader: found.id}
@@ -141,11 +142,10 @@ app.get('/new', function(req, res) {
 
 app.get('/video', function(req, res) {
   var url_str = url.parse(req.url, true).query;
-  
+
   // get video
   models.Video.find({where : {id: url_str.v}, include: [models.User]
     }).success(function(video) {
-
       if (video) {
         // get comments
         models.Comment.findAll({

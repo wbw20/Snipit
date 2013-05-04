@@ -5,7 +5,7 @@ body {
   font-family: Arial,sans-serif;
   text-align: center;
   margin: 0;
-  
+
   /* gradient background */
   background: #cfe7fa; /* Old browsers */
   background: -moz-linear-gradient(top,  #cfe7fa 0%, #6393c1 100%); /* FF3.6+ */
@@ -62,6 +62,20 @@ h2 {
 }
 img.thumbnail {
   float: left;
+  height: 120px;
+  width: 160px;
+  padding: 5px;
+  padding-top: 30px;
+}
+div.title {
+  font-size: 40px;
+  font-weight: bold;
+}
+div.videobar {
+  width: 85%;
+  height: 200px;
+  background-color: #DBDBDB;
+  margin: 30px auto;
   height: 143px;
   width: 196px;
   padding: 20px 5px;
@@ -101,8 +115,39 @@ dd {
   width: 92%;
   height: 240px;
   margin: 0 auto;
+}
+img.thumbnailLarge {
+    padding: 20px;
+    width: 300;
+    height: 208;
+}
+img.thumbnailSmall {
+    width: 200;
+    height: 132;
+}
+img.thumbnailTiny {
+    width: 100;
+    height: 66;
+}
+span.videobartitle {
+  position: relative;
+  right: 35%;
+  font-size: 17pt;
   margin-bottom: 20px;
 }
+table.profileTable {
+    width: 100%;
+}
+td.profileColDesc {
+    padding: 30px;
+    width: 100%;
+    height: 100%;
+}
+tr.profileRow {
+  width: 100%;
+  height: 188px;
+}
+
 #searchContainer {
   padding: 20px 0;
 }

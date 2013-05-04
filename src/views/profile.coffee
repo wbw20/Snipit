@@ -43,7 +43,7 @@ html ->
                   label: 'Sign In'
                   dropDown: signinDialog
                 }
-                
+
                 register_button = new Button {
                   label: 'Register'
                   onClick: () ->
@@ -53,8 +53,6 @@ html ->
                 (dojo.byId 'signinBox').appendChild login_button.domNode
                 (dojo.byId 'register').appendChild register_button.domNode
 
-
-        # still within loginBox
         if @user
           li ->
             span ->
@@ -80,52 +78,117 @@ html ->
                       around: (dom.byId 'icon')
                     }
 
-    div id: 'container', ->
-      div id: 'main', ->
-        h2 @username
-        dl id: 'user-info', ->
-          dt 'Full name:'
-          dd @name
-          br ->
-          dt 'Age:'
-          dd @age
+    div name: 'spacer', style: 'height: 100px'
+    div style: 'width: 100%; overflow: hidden', ->
+      div style: 'width: 60%; float: left', ->
+        h1 @user.username
+      div name: 'avatarBox', style: 'width: 60%; float: left', ->
+        img src: 'silhouette.png'
+      div name: 'infoBox', style: 'position: relative; bottom: -140px; left: -150px', ->
+        table style: 'font-size: 35px', ->
+          tr ->
+            td ->
+              div name: 'age', ->
+                if (@user.age == null)
+                  p 'Age not given'
+                else
+                  p @user.age
+          tr ->
+            td ->
+              div name: 'joinDate', ->
+                p 'Joined On ' + @user.createdAt.toString().slice(0,15)
+          tr ->
+            td ->
+              div name: 'aboutMe', ->
+                'About Me: ......'
 
-        ###
-        table ->
-          for video in @uploads 
-            tr -> 
-              td -> 
-                a ->
-                  video.selectedValues.name
-              #td -> a video.selectedValues.thumbnail
-              #td -> a video.selectedValues.description
-              td -> 
-                a -> 
-                  video.selectedValues.createdAt.toString ''
-              td -> 
-                a -> 
-                  video.selectedValues.updatedAt.toString ''
-        ###
-                                  
-      div name: 'tabContainer', style: 'width: 60%', ->
-        div id: 'tcl-prog'
-        coffeescript ->
-          require ["dojo/ready", "dijit/layout/TabContainer", "dijit/layout/ContentPane"], (ready, TabContainer, ContentPane) ->
-            ready () ->
-              tc = new TabContainer {
-                style: 'height: 100%; width: 100%;'
-              }, 'tcl-prog'
+    div id: 'uploadedVids', ->
+      coffeescript ->
+        require ['dojo/_base/lang', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore',
+        'dojo/dom', 'dojo/domReady!'], (lang, DataGrid, ItemFileWriteStore, dom) ->
+          dojo.xhrGet {
+            url: 'uploads',
+            handleAs: 'text',
+            load: (uploadata) ->
+          }
 
-              cp1 = new ContentPane {
-                title: 'uploads',
-                content: dojo.byId 'contentTable'
-              }
-              tc.addChild cp1
-   
-              cp2 = new ContentPane {
-                title: 'favorites',
-                content: 'put videos here'
-              }
-              tc.addChild cp2
+      table class: 'profileTable', ->
+        for video in @uploads
+          tr class: 'profileRow', ->
+            td ->
+              a ->
+                img src: 'Biff-300x208.jpg', class: 'thumbnailLarge'
+            td class: 'profileColDesc', ->
+              div class: 'title', ->
+                video.selectedValues.name.toString()
+              div style: 'position: relative; left: 40px', ->
+                'Created on ' + video.selectedValues.createdAt.toString().slice(0,15)
+              div ->
+                'Likes | Dislikes' #TODO access from database
+              div ->
+                'Description...' #TODO put in database
 
-              tc.startup ''
+    div id: 'favoriteVids', ->
+      table class: 'profileTable', ->
+        for video in @uploads #TODO use @favorites
+          tr class: 'profileRow', ->
+            td ->
+              a ->
+                img src: 'Biff-300x208.jpg', class: 'thumbnailLarge'
+            td class: 'profileColDesc', ->
+              div class: 'title', ->
+                video.selectedValues.name.toString()
+              div style: 'position: relative; left: 40px', ->
+                'Created on ' + video.selectedValues.createdAt.toString().slice(0,15)
+              div style: 'position: relative; left: 40px', ->
+                'Uploaded by ' + @username
+              div ->
+                'Likes | Dislikes'
+              div ->
+                'Description...'
+
+    div id: 'playlists', ->
+      table class: 'profileTable', ->
+        for playlist in @uploads # TODO make into @playlists
+          tr class: 'profileRow', ->
+            td style: 'padding: 20px', ->
+                img src: 'Biff-300x208.jpg', class: 'thumbnailSmall'
+                div ->
+                  img src: 'testThumb.jpg', class: 'thumbnailTiny'
+                  img src: 'testThumb2.jpg', class: 'thumbnailTiny'
+            td class: 'profileColDesc', ->
+              div class: 'title', -> # Displays playlist's title
+                'Playlist Title Here' # + playlist.selectedValues.playlistTitle.toString()
+              div ->
+                'Num of Videos in Playlist Here' # + playlist.selectedValues.vidCount.toString()
+              div style: 'position: relative; left: 40px', -> # Displays playlist creation date
+                'Created on ' + playlist.selectedValues.createdAt.toString().slice(0,15)
+
+    div name: 'tabContainer', style: 'width: 60%; margin: 0 auto', ->
+      div id: 'tcl-prog'
+      coffeescript ->
+        require ["dojo/ready", "dijit/layout/TabContainer", "dijit/layout/ContentPane"], (ready, TabContainer, ContentPane) ->
+          ready () ->
+            tc = new TabContainer {
+              style: 'height: 100%; width: 100%;'
+            }, 'tcl-prog'
+
+            cp1 = new ContentPane {
+              title: 'Uploads',
+              content: dojo.byId 'uploadedVids'
+            }
+            tc.addChild cp1
+
+            cp2 = new ContentPane {
+              title: 'Favorites',
+              content: dojo.byId 'favoriteVids'
+            }
+            tc.addChild cp2
+
+            cp3 = new ContentPane {
+              title: 'Playlists',
+              content: dojo.byId 'playlists'
+            }
+            tc.addChild cp3
+
+            tc.startup ''
