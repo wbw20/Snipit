@@ -43,6 +43,7 @@ app.configure(function() {
 });
 
 app.get('/', function(req, res) {
+  // asynchronous function to grab recently viewed videos
   util.getRecent(function(recent) {
     res.render(__dirname + '/views/index.coffee', {
       user: req.user,
