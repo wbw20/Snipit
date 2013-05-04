@@ -128,6 +128,7 @@ app.post('/snip', function(req, res) {
             console.log(data.toString());
         });
         converter.stderr.on('data', function (data) {
+            console.log(data.toString());
         });
         converter.on('close', function(code) {
             console.log('OVER!');

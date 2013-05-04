@@ -100,8 +100,8 @@ html ->
           div class: 'videocontainer', ->
             h2 ->
               sec.name
-              div class: 'contentbar clearfix', ->
-                for vid in sec.content
-                  a href: 'video?v=' + vid.id, ->
-                    img src: 'photos/thumbnail/' + vid.id + '.jpg', class: 'thumbnail', alt: vid.name
+            div class: 'contentbar clearfix', ->
+              for vid in sec.content
+                a href: 'video?v=' + vid.id, ->
+                  img src: 'photos/thumbnail/' + vid.id + '.jpg', class: 'thumbnail', alt: vid.name
 
