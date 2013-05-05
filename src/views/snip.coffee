@@ -81,7 +81,6 @@ html ->
         
     div id: 'container', ->
       div id: 'main', ->
-        div name: 'spacer', style: 'height: 50px'
         div id: 'searchContainer', style: 'margin-bottom: 20px'
         div id: 'placeHolder', style: 'width: 740px; height: 480px; background-color: #D4E7F3; margin-left: auto; margin-right: auto'
         div id: 'videoContainer', ->
@@ -89,7 +88,9 @@ html ->
             require ['dojo/ready', 'dojo/dom-style', 'dijit/form/TextBox'], (ready, domstyle,  TextBox) ->
               ready () ->
                 dojo.addOnLoad () ->
-                  searchBox = new TextBox
+                  searchBox = new TextBox {
+                    placeHolder: 'Enter a YouTube URL...'
+                  }
                   domstyle.set searchBox.domNode, 'width', '30em'
                   (dojo.byId 'searchContainer').appendChild searchBox.domNode
                   dojo.connect searchBox, 'onChange', () ->
@@ -113,14 +114,24 @@ html ->
           table style: 'margin: auto;', ->
             tr ->
               td ->
-                label for: 'start', ->
-                  'Start (ms)'
-                input name: 'start', style: 'margin-right: 100px'
+                #label for: 'start', ->
+                  #'Start (ms)'
+                #input name: 'start', style: 'margin-right: 100px'
+                div id: 'start', style: 'padding-right: 250px'
               td ->
-                label for: 'end', ->
-                  'End (ms)'
-                input name: 'end'
-                input name: 'url', id: 'url', style: 'display: none'
+                #label for: 'end', ->
+                  #'End (ms)'
+                #input name: 'end'
+                #input name: 'url', id: 'url', style: 'display: none'
+                div id: 'end'
+              coffeescript ->
+                require ['dijit/form/TextBox'], (TextBox) ->
+                  (dojo.byId 'start').appendChild (new TextBox {
+                    placeHolder: 'Start (seconds)'
+                  }).domNode
+                  (dojo.byId 'end').appendChild (new TextBox {
+                    placeHolder: 'End (seconds)'
+                  }).domNode
             tr ->
               td ->
                 label for: 'name', ->
