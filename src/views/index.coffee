@@ -95,9 +95,6 @@ html ->
                       baseUrl: 'localhost:8080'
                     }
 
-                    searchBox = new TextBox
-                    (dojo.byId 'searchContainer').appendChild searchBox.domNode
-
                   searchBox = new TextBox
                   domstyle.set searchBox.domNode, 'width', '30em'
                   (dojo.byId 'searchContainer').appendChild searchBox.domNode
@@ -117,5 +114,6 @@ html ->
             div class: 'contentbar clearfix', ->
               for vid in sec.content
                 a href: 'video?v=' + vid.id, ->
-                  img src: 'photos/thumbnail/' + vid.id + '.jpg', class: 'thumbnail', alt: vid.name
+                  imgPath = 'photos/thumbnail/' + (vid.path.match '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') + '.png'
+                  img src: imgPath, class: 'thumbnail', alt: vid.name
 

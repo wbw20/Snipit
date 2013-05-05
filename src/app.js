@@ -44,16 +44,18 @@ app.configure(function() {
 
 app.get('/', function(req, res) {
   // asynchronous function to grab recently viewed videos
-  util.getRecent(function(recent) {
-    res.render(__dirname + '/views/index.coffee', {
-      user: req.user,
-      videos: [{
-        name: 'Popular',
-        content: util.getPopular()
-      }, {
-        name: 'Recent',
-        content: recent
-      }]
+  util.getPopular(function(popular) {
+    util.getRecent(function(recent) {
+      res.render(__dirname + '/views/index.coffee', {
+        user: req.user,
+        videos: [{
+          name: 'Popular',
+          content: popular
+        }, {
+          name: 'Recent',
+          content: recent
+        }]
+      });
     });
   });
 });
