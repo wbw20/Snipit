@@ -4,4 +4,5 @@ var connection = require('../dao').connection;
 module.exports = Video = connection.define('video', {
         id        : { type: Sequalize.STRING, primaryKey: true },
         name      : { type: Sequalize.STRING, allowNull: false },
+        path      : { type: Sequalize.STRING, allowNull: false }
 });

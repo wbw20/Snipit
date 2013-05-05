@@ -122,7 +122,7 @@ app.get('/uploads', function(req, res) {
 
 app.get('/snip', function(req, res) {
   res.render(__dirname + '/views/snip.coffee', {
-    user: req.user,
+    user: req.user
   });
 });
 
@@ -131,20 +131,17 @@ app.post('/snip', function(req, res) {
   var converter;
   var downloader;
 
-  // snip
-  //var convert = function() {
-
-  //}
+  //put new video in db
+  models.Video.build({
+    name: req.body.name,
+    path: 'videos/snipped/' + id + '.flv'
+  }).save().success(function(video) {
+    res.redirect('/video?v=' + video.id);
+  });
 
   downloader = util.spawn('java', ['-jar', '../opt/downloader.jar', req.body.url, '../data/videos/raw/' + id + '.mp4']);
     downloader.on('close', function(code) {
-      //put new video in db
-      models.Video.build({
-        name: req.body.name,
-        file: '../data/videos/snipped/' + id + '.mpg'
-      }).save();
-
-        converter = util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/raw/' + id + '.mp4', req.body.start, req.body.end, '../data/videos/snipped/' + id + '.mpg']);
+        converter = util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/raw/' + id + '.mp4', req.body.start, req.body.end, '../data/videos/snipped/' + id + '.flv']);
         converter.stdout.on('data', function (data) {
             console.log(data.toString());
         });
@@ -156,10 +153,6 @@ app.post('/snip', function(req, res) {
             downloader.kill();
         });
     });
-
-  res.render(__dirname + '/views/snip.coffee', {
-    user: req.user
-  });
 });
 
 app.get('/new', function(req, res) {
@@ -172,18 +165,28 @@ app.get('/video', function(req, res) {
   // get video
   models.Video.find({where : {id: url_str.v}, include: [models.User]
     }).success(function(video) {
-	    // get comments
-      models.Comment.findAll({where : {video: video.id}, include: [models.User]
+      if (video) {
+        // get comments
+        models.Comment.findAll({
+          where : { video: video.id },
+          include: [models.User]
         }).success(function(comments) {
-          res.render(__dirname + '/views/video.coffee', {
-            user: req.user,
-            vid: video.id,
-            vname: video.name,
-            uploader: video.user,
-            comments: comments
-          });
-          console.log(video);
-      });
+          //Has the snipping operation finished yet?
+          fs.exists('../data/' + video.path, function(exists) {
+            video.ready = exists;
+
+            res.render(__dirname + '/views/video.coffee', {
+              user: req.user,
+              vid: video,
+              uploader: video.user,
+              comments: comments
+            });
+          })
+        });
+      // Video doesn't exist
+      } else {
+        res.send(404);
+      }
   });
 });
 
@@ -205,12 +208,14 @@ app.post('/login', function (req, res) {
         password: req.body.password
       }
     }).success(function(theUserWeFound) {
+      //authenticate the user
       if (theUserWeFound) {
         new Cookies(req, res, keygrip).set('login', req.body.username, {signed: true});
-        res.send(200); //authenticate the user
+          return res.redirect('/');
+      //or don't
       } else {
         res.send('invalid login');
-        res.send(401);//or don't
+        res.send(401);
       }
     });
 });

@@ -1,7 +1,7 @@
 doctype 5
 html ->
   head ->
-    title @vname + ' - SnipIt'
+    title @vid.name + ' - SnipIt'
     link rel: 'stylesheet', type: 'text/css', href: 'style.css'
     link rel: 'stylesheet', type: 'text/css', href: 'dijit/themes/claro/claro.css'
     link rel: 'stylesheet', type: 'text/css', href: 'flowplayer/skin/minimalist.css'
@@ -86,16 +86,22 @@ html ->
 
     div id: 'container', ->
       div id: 'main', ->
-        h1 @vname
-        div id: 'video', ->
-	        div class: 'flowplayer', 'data-swf': 'flowplayer/flowplayer.swf', 'data-ratio': '0.667', ->
-	          video ->
-	            source type: 'video/webm', src: 'videos/' + @vid + '.webm'
+        h1 @vid.name
+        if @vid.ready
+          div id: 'video', ->
+            div class: 'flowplayer', 'data-swf': 'flowplayer/flowplayer.swf', 'data-ratio': '0.667', ->
+              video ->
+                source type: 'video/flash', src: @vid.path
+        else
+          h1 'NOT READY'
 	      div id: 'video-stats', class: 'clearfix', ->
 	        span id: 'creator', ->
-	          text 'Created by '
-	          a href: 'profile?u=' + @uploader.id, ->
-	            @uploader.username
+            if @uploader
+              text 'Created by '
+              a href: 'profile?u=' + @uploader.id, ->
+                @uploader.username
+            else
+              text 'Created Anonymously'
 	        span id: 'dislike'
 	        span id: 'like'
 	        coffeescript ->
@@ -110,26 +116,16 @@ html ->
                   label: 'Dislike'
                 }
 
-<<<<<<< HEAD
-    h1 'Video Name: ' + ' Video ID: ' + @vid
-    div id: 'video', ->
-	  div class: 'flowplayer', 'data-swf': 'flowplayer/flowplayer.swf', 'data-ratio': '0.667', ->
-	    video ->
-	      source type: 'video/webm', src: 'test.webm'
-	      
-=======
                 (dojo.byId 'like').appendChild like_button.domNode
                 (dojo.byId 'dislike').appendChild dislike_button.domNode
 
-            
-	      h2 'Comments'
-	      div id: 'comment-container', class: 'contentbar', ->
-	        for i in @comments
-	          div id: 'comment' + i.id, ->
-	            a href: 'profile?u='+ i.user.id, ->
-	              i.user.username
-	            p i.comment
->>>>>>> dff055b73f6beddbef2a96ae9c6f0bda446434f0
+    h2 'Comments'
+    div id: 'comment-container', class: 'contentbar', ->
+      for i in @comments
+        div id: 'comment' + i.id, ->
+          a href: 'profile?u='+ i.user.id, ->
+            i.user.username
+          p i.comment
 	      
 	      
       
