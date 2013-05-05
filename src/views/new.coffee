@@ -1,5 +1,6 @@
 html ->
   head ->
+    title: 'Join SnipIt!'
     link rel: 'stylesheet', type: 'text/css', href: 'style.css'
     link rel: 'stylesheet', type: 'text/css', href: 'dijit/themes/claro/claro.css'
     script src: 'dojo/dojo.js'
@@ -64,7 +65,21 @@ html ->
                       popup: iconDialog,
                       around: (dom.byId 'icon')
                     }
+        li ->
+          div id: 'snip'
 
+          coffeescript ->
+            require ['dojo/ready', 'dojo/on', 'dojo/parser', 'dijit/form/TextBox', 'dijit/form/Button'], (ready, dojon, parser, TextBox, Button) ->
+              ready () ->
+
+              snip_button = new Button {
+                label: 'Snip a Video'
+                onClick: () ->
+                  window.location = '/snip';
+              }
+
+              (dojo.byId 'snip').appendChild snip_button.domNode 
+        
     div id: 'container', ->
       div id: 'main', ->
         div name: 'spacer', style: 'height: 50px'
