@@ -123,7 +123,8 @@ html ->
           tr class: 'profileRow', ->
             td ->
               a ->
-                img src: 'Biff-300x208.jpg', class: 'thumbnailLarge'
+                filename = video.path.slice(15, -8) + '.png'
+                img src: filename, class: 'thumbnailLarge'
             td class: 'profileColDesc', ->
               div class: 'title', ->
                 video.selectedValues.name.toString()
