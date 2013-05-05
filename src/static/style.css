@@ -87,7 +87,7 @@ div.videobar {
 	height: 330px;
 	margin: 0 auto;
 }
-#comment-container {
+#comment-container, #add-comment {
   padding: 15px;
   text-align: left;
   margin-bottom: 20px;

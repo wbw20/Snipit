@@ -139,6 +139,7 @@ html ->
             a href: 'profile?u='+ i.user.id, ->
               i.user.username
             p i.comment
-	      
-	      
+	      h2 'Add a Comment'  
+	      div id: 'add-comment', class: 'contentbar', ->
+	        
       
