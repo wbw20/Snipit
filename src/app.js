@@ -62,6 +62,11 @@ app.get('/profile', function(req, res) {
 
   var url_str = url.parse(req.url, true).query;
 
+  if (url_str.u == undefined) {
+   res.send(404)
+   return
+  }
+
   models.User.find({where: {id: url_str.u}
   }).success(function(userForPage) {
 

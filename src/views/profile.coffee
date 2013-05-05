@@ -1,6 +1,6 @@
 html ->
   head ->
-    title @username + '\'s Profile'
+    title @pageUser.username + '\'s Profile'
     link rel: 'stylesheet', type: 'text/css', href: 'style.css'
     link rel: 'stylesheet', type: 'text/css', href: 'dijit/themes/claro/claro.css'
     script src: 'dojo/dojo.js'
@@ -56,7 +56,7 @@ html ->
         if @user
           li ->
             span ->
-              'hello, ' + @pageUser.name
+              'hello, ' + @user.name
             img id: 'icon', src: 'icon.png'
 
             coffeescript ->
@@ -90,7 +90,7 @@ html ->
                   window.location = '/snip';
               }
 
-              (dojo.byId 'snip').appendChild snip_button.domNode 
+              (dojo.byId 'snip').appendChild snip_button.domNode
 
     div name: 'spacer', style: 'height: 100px'
     div style: 'width: 100%; overflow: hidden', ->
