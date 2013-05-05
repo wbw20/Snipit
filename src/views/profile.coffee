@@ -56,7 +56,7 @@ html ->
         if @user
           li ->
             span ->
-              'hello, ' + @user.username
+              'hello, ' + @pageUser.name
             img id: 'icon', src: 'icon.png'
 
             coffeescript ->
@@ -81,7 +81,7 @@ html ->
     div name: 'spacer', style: 'height: 100px'
     div style: 'width: 100%; overflow: hidden', ->
       div style: 'width: 60%; float: left', ->
-        h1 @user.username
+        h1 @pageUser.username
       div name: 'avatarBox', style: 'width: 60%; float: left', ->
         img src: 'silhouette.png'
       div name: 'infoBox', style: 'position: relative; bottom: -140px; left: -150px', ->
@@ -89,14 +89,14 @@ html ->
           tr ->
             td ->
               div name: 'age', ->
-                if (@user.age == null)
+                if (@pageUser.age == null)
                   p 'Age not given'
                 else
-                  p @user.age
+                  p @pageUser.age
           tr ->
             td ->
               div name: 'joinDate', ->
-                p 'Joined On ' + @user.createdAt.toString().slice(0,15)
+                p 'Joined On ' + @pageUser.createdAt.toString().slice(0,15)
           tr ->
             td ->
               div name: 'aboutMe', ->
@@ -134,7 +134,7 @@ html ->
               div style: 'position: relative; left: 40px', ->
                 'Created on ' + video.createdAt.toString().slice(0,15)
               div style: 'position: relative; left: 40px', ->
-                'Uploaded by '  + @user.uploaderName
+                'Uploaded by ' + video.uploaderName
               div ->
                 'Likes | Dislikes'
               div ->
@@ -152,11 +152,11 @@ html ->
                   img src: 'testThumb2.jpg', class: 'thumbnailTiny'
             td class: 'profileColDesc', ->
               div class: 'title', -> # Displays playlist's title
-                playlist.selectedValues.name.toString()
+                playlist.name.toString()
               div ->
-                'Num of Videos in Playlist Here' # + playlist.selectedValues.vidCount.toString()
+                playlist.numVideos.toString()
               div style: 'position: relative; left: 40px', -> # Displays playlist creation date
-                'Created on ' + playlist.selectedValues.createdAt.toString().slice(0,15)
+                'Created on ' + playlist.createdAt.toString().slice(0,15)
 
     div name: 'tabContainer', style: 'width: 60%; margin: 0 auto', ->
       div id: 'tcl-prog'
