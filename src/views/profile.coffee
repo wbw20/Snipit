@@ -77,6 +77,20 @@ html ->
                       popup: iconDialog,
                       around: (dom.byId 'icon')
                     }
+        li ->
+          div id: 'snip'
+
+          coffeescript ->
+            require ['dojo/ready', 'dojo/on', 'dojo/parser', 'dijit/form/TextBox', 'dijit/form/Button'], (ready, dojon, parser, TextBox, Button) ->
+              ready () ->
+
+              snip_button = new Button {
+                label: 'Snip a Video'
+                onClick: () ->
+                  window.location = '/snip';
+              }
+
+              (dojo.byId 'snip').appendChild snip_button.domNode 
 
     div name: 'spacer', style: 'height: 100px'
     div style: 'width: 100%; overflow: hidden', ->

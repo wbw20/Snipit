@@ -4,10 +4,9 @@ html ->
     title @vid.name + ' - SnipIt'
     link rel: 'stylesheet', type: 'text/css', href: 'style.css'
     link rel: 'stylesheet', type: 'text/css', href: 'dijit/themes/claro/claro.css'
-    link rel: 'stylesheet', type: 'text/css', href: 'flowplayer/skin/minimalist.css'
     script src: 'dojo/dojo.js'
     script src: 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js'
-    script src: 'flowplayer/flowplayer.min.js'
+    script src: 'flowplayer/flowplayer-3.2.12.min.js'
 
   body class: 'claro', ->
     div id: 'nav', ->
@@ -83,15 +82,29 @@ html ->
                       popup: iconDialog,
                       around: (dom.byId 'icon')
                     }
+        li ->
+          div id: 'snip'
+            
+          coffeescript ->
+            require ['dojo/ready', 'dojo/on', 'dojo/parser', 'dijit/form/TextBox', 'dijit/form/Button'], (ready, dojon, parser, TextBox, Button) ->
+              ready () ->
+
+              snip_button = new Button {
+                label: 'Snip a Video'
+                onClick: () ->
+                  window.location = '/snip';
+              }
+
+              (dojo.byId 'snip').appendChild snip_button.domNode            
 
     div id: 'container', ->
       div id: 'main', ->
         h1 @vid.name
         if @vid.ready
           div id: 'video', ->
-            div class: 'flowplayer', 'data-swf': 'flowplayer/flowplayer.swf', 'data-ratio': '0.667', ->
-              video ->
-                source type: 'video/flash', src: @vid.path
+            a href: @vid.path, id: 'flowplayer', ->
+            coffeescript ->
+              flowplayer 'flowplayer', 'flowplayer/flowplayer-3.2.16.swf'        
         else
           h1 'NOT READY'
 	      div id: 'video-stats', class: 'clearfix', ->
@@ -119,13 +132,14 @@ html ->
                 (dojo.byId 'like').appendChild like_button.domNode
                 (dojo.byId 'dislike').appendChild dislike_button.domNode
 
-    h2 'Comments'
-    div id: 'comment-container', class: 'contentbar', ->
-      for i in @comments
-        div id: 'comment' + i.id, ->
-          a href: 'profile?u='+ i.user.id, ->
-            i.user.username
-          p i.comment
-	      
-	      
+      h2 'Comments'
+      div id: 'comment-container', class: 'contentbar', ->
+        for i in @comments
+          div id: 'comment' + i.id, ->
+            a href: 'profile?u='+ i.user.id, ->
+              i.user.username
+            p i.comment
+	      h2 'Add a Comment'  
+	      div id: 'add-comment', class: 'contentbar', ->
+	        
       

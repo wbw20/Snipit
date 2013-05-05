@@ -7,7 +7,7 @@ html ->
 
   body class: 'claro', ->
     div id: 'nav', ->
-      ul ->
+      ul ->        
         unless @user
           li ->
             div id: 'register'
@@ -65,6 +65,20 @@ html ->
                       popup: iconDialog,
                       around: (dom.byId 'icon')
                     }
+        li ->
+          div id: 'snip'
+
+          coffeescript ->
+            require ['dojo/ready', 'dojo/on', 'dojo/parser', 'dijit/form/TextBox', 'dijit/form/Button'], (ready, dojon, parser, TextBox, Button) ->
+              ready () ->
+
+              snip_button = new Button {
+                label: 'Snip a Video'
+                onClick: () ->
+                  window.location = '/snip';
+              }
+
+              (dojo.byId 'snip').appendChild snip_button.domNode            
 
     div id: 'container', ->
       div id: 'main', ->
@@ -100,8 +114,8 @@ html ->
           div class: 'videocontainer', ->
             h2 ->
               sec.name
-              div class: 'contentbar clearfix', ->
-                for vid in sec.content
-                  a href: 'video?v=' + vid.id, ->
-                    img src: 'photos/thumbnail/' + vid.id + '.jpg', class: 'thumbnail', alt: vid.name
+            div class: 'contentbar clearfix', ->
+              for vid in sec.content
+                a href: 'video?v=' + vid.id, ->
+                  img src: 'photos/thumbnail/' + vid.id + '.jpg', class: 'thumbnail', alt: vid.name
 
