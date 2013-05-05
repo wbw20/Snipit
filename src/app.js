@@ -73,22 +73,9 @@ app.get('/profile', function(req, res) {
     if (userForPage) {
 
       new Sequelize.Utils.QueryChainer()
-        .add(dao.connection.query('select P.id, P.name, P.createdAt, P.creator, ' +
-                                  'count(V.id) as numVideos from ' +
-                                  'videos V, playlists P, video_to_playlists VP ' +
-                                  'where VP.videoId = V.id and VP.playlistId = P.id and ' +
-                                  'P.creator = ' + userForPage.id + ' ' +
-                                  'group by P.id'))
+        .add(dao.connection.query(util.getPlaylists(userForPage)))
         .add(models.Video.findAll({where: {uploader: userForPage.id}}))
-        .add(dao.connection.query('select * from ' +
-                                  '(select V.id as videoId, V.createdAt, U.id as userId, ' +
-                                  'U.name, U.username, U.age, V.name as videoName, V.uploader as uploader '+
-                                  'from user_to_video_favorites F, videos V, users U ' +
-                                  'where F.videoId = V.id and F.userId = U.id and U.id = ' + userForPage.id
-                                  + ') X, ' +
-                                  '(select U.id, U.username as uploaderName ' +
-                                  'from users U) Y ' +
-                                  'where Y.id = X.uploader;'))
+        .add(dao.connection.query(util.getFavorites(userForPage)))
         .run()
         .success(function(results) {
           var playlistsForPage = results[0]
