@@ -127,11 +127,11 @@ html ->
                 img src: filename, class: 'thumbnailLarge'
             td class: 'profileColDesc', ->
               div class: 'title', ->
-                video.selectedValues.name.toString()
+                video.name.toString()
               div style: 'position: relative; left: 40px', ->
-                'Created on ' + video.selectedValues.createdAt.toString().slice(0,15)
+               'Created on ' + video.vidCreatedAt.toString().slice(0,15)
               div ->
-                'Likes | Dislikes' #TODO access from database
+                video.likeCount.toString() + ' likes'
               div ->
                 'Description...' #TODO put in database
 
@@ -147,11 +147,11 @@ html ->
               div class: 'title', ->
                 video.videoName.toString()
               div style: 'position: relative; left: 40px', ->
-                'Created on ' + video.createdAt.toString().slice(0,15)
+                'Created on ' + video.vidCreatedAt.toString().slice(0,15)
               div style: 'position: relative; left: 40px', ->
                 'Uploaded by ' + video.uploaderName
               div ->
-                'Likes | Dislikes'
+                video.likeCount.toString() + ' likes'
               div ->
                 'Description...'
 

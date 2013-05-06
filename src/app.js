@@ -74,7 +74,7 @@ app.get('/profile', function(req, res) {
 
       new Sequelize.Utils.QueryChainer()
         .add(dao.connection.query(util.getPlaylists(userForPage)))
-        .add(models.Video.findAll({where: {uploader: userForPage.id}}))
+        .add(dao.connection.query(util.getUploads(userForPage)))
         .add(dao.connection.query(util.getFavorites(userForPage)))
         .run()
         .success(function(results) {
