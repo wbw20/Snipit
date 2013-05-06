@@ -123,6 +123,14 @@ app.get('/uploads', function(req, res) {
   res.send(ajaxdata);
 });
 
+app.get('/search', function(req, res) {
+  console.log(url.parse(req.url, true).query.terms);
+
+  util.search(url.parse(req.url, true).query.terms, function(results) {
+      res.send(results);
+  })
+});
+
 app.get('/snip', function(req, res) {
   res.render(__dirname + '/views/snip.coffee', {
     user: req.user

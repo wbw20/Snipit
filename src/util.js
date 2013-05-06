@@ -1,5 +1,6 @@
 var child = require('child_process');
 var fs = require('fs');
+var dao = require('./dao');
 var models = require('./models');
 
 module.exports = {
@@ -59,6 +60,30 @@ module.exports = {
     models.Video.findAll({limit: 4
       }).success(function(video) {
         callback(video);
+    });
+  },
+
+  /* search for videos by a list of keywords */
+  search: function(terms, callback) {
+    queryString = 'select videoId, name, path, uploader from' +
+                  '  (select videoId from' +
+                  '    (select videoId, count(*) from' +
+                  '      tags T, tag_to_videoes TTV' +
+                  "      where T.word = 'Snipit' ";
+
+    JSON.parse(terms).forEach(function(term) {
+      if (term.match(/^[a-zA-Z]+$/)) {
+        queryString +=   'or T.word = ' + "'" + term + "'" + ' ';
+      }
+    });
+
+    queryString += '   group by videoId) Z' +
+                   ' limit 10) X,' +
+                   ' videos Y' +
+                   ' where X.videoId = Y.id';
+
+    dao.connection.query(queryString).success(function(results) {
+      callback(results);
     });
   }
 }

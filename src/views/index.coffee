@@ -96,6 +96,14 @@ html ->
                     }
 
                   searchBox = new TextBox
+                  dojo.connect searchBox, 'onChange', () ->
+                    console.log (searchBox.value.split ' ')
+                    dojo.xhrGet {
+                      url: '/search?terms=' + JSON.stringify(searchBox.value.split ' '),
+                      handleAs: 'text',
+                      handle: (data) ->
+                        console.log data
+                    }
                   domstyle.set searchBox.domNode, 'width', '30em'
                   (dojo.byId 'searchContainer').appendChild searchBox.domNode
       sections = [{
