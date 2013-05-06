@@ -81,7 +81,7 @@ html ->
         
     div id: 'container', ->
       div id: 'main', ->
-        div id: 'searchContainer', style: 'margin-bottom: 20px'
+        div id: 'searchContainer', style: 'margin-bottom: 10px; margin-top: 20px'
         div id: 'placeHolder', style: 'width: 740px; height: 480px; background-color: #D4E7F3; margin-left: auto; margin-right: auto'
         div id: 'videoContainer', ->
           coffeescript ->
@@ -91,8 +91,9 @@ html ->
                   searchBox = new TextBox {
                     placeHolder: 'Enter a YouTube URL...'
                   }
-                  domstyle.set searchBox.domNode, 'width', '30em'
                   (dojo.byId 'searchContainer').appendChild searchBox.domNode
+                  domstyle.set searchBox.domNode, 'width', '30em'
+
                   dojo.connect searchBox, 'onChange', () ->
                     # Hide placeholder
                     dojo.style (dojo.byId 'placeHolder'), 'display', 'none'
@@ -114,28 +115,53 @@ html ->
           table style: 'margin: auto;', ->
             tr ->
               td ->
-                #label for: 'start', ->
-                  #'Start (ms)'
-                #input name: 'start', style: 'margin-right: 100px'
-                div id: 'start', style: 'padding-right: 250px'
-              td ->
-                #label for: 'end', ->
-                  #'End (ms)'
-                #input name: 'end'
-                #input name: 'url', id: 'url', style: 'display: none'
-                div id: 'end'
-              coffeescript ->
-                require ['dijit/form/TextBox'], (TextBox) ->
-                  (dojo.byId 'start').appendChild (new TextBox {
-                    placeHolder: 'Start (seconds)'
-                  }).domNode
-                  (dojo.byId 'end').appendChild (new TextBox {
-                    placeHolder: 'End (seconds)'
-                  }).domNode
+                input id: 'url', name: 'url', style: 'display: none'
             tr ->
               td ->
-                label for: 'name', ->
-                  'Name this snip! '
-                input name: 'name', style: 'padding-right: 20px'
+                div id: 'startContainer', style: 'padding-right: 250px; padding-top: 3px'
               td ->
-                input type: 'submit', style: 'margin-left: auto; margin-right: auto;'
+                div id: 'endContainer', style: 'padding-top: 3px'
+            tr ->
+              td colspan: '2', ->
+                div id: 'nameContainer', style: 'padding-top: 3px'
+            tr ->
+              td colspan: '2', ->
+                div id: 'tagContainer', style: 'display: inline-block; padding-top: 3px'
+                div id: 'submitContainer', style: 'display: inline-block;', ->
+
+          coffeescript ->
+            require ['dijit/form/TextBox',
+                     'dijit/form/Textarea',
+                     'dijit/form/Button',
+                     'dojo/dom-style'],
+            (TextBox, TextArea, Button, domstyle) ->
+              (dojo.byId 'startContainer').appendChild (new TextBox {
+                name: 'start',
+                placeHolder: 'Start (seconds)'
+              }).domNode
+              (dojo.byId 'endContainer').appendChild (new TextBox {
+                name: 'end',
+                placeHolder: 'End (seconds)'
+              }).domNode
+
+              nameBox = new TextBox {
+                name: 'name',
+                placeHolder: 'Name this snip'
+              }
+              (dojo.byId 'nameContainer').appendChild nameBox.domNode
+              domstyle.set nameBox.domNode, 'width', '740px'
+              domstyle.set nameBox.domNode, 'font-size', '32pt'
+
+              tagBox = new TextArea {
+                name: 'tag',
+                value: '#Snipit #Video ...'
+              }
+              (dojo.byId 'tagContainer').appendChild tagBox.domNode
+              domstyle.set tagBox.domNode, 'width', '680px'
+              domstyle.set tagBox.domNode, 'height', '100px'
+              domstyle.set tagBox.domNode, 'font-size', '12pt'
+
+              (dojo.byId 'submitContainer').appendChild (new Button {
+                type: 'Submit',
+                label: 'Snip!'
+              }).domNode

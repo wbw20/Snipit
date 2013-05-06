@@ -139,20 +139,29 @@ app.post('/snip', function(req, res) {
     name: req.body.name,
     path: 'videos/snipped/' + id + '.flv'
   }).save().success(function(video) {
+    //put tags in the database
+    var tags = req.body.tag.match(/(?!#)[0-9a-zA-Z]*/g);
+    tags.forEach (function(word) {
+      if (word) {
+        models.Tag.findOrCreate({
+          'word': word
+        }).success(function(tag) {
+          if (tag) {
+            dao.connection.query('insert into tag_to_videoes (tagId, videoId, updatedAt, createdAt)' +
+                                 '  values (' + tag.id + ', ' + video.id + ', now(), now());');
+          }
+        });
+      }
+    });
     res.redirect('/video?v=' + video.id);
   });
 
   downloader = util.spawn('java', ['-jar', '../opt/downloader.jar', req.body.url, '../data/videos/raw/' + id + '.mp4']);
     downloader.on('close', function(code) {
         converter = util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/raw/' + id + '.mp4', req.body.start, req.body.end, '../data/videos/snipped/' + id + '.flv']);
-        converter.stdout.on('data', function (data) {
-            console.log(data.toString());
-        });
-        converter.stderr.on('data', function (data) {
-            console.log(data.toString());
-        });
+        converter.stdout.on('data', function (data) {});
+        converter.stderr.on('data', function (data) {});
         converter.on('close', function(code) {
-            console.log('OVER!');
             converter.kill();
             downloader.kill();
         });
