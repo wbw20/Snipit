@@ -102,7 +102,29 @@ html ->
                       url: '/search?terms=' + JSON.stringify(searchBox.value.split ' '),
                       handleAs: 'text',
                       handle: (data) ->
-                        console.log data
+                        container = dojo.create 'div', {
+                          style: {
+                            'background-color': '#DBDBDB',
+                            border: '2px solid #B8CCFF',
+                            margin: '0 auto'
+                          }
+                        }, (dojo.byId 'resultsContainer')
+
+                        for result in (JSON.parse data)
+                          link = dojo.create 'a', {
+                            href: 'video?v=' + result.id
+                          }, container
+
+                          thumbnail = dojo.create 'img', {
+                            style: {
+                              float: 'left',
+                              height: '135px',
+                              width: '187',
+                              padding: '15px 0 15px 15px'
+                            },
+                            src: 'photos/thumbnail/' + (result.path.match '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') + '.png',
+                            alt: result.name
+                          }, link
                     }
                   domstyle.set searchBox.domNode, 'width', '30em'
                   (dojo.byId 'searchContainer').appendChild searchBox.domNode
@@ -114,6 +136,7 @@ html ->
                     name: 'Our Favorites'
                   }]
       div name: 'spacer', style: 'height: 60px'
+      div id: 'resultsContainer'
       for sec in @videos
         section name: sec.name, ->
           div class: 'videocontainer', ->

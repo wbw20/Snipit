@@ -65,7 +65,7 @@ module.exports = {
 
   /* search for videos by a list of keywords */
   search: function(terms, callback) {
-    queryString = 'select videoId, name, path, uploader from' +
+    queryString = 'select videoId as id, name, path, uploader from' +
                   '  (select videoId from' +
                   '    (select videoId, count(*) from' +
                   '      tags T, tag_to_videoes TTV' +
