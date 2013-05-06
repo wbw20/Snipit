@@ -102,11 +102,16 @@ html ->
                       url: '/search?terms=' + JSON.stringify(searchBox.value.split ' '),
                       handleAs: 'text',
                       handle: (data) ->
+                        console.log (JSON.parse data)
+
+                        domstyle.set (dojo.byId 'resultsTitle'), 'display', ''
                         container = dojo.create 'div', {
                           style: {
                             'background-color': '#DBDBDB',
                             border: '2px solid #B8CCFF',
-                            margin: '0 auto'
+                            margin: '0 auto',
+                            height: ((JSON.parse data).length%4)*167,
+                            width: '827px'
                           }
                         }, (dojo.byId 'resultsContainer')
 
@@ -136,6 +141,8 @@ html ->
                     name: 'Our Favorites'
                   }]
       div name: 'spacer', style: 'height: 60px'
+      h2 id: 'resultsTitle', style: 'display: none', ->
+        'Results'
       div id: 'resultsContainer'
       for sec in @videos
         section name: sec.name, ->

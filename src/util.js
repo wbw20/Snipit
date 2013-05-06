@@ -69,7 +69,7 @@ module.exports = {
                   '  (select videoId from' +
                   '    (select videoId, count(*) from' +
                   '      tags T, tag_to_videoes TTV' +
-                  "      where T.word = 'Snipit' ";
+                  "      where T.id = TTV.tagId and (t.id = 0 ";
 
     JSON.parse(terms).forEach(function(term) {
       if (term.match(/^[a-zA-Z]+$/)) {
@@ -77,7 +77,7 @@ module.exports = {
       }
     });
 
-    queryString += '   group by videoId) Z' +
+    queryString += ')   group by videoId) Z' +
                    ' limit 10) X,' +
                    ' videos Y' +
                    ' where X.videoId = Y.id';
