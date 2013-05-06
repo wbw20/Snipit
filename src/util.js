@@ -8,7 +8,7 @@ module.exports = {
   spawn: function(process, args, onData, onEnd) {
     return child.spawn(process, args);
   },
-  
+
   /* generates Java-style UUIDs */
   uuid: function() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -16,10 +16,10 @@ module.exports = {
       return v.toString(16);
     });
   },
-  
+
   /* grab 4 videos with most views */
   getPopular: function(callback) {
-    
+
       /* fake data for now */
       var results = [{
                        name: "video 1",
@@ -34,7 +34,7 @@ module.exports = {
                        name: "video 4",
                        id:   "Dabc50a0-a460-11e2-9e96-0800200c9a66",
                      }];
-                      
+
       var toReturn = new Array();
       for (var i = 0; i < results.length; i++) {
         toReturn[i] = {
@@ -46,13 +46,13 @@ module.exports = {
 
     return toReturn;
   },
-  
+
   /* grab 4 videos created most recently */
   getRecent: function(callback) {
     models.Video.findAll({order: 'createdAt DESC', limit: 4
       }).success(function(video) {
         callback(video);
-    }); 
+    });
   },
 
   /* grab 4 most popular videos */
@@ -85,5 +85,48 @@ module.exports = {
     dao.connection.query(queryString).success(function(results) {
       callback(results);
     });
+  },
+
+
+
+  getUploads: function(userForPage) {
+    return('select *, UP.createdAt as vidCreatedAt, count(L.id) as likeCount from ' +
+           '(select V.id as videoId, V.name, V.path, V.createdAt, V.uploader from ' +
+           'videos V, users U ' +
+           'where V.uploader = U.id and U.id = '+ userForPage.id + ') as UP, ' +
+           'likedislikes L ' +
+           'where L.video = UP.videoId ' +
+           'group by UP.videoId')
+  },
+
+  getPlaylists: function(userForPage) {
+    return('select P.id, P.name, P.createdAt, P.creator, PH1.path as path1, PH2.path as path2, ' +
+           'PH3.path as path3, count(V.id) as numVideos from videos V, video_to_playlists VP, ' +
+           'playlists P, (select V.path from videos V, video_to_playlists VP, playlists P ' +
+           'where V.id = VP.videoId and VP.playlistId = P.id and P.creator = ' + userForPage.id + ' ' +
+           'order by V.id limit 1) as PH1, (select V.path from videos V, video_to_playlists VP, ' +
+           'playlists P where V.id = VP.videoId and VP.playlistId = P.id and ' +
+           'P.creator = ' + userForPage.id + ' ' + 'order by V.id desc limit 1) as PH2, ' +
+           '(select V.path from videos V, video_to_playlists VP, playlists P where V.id = VP.videoId ' +
+           'and VP.playlistId = P.id and P.creator = ' + userForPage.id + '  order by V.id limit 2) ' +
+           'as PH3 where VP.videoId = V.id and VP.playlistId = P.id and P.creator = ' + userForPage.id + ' ' +
+           'and PH3.path <> PH1.path group by P.id')
+  },
+
+  getFavorites: function(userForPage) {
+
+    console.log('calls correctly')
+        return('select videoId, FavLikes.vidCreatedAt, userId, FavLikes.name, FavLikes.username, path, videoName, ' +
+               'uploader, U.name as uploaderName, FavLikes.likeCount from ' +
+               '(select *, count(L.id) as likeCount ' +
+               'from (select V.id as videoId, V.createdAt as vidCreatedAt, U.id as userId, ' +
+               'U.name, U.username, U.age, V.path, V.name as videoName, V.uploader as uploader ' +
+               'from user_to_video_favorites F, videos V, users U ' +
+               'where F.videoId = V.id and F.userId = U.id and U.id = ' + userForPage.id + ') as X, ' +
+               'likedislikes L ' +
+               'where X.videoId = L.video and L.likedislike = "like" ' +
+               'group by X.videoId) as FavLikes, users U ' +
+               'where U.id = FavLikes.uploader')
   }
 }
+

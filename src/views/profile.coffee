@@ -1,6 +1,6 @@
 html ->
   head ->
-    title @username + '\'s Profile'
+    title @pageUser.username + '\'s Profile'
     link rel: 'stylesheet', type: 'text/css', href: 'style.css'
     link rel: 'stylesheet', type: 'text/css', href: 'dijit/themes/claro/claro.css'
     script src: 'dojo/dojo.js'
@@ -56,7 +56,7 @@ html ->
         if @user
           li ->
             span ->
-              'hello, ' + @pageUser.name
+              'hello, ' + @user.name
             img id: 'icon', src: 'icon.png'
 
             coffeescript ->
@@ -90,7 +90,7 @@ html ->
                   window.location = '/snip';
               }
 
-              (dojo.byId 'snip').appendChild snip_button.domNode 
+              (dojo.byId 'snip').appendChild snip_button.domNode
 
     div name: 'spacer', style: 'height: 100px'
     div style: 'width: 100%; overflow: hidden', ->
@@ -123,14 +123,15 @@ html ->
           tr class: 'profileRow', ->
             td ->
               a ->
-                img src: 'Biff-300x208.jpg', class: 'thumbnailLarge'
+                filename = 'photos/thumbnail/' + video.path.slice(15, -8) + '.png'
+                img src: filename, class: 'thumbnailLarge'
             td class: 'profileColDesc', ->
               div class: 'title', ->
-                video.selectedValues.name.toString()
+                video.name.toString()
               div style: 'position: relative; left: 40px', ->
-                'Created on ' + video.selectedValues.createdAt.toString().slice(0,15)
+               'Created on ' + video.vidCreatedAt.toString().slice(0,15)
               div ->
-                'Likes | Dislikes' #TODO access from database
+                video.likeCount.toString() + ' likes'
               div ->
                 'Description...' #TODO put in database
 
@@ -141,16 +142,16 @@ html ->
           tr class: 'profileRow', ->
             td ->
               a ->
-                img src: 'Biff-300x208.jpg', class: 'thumbnailLarge'
+                img src: 'photos/thumbnail/' + video.path.slice(15,-8) + '.png', class: 'thumbnailLarge'
             td class: 'profileColDesc', ->
               div class: 'title', ->
                 video.videoName.toString()
               div style: 'position: relative; left: 40px', ->
-                'Created on ' + video.createdAt.toString().slice(0,15)
+                'Created on ' + video.vidCreatedAt.toString().slice(0,15)
               div style: 'position: relative; left: 40px', ->
                 'Uploaded by ' + video.uploaderName
               div ->
-                'Likes | Dislikes'
+                video.likeCount.toString() + ' likes'
               div ->
                 'Description...'
 
@@ -160,15 +161,15 @@ html ->
         for playlist in @playlists
           tr class: 'profileRow', ->
             td style: 'padding: 20px', ->
-                img src: 'Biff-300x208.jpg', class: 'thumbnailSmall'
+                img src: 'photos/thumbnail/' + playlist.path1.slice(15, -8) + '.png', class: 'thumbnailSmall'
                 div ->
-                  img src: 'testThumb.jpg', class: 'thumbnailTiny'
-                  img src: 'testThumb2.jpg', class: 'thumbnailTiny'
+                  img src: 'photos/thumbnail/' + playlist.path2.slice(15, -8) + '.png', class: 'thumbnailTiny'
+                  img src: 'photos/thumbnail/' + playlist.path3.slice(15, -8) + '.png', class: 'thumbnailTiny'
             td class: 'profileColDesc', ->
               div class: 'title', -> # Displays playlist's title
                 playlist.name.toString()
               div ->
-                playlist.numVideos.toString()
+                playlist.numVideos.toString() + ' videos in playlist'
               div style: 'position: relative; left: 40px', -> # Displays playlist creation date
                 'Created on ' + playlist.createdAt.toString().slice(0,15)
 
