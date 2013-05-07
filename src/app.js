@@ -228,32 +228,17 @@ app.post('/comment', function (req, res) {
       video: req.body.vid_id
   }).save();
 
-  // get video
-  models.Video.find({where : {id: req.body.vid_id}, include: [models.User]
-    }).success(function(video) {
-      if (video) {
-        // get comments
-        models.Comment.findAll({
-          where : { video: video.id },
-          include: [models.User]
-        }).success(function(comments) {
-          //Has the snipping operation finished yet?
-          fs.exists('../data/' + video.path, function(exists) {
-            video.ready = exists;
+  req.redirect('/video?v=' + req.body.vid_id);
+});
 
-            res.render(__dirname + '/views/video.coffee', {
-              user: req.user,
-              vid: video,
-              uploader: video.user,
-              comments: comments
-            });
-          })
-        });
-      // Video doesn't exist
-      } else {
-        res.send(404);
-      }
-  });
+app.post('/message', function (req, res) {
+  models.Message.build({
+      message: req.body.message,
+      sender: req.user.id,
+      recipient: req.body.recipient
+  }).save();
+
+  res.redirect('/profile?u=' + req.body.recipient);
 });
 
 app.post('/new', function (req, res) {

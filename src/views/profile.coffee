@@ -129,23 +129,23 @@ html ->
 	       
 	      div id: 'message-box', ->
 	        form method: 'post', action: 'message', ->
-	          #input name: 'vid_id', type: 'hidden', value: @vid.id
-	          div id: 'comment-box'
-	          div id: 'submit-comment'
+	          input name: 'recipient', type: 'hidden', value: @pageUser.id
+	          div id: 'message-text'
+	          div id: 'submit-message'
 	          coffeescript ->
               require ['dojo/ready', 
                        'dojo/dom-style', 
                        'dijit/form/Textarea', 
                        'dijit/form/Button'], (ready, domstyle, TextArea, Button) ->
                 ready () ->
-                  commentBox = new TextArea {
-                    name: 'comment',
+                  messageBox = new TextArea {
+                    name: 'message',
                     value: 'Message this user...',
                     style: 'width:400px;height:100px;'
                   }
-                  (dojo.byId 'comment-box').appendChild commentBox.domNode
+                  (dojo.byId 'message-text').appendChild messageBox.domNode
 	            
-	                (dojo.byId 'submit-comment').appendChild (new Button {
+	                (dojo.byId 'submit-message').appendChild (new Button {
                     type: 'Submit',
                     label: 'Submit',
                     style: 'margin-top:5px;'

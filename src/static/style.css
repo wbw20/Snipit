@@ -130,6 +130,9 @@ img#user-icon {
   text-align: left; 
   float: right;
 }
+#message-box textarea {
+  min-height: 100px !important;
+}
 #messages { 
   padding: 20px;
   text-align: left;
