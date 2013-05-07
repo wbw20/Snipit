@@ -142,7 +142,7 @@ app.post('/snip', function(req, res) {
   models.Video.build({
     name: req.body.name,
     path: 'videos/snipped/' + id + '.flv',
-    uploader: req.user.id
+    uploader: req.user ? req.user.id : 0
   }).save().success(function(video) {
     //put tags in the database
     var tags = req.body.tag.match(/(?!#)[0-9a-zA-Z]*/g);
