@@ -154,9 +154,8 @@ html ->
           for video in @uploads
             tr class: 'profileRow', ->
               td ->
-                a ->
-                  filename = 'photos/thumbnail/' + video.path.slice(15, -8) + '.png'
-                  img src: filename, class: 'thumbnailLarge'
+                a href: '/video?v=' + video.id, ->
+                  img src: 'photos/thumbnail/' + (video.path.match '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') + '.png', class: 'thumbnailLarge'
               td class: 'profileColDesc', ->
                 div class: 'title', ->
                   video.name.toString()
@@ -171,8 +170,8 @@ html ->
           for video in @favorites
             tr class: 'profileRow', ->
               td ->
-                a ->
-                  img src: 'photos/thumbnail/' + video.path.slice(15,-8) + '.png', class: 'thumbnailLarge'
+                a href: '/video?v=' + video.id, ->
+                  img src: 'photos/thumbnail/' + (video.path.match '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') + '.png', class: 'thumbnailLarge'
               td class: 'profileColDesc', ->
                 div class: 'title', ->
                   video.videoName.toString()
@@ -191,10 +190,11 @@ html ->
           for playlist in @playlists
             tr class: 'profileRow', ->
               td style: 'padding: 20px', ->
-                  img src: 'photos/thumbnail/' + playlist.path1.slice(15, -8) + '.png', class: 'thumbnailSmall'
+                a href: '/video?v=' + video.id, ->
+                  img src: 'photos/thumbnail/' + (video.path.match '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') + '.png', class: 'thumbnailSmall'
                   div ->
-                    img src: 'photos/thumbnail/' + playlist.path2.slice(15, -8) + '.png', class: 'thumbnailTiny'
-                    img src: 'photos/thumbnail/' + playlist.path3.slice(15, -8) + '.png', class: 'thumbnailTiny'
+                    img src: 'photos/thumbnail/' + (video.path.match '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') + '.png', class: 'thumbnailTiny'
+                    img src: 'photos/thumbnail/' + (video.path.match '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') + '.png', class: 'thumbnailTiny'
               td class: 'profileColDesc', ->
                 div class: 'title', -> # Displays playlist's title
                   playlist.name.toString()
@@ -210,7 +210,7 @@ html ->
         # display messages
         for message in @messages
           a href: 'profile?u='+ message.user.id, ->
-                message.user.username
+            message.user.username
           p message.message
         
         
