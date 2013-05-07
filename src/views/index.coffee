@@ -19,8 +19,10 @@ html ->
                 ready () ->
                 signinDialog = new Dialog {
                   content: '<form id="signinform" method="post" action="/login">' +
-                             '<label for="username">userame:</label> <input type="text" data-dojo-type="dijit/form/TextBox" id="username" name="username"><br><br>' +
-                             '<label for="password">password:</label> <input type="text" data-dojo-type="dijit/form/TextBox" id="password" name="password">' +
+                             '<label for="username">username:</label>' + 
+                             '<input type="text" data-dojo-type="dijit/form/TextBox" id="username" name="username"><br><br>' +
+                             '<label for="password">password:</label>' + 
+                             '<input type="text" data-dojo-type="dijit/form/TextBox" id="password" name="password">' +
                              '<button id="signinsubmit" type="submit" data-dojo-type="dijit/form/Button">Login</button>' +
                            '</form>'
                 }

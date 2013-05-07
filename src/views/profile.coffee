@@ -20,25 +20,13 @@ html ->
               require ['dojo/ready', 'dojo/on', 'dojo/parser', 'dijit/form/TextBox', 'dijit/form/Button', 'dijit/form/DropDownButton', 'dijit/TooltipDialog'], (ready, dojon, parser, TextBox, Button, DropDownButton, Dialog) ->
                 ready () ->
                 signinDialog = new Dialog {
-                  content: '<form id="signinform">' +
-                             '<label for="username">userame:</label> <input type="text" data-dojo-type="dijit/form/TextBox" id="username" name="username"><br><br>' +
-                             '<label for="password">password:</label> <input type="text" data-dojo-type="dijit/form/TextBox" id="password" name="password">' +
+                  content: '<form id="signinform" method="post" action="/login">' +
+                             '<label for="username">username:</label>' + 
+                             '<input type="text" data-dojo-type="dijit/form/TextBox" id="username" name="username"><br><br>' +
+                             '<label for="password">password:</label>' + 
+                             '<input type="text" data-dojo-type="dijit/form/TextBox" id="password" name="password">' +
                              '<button id="signinsubmit" type="submit" data-dojo-type="dijit/form/Button">Login</button>' +
                            '</form>'
-                  onOpen: () ->
-                    dojo.connect (dojo.byId 'signinform'), "onsubmit", (event) ->
-                      dojo.stopEvent event
-                      dojo.xhrPost {
-                        url: 'login',
-                        form: (dojo.byId 'signinform'),
-                        load: (data) ->
-                          if data == 'invalid login'
-                            console.log 'FAIL'
-                          else
-                            location.reload(true)
-                        error: (error) ->
-                          console.log error
-                      }
                 }
 
                 login_button = new DropDownButton {
