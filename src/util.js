@@ -69,7 +69,7 @@ module.exports = {
                   '  (select videoId from' +
                   '    (select videoId, count(*) from' +
                   '      tags T, tag_to_videoes TTV' +
-                  "      where T.id = TTV.tagId and (t.id = 0 ";
+                  "      where T.id = TTV.tagId and (T.id = 0 ";
 
     JSON.parse(terms).forEach(function(term) {
       if (term.match(/^[a-zA-Z]+$/)) {
@@ -93,7 +93,7 @@ module.exports = {
     return('select *, UP.createdAt as vidCreatedAt, count(L.id) as likeCount from ' +
            '(select V.id as videoId, V.name, V.path, V.createdAt, V.uploader from ' +
            'videos V, users U ' +
-           'where V.uploader = U.id and U.id = '+ userForPage.id + ') as UP, ' +
+           'where V.uploader = '+ userForPage.id + ') as UP, ' +
            'likedislikes L ' +
            'where L.video = UP.videoId ' +
            'group by UP.videoId')
