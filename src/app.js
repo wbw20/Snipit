@@ -64,37 +64,46 @@ app.get('/profile', function(req, res) {
 
   var url_str = url.parse(req.url, true).query;
 
+  // if no user specified
   if (url_str.u == undefined) {
-   res.send(404)
-   return
-  }
+    // if user logged in, default to their profile
+    if (req.user != undefined) {
+      url_str.u = req.user.id
+    
+    // else 404
+    } else {
+     res.send(404)
+     return
+    }
+  }    
 
-  models.User.find({where: {id: url_str.u}
-  }).success(function(userForPage) {
+  util.getMessages(url_str.u, function(messages) {
+    models.User.find({where: {id: url_str.u}
+    }).success(function(userForPage) {
 
-    if (userForPage) {
+      if (userForPage) {
+        new Sequelize.Utils.QueryChainer()
+          .add(dao.connection.query(util.getPlaylists(userForPage)))
+          .add(dao.connection.query(util.getFavorites(userForPage)))
+          .run().success(function(results) {
+            util.getUploads(userForPage, function(videos) {
+              var playlistsForPage = results[0];
+              var favoritesForPage = results[1];
 
-      new Sequelize.Utils.QueryChainer()
-        .add(dao.connection.query(util.getPlaylists(userForPage)))
-        .add(dao.connection.query(util.getFavorites(userForPage)))
-        .run()
-        .success(function(results) {
-          util.getUploads(userForPage, function(videos) {
-            var playlistsForPage = results[0]
-            var favoritesForPage = results[1]
-
-            res.render(__dirname + '/views/profile.coffee', {
-              user: req.user,
-              pageUser: userForPage,
-              uploads: videos,
-              playlists: playlistsForPage,
-              favorites: favoritesForPage
+              res.render(__dirname + '/views/profile.coffee', {
+                user: req.user,
+                pageUser: userForPage,
+                uploads: videos,
+                playlists: playlistsForPage,
+                favorites: favoritesForPage,
+                messages: messages
+              });
             });
           });
-        });
-      } else {
-       res.send(404)
-    }
+        } else {
+         res.send(404)
+        }
+    });
   });
 });
 
@@ -207,6 +216,26 @@ app.get('/video', function(req, res) {
         res.send(404);
       }
   });
+});
+
+app.post('/comment', function (req, res) {
+  models.Comment.build({
+      comment: req.body.comment,
+      user: req.user.id,
+      video: req.body.vid_id
+  }).save();
+
+  req.redirect('/video?v=' + req.body.vid_id);
+});
+
+app.post('/message', function (req, res) {
+  models.Message.build({
+      message: req.body.message,
+      sender: req.user.id,
+      recipient: req.body.recipient
+  }).save();
+
+  res.redirect('/profile?u=' + req.body.recipient);
 });
 
 app.post('/new', function (req, res) {

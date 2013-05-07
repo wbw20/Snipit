@@ -38,8 +38,8 @@ module.exports = {
     Video.hasMany(Tag, {joinTableName: 'tag_to_video'});
 
     /* Messages */
-    Message.belongsTo(User, {foreignKey: 'sender'});
     Message.belongsTo(User, {foreignKey: 'recipient'});
+    Message.belongsTo(User, {foreignKey: 'sender'});
 
     /* Comments */
     Comment.belongsTo(User, {foreignKey: 'user'});

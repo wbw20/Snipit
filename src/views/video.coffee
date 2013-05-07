@@ -10,6 +10,8 @@ html ->
 
   body class: 'claro', ->
     div id: 'nav', ->
+      a href: '/', ->
+        img id: 'nav-logo', src: 'logo-small.png'
       ul ->
         unless @user
           li ->
@@ -65,13 +67,19 @@ html ->
             img id: 'icon', src: 'icon.png'
 
             coffeescript ->
-              require ['dojo/ready', 'dijit/TooltipDialog', 'dijit/popup', 'dojo/on', 'dojo/dom'], (ready, TooltipDialog, popup, dojon, dom) ->
+              require ['dojo/ready', 
+                       'dijit/TooltipDialog', 
+                       'dijit/popup', 
+                       'dojo/on', 
+                       'dojo/dom'], (ready, TooltipDialog, popup, dojon, dom) ->
                 ready () ->
                   iconDialog = new TooltipDialog {
                     id: 'iconDialog',
-                    style: 'width: 300px;',
-                    content: '<form action="logout">' +
-                                '<button id="logoutsubmit" type="submit" data-dojo-type="dijit/form/Button">Log out</button>' +
+                    style: 'width: 130px;',
+                    content: '<button id="profile" type="button" data-dojo-type="dijit/form/Button"' + 
+                                'onclick="window.location=\'/profile\'">view profile</button>' +
+                              '<form action="logout">' +
+                                '<button id="logoutsubmit" type="submit" data-dojo-type="dijit/form/Button">log out</button>' +
                               '</form>',
                     onMouseLeave: () ->
                       popup.close iconDialog
@@ -131,15 +139,47 @@ html ->
 
                 (dojo.byId 'like').appendChild like_button.domNode
                 (dojo.byId 'dislike').appendChild dislike_button.domNode
-
-      h2 'Comments'
-      div id: 'comment-container', class: 'contentbar', ->
-        for i in @comments
-          div id: 'comment' + i.id, ->
-            a href: 'profile?u='+ i.user.id, ->
-              i.user.username
-            p i.comment
+    
+      if @comments.length > 0      
+        h2 'Comments'
+        div id: 'comment-container', class: 'contentbar', ->
+          for i in @comments
+            div id: 'comment' + i.id, ->
+              a href: 'profile?u='+ i.user.id, ->
+                i.user.username
+              p i.comment
+      
+      unless @user      
+        div class: 'contentbar', id: 'add-comment', ->
+          text 'Log in to add a comment!'
+      if @user
 	      h2 'Add a Comment'  
 	      div id: 'add-comment', class: 'contentbar', ->
-	        
+	        form method: 'post', action: 'comment', ->
+	          input name: 'vid_id', type: 'hidden', value: @vid.id
+	          div id: 'comment-box'
+	          div id: 'submit-comment'
+	          coffeescript ->
+              require ['dojo/ready', 
+                       'dojo/dom-style', 
+                       'dijit/form/Textarea', 
+                       'dijit/form/Button'], (ready, domstyle, TextArea, Button) ->
+                ready () ->
+                  commentBox = new TextArea {
+                    name: 'comment',
+                    style: 'width:400px;height:100px;'
+                  }
+                  (dojo.byId 'comment-box').appendChild commentBox.domNode
+	          
+	                (dojo.byId 'submit-comment').appendChild (new Button {
+                    type: 'Submit',
+                    label: 'Submit',
+                    style: 'margin-top:5px;'
+                  }).domNode
+	          
+	          
+	          
+	          
+	          
+	          
       

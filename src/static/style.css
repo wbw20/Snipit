@@ -28,6 +28,8 @@ h2 {
 	margin: 0 auto;
 	width: 900px;
 }
+
+/* NAVIGATION */
 #nav {
 
 	/* gradient background */
@@ -60,6 +62,13 @@ h2 {
 	color: white;
 	font-weight: bold;
 }
+#nav img#nav-logo {
+  padding: 4px;
+}
+#icon {
+  vertical-align: bottom;
+}
+
 img.thumbnail {
   float: left;
   height: 135px;
@@ -98,10 +107,41 @@ div.videobar {
 #creator {
   float: left !important;
 }
+#comment-box textarea {
+  min-height: 100px !important;
+}
 
 /* PROFILE PAGE */
+h1#profile-header {
+  text-align: left;
+  margin-left: 0;
+  margin-bottom: 20px;
+}
+img#user-icon {
+  margin-right: 30px;
+  height: 100px;
+  float: left;
+}
+#infoBox {
+  margin-bottom: 20px;
+  float: left;
+}
+#message-box {
+  text-align: left; 
+  float: right;
+}
+#message-box textarea {
+  min-height: 100px !important;
+}
+#messages { 
+  padding: 20px;
+  text-align: left;
+}
 #user-info {
   text-align: left;
+}
+#tabContainer {
+  margin-bottom: 30px;
 }
 dt {
   font-weight: bold;

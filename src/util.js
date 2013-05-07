@@ -125,6 +125,14 @@ module.exports = {
                'where X.videoId = L.video and L.likedislike = "like" ' +
                'group by X.videoId) as FavLikes, users U ' +
                'where U.id = FavLikes.uploader')
+  },
+  
+  getMessages: function(userID, callback) {
+    models.Message.findAll({where: {recipient: userID}, order: 'createdAt DESC', include: [models.User], include: [models.User]
+      }).success(function(messages) {
+        console.log(messages);
+        callback(messages);
+    });
   }
 }
 
