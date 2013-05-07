@@ -66,7 +66,6 @@ app.get('/profile', function(req, res) {
 
   // if no user specified
   if (url_str.u == undefined) {
-    
     // if user logged in, default to their profile
     if (req.user != undefined) {
       url_str.u = req.user.id
@@ -79,33 +78,31 @@ app.get('/profile', function(req, res) {
   }    
 
   util.getMessages(url_str.u, function(messages) {
-  
     models.User.find({where: {id: url_str.u}
     }).success(function(userForPage) {
 
       if (userForPage) {
-
         new Sequelize.Utils.QueryChainer()
           .add(dao.connection.query(util.getPlaylists(userForPage)))
-          .add(dao.connection.query(util.getUploads(userForPage)))
           .add(dao.connection.query(util.getFavorites(userForPage)))
-          .run()
-          .success(function(results) {
-            var playlistsForPage = results[0]
-            var videos = results[1]
-            var favoritesForPage = results[2]
+          .run().success(function(results) {
+            util.getUploads(userForPage, function(videos) {
+              var playlistsForPage = results[0];
+              var favoritesForPage = results[1];
 
-            res.render(__dirname + '/views/profile.coffee', {
-              user: req.user,
-              pageUser: userForPage,
-              uploads: videos,
-              playlists: playlistsForPage,
-              favorites: favoritesForPage,
-              messages: messages
+              res.render(__dirname + '/views/profile.coffee', {
+                user: req.user,
+                pageUser: userForPage,
+                uploads: videos,
+                playlists: playlistsForPage,
+                favorites: favoritesForPage,
+                messages: messages
+              });
             });
           });
-        } else
+        } else {
          res.send(404)
+        }
     });
   });
 });

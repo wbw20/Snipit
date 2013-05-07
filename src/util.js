@@ -89,14 +89,12 @@ module.exports = {
 
 
 
-  getUploads: function(userForPage) {
-    return('select *, UP.createdAt as vidCreatedAt, count(L.id) as likeCount from ' +
-           '(select V.id as videoId, V.name, V.path, V.createdAt, V.uploader from ' +
-           'videos V, users U ' +
-           'where V.uploader = '+ userForPage.id + ') as UP, ' +
-           'likedislikes L ' +
-           'where L.video = UP.videoId ' +
-           'group by UP.videoId')
+  getUploads: function(user, callback) {
+    dao.connection.query('select *' +
+                         '  from videos V' +
+                         '  where V.uploader = ' + user.id).success(function(results) {
+        callback(results);
+    });
   },
 
   getPlaylists: function(userForPage) {
@@ -130,13 +128,11 @@ module.exports = {
   },
   
   getMessages: function(userID, callback) {
-
     models.Message.findAll({where: {recipient: userID}, order: 'createdAt DESC', include: [models.User], include: [models.User]
       }).success(function(messages) {
         console.log(messages);
         callback(messages);
     });
-    
   }
 }
 
