@@ -64,10 +64,19 @@ app.get('/profile', function(req, res) {
 
   var url_str = url.parse(req.url, true).query;
 
+  // if no user specified
   if (url_str.u == undefined) {
-   res.send(404)
-   return
-  }
+    
+    // if user logged in, default to their profile
+    if (req.user != undefined) {
+      url_str.u = req.user.id
+    
+    // else 404
+    } else {
+     res.send(404)
+     return
+    }
+  }    
 
   models.User.find({where: {id: url_str.u}
   }).success(function(userForPage) {
@@ -208,7 +217,7 @@ app.get('/video', function(req, res) {
   });
 });
 
-app.post('/video', function (req, res) {
+app.post('/comment', function (req, res) {
   models.Comment.build({
       comment: req.body.comment,
       user: req.user.id,

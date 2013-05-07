@@ -67,13 +67,19 @@ html ->
             img id: 'icon', src: 'icon.png'
 
             coffeescript ->
-              require ['dojo/ready', 'dijit/TooltipDialog', 'dijit/popup', 'dojo/on', 'dojo/dom'], (ready, TooltipDialog, popup, dojon, dom) ->
+              require ['dojo/ready', 
+                       'dijit/TooltipDialog', 
+                       'dijit/popup', 
+                       'dojo/on', 
+                       'dojo/dom'], (ready, TooltipDialog, popup, dojon, dom) ->
                 ready () ->
                   iconDialog = new TooltipDialog {
                     id: 'iconDialog',
-                    style: 'width: 300px;',
-                    content: '<form action="logout">' +
-                                '<button id="logoutsubmit" type="submit" data-dojo-type="dijit/form/Button">Log out</button>' +
+                    style: 'width: 130px;',
+                    content: '<button id="profile" type="button" data-dojo-type="dijit/form/Button"' + 
+                                'onclick="window.location=\'/profile\'">view profile</button>' +
+                              '<form action="logout">' +
+                                '<button id="logoutsubmit" type="submit" data-dojo-type="dijit/form/Button">log out</button>' +
                               '</form>',
                     onMouseLeave: () ->
                       popup.close iconDialog
@@ -149,7 +155,7 @@ html ->
       if @user
 	      h2 'Add a Comment'  
 	      div id: 'add-comment', class: 'contentbar', ->
-	        form method: 'post', ->
+	        form method: 'post', action: 'comment', ->
 	          input name: 'vid_id', type: 'hidden', value: @vid.id
 	          div id: 'comment-box'
 	          div id: 'submit-comment'
