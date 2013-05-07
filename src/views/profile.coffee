@@ -122,9 +122,6 @@ html ->
               div name: 'joinDate', ->
                 p 'Joined on ' + @pageUser.createdAt.toString().slice(0,15)
       
-      unless @user      
-        div class: 'contentbar', id: 'add-comment', ->
-          text 'Log in to add a comment!'
       if @user
 	       
 	      div id: 'message-box', ->
