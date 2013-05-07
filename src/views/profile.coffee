@@ -100,14 +100,16 @@ html ->
 
               (dojo.byId 'snip').appendChild snip_button.domNode
 
-    div name: 'spacer', style: 'height: 100px'
-    div style: 'width: 100%; overflow: hidden', ->
-      div style: 'width: 60%; float: left', ->
-        h1 @pageUser.username
-      div name: 'avatarBox', style: 'width: 60%; float: left', ->
-        img src: 'silhouette.png'
-      div name: 'infoBox', style: 'position: relative; bottom: -140px; left: -150px', ->
-        table style: 'font-size: 35px', ->
+    div id: 'container', ->
+      h1 id: 'profile-header', ->
+        @pageUser.username
+      img id: 'user-icon', src: 'silhouette.png'
+      div id: 'infoBox', ->
+        table style: 'font-size: 20px', ->
+          tr ->
+            td ->
+              div name: 'fullName', ->
+                p @pageUser.name
           tr ->
             td ->
               div name: 'age', ->
@@ -118,94 +120,90 @@ html ->
           tr ->
             td ->
               div name: 'joinDate', ->
-                p 'Joined On ' + @pageUser.createdAt.toString().slice(0,15)
-          tr ->
-            td ->
-              div name: 'aboutMe', ->
-                'About Me: ......'
+                p 'Joined on ' + @pageUser.createdAt.toString().slice(0,15)
 
-    # Videos the user has uploaded
-    div id: 'uploadedVids', ->
-      table class: 'profileTable', ->
-        for video in @uploads
-          tr class: 'profileRow', ->
-            td ->
-              a ->
-                filename = 'photos/thumbnail/' + video.path.slice(15, -8) + '.png'
-                img src: filename, class: 'thumbnailLarge'
-            td class: 'profileColDesc', ->
-              div class: 'title', ->
-                video.name.toString()
-              div style: 'position: relative; left: 40px', ->
-               'Created on ' + video.vidCreatedAt.toString().slice(0,15)
-              div ->
-                video.likeCount.toString() + ' likes'
-              div ->
-                'Description...' #TODO put in database
-
-    # Videos the user has favorited
-    div id: 'favoriteVids', ->
-      table class: 'profileTable', ->
-        for video in @favorites
-          tr class: 'profileRow', ->
-            td ->
-              a ->
-                img src: 'photos/thumbnail/' + video.path.slice(15,-8) + '.png', class: 'thumbnailLarge'
-            td class: 'profileColDesc', ->
-              div class: 'title', ->
-                video.videoName.toString()
-              div style: 'position: relative; left: 40px', ->
-                'Created on ' + video.vidCreatedAt.toString().slice(0,15)
-              div style: 'position: relative; left: 40px', ->
-                'Uploaded by ' + video.uploaderName
-              div ->
-                video.likeCount.toString() + ' likes'
-              div ->
-                'Description...'
-
-    # Playlists the user has made
-    div id: 'playlists', ->
-      table class: 'profileTable', ->
-        for playlist in @playlists
-          tr class: 'profileRow', ->
-            td style: 'padding: 20px', ->
-                img src: 'photos/thumbnail/' + playlist.path1.slice(15, -8) + '.png', class: 'thumbnailSmall'
+      # Videos the user has uploaded
+      div id: 'uploadedVids', ->
+        table class: 'profileTable', ->
+          for video in @uploads
+            tr class: 'profileRow', ->
+              td ->
+                a ->
+                  filename = 'photos/thumbnail/' + video.path.slice(15, -8) + '.png'
+                  img src: filename, class: 'thumbnailLarge'
+              td class: 'profileColDesc', ->
+                div class: 'title', ->
+                  video.name.toString()
+                div style: 'position: relative; left: 40px', ->
+                 'Created on ' + video.vidCreatedAt.toString().slice(0,15)
                 div ->
-                  img src: 'photos/thumbnail/' + playlist.path2.slice(15, -8) + '.png', class: 'thumbnailTiny'
-                  img src: 'photos/thumbnail/' + playlist.path3.slice(15, -8) + '.png', class: 'thumbnailTiny'
-            td class: 'profileColDesc', ->
-              div class: 'title', -> # Displays playlist's title
-                playlist.name.toString()
-              div ->
-                playlist.numVideos.toString() + ' videos in playlist'
-              div style: 'position: relative; left: 40px', -> # Displays playlist creation date
-                'Created on ' + playlist.createdAt.toString().slice(0,15)
+                  video.likeCount.toString() + ' likes'
+                div ->
+                  'Description...' #TODO put in database
 
-    div name: 'tabContainer', style: 'width: 60%; margin: 0 auto', ->
-      div id: 'tcl-prog'
-      coffeescript ->
-        require ["dojo/ready", "dijit/layout/TabContainer", "dijit/layout/ContentPane"], (ready, TabContainer, ContentPane) ->
-          ready () ->
-            tc = new TabContainer {
-              style: 'height: 100%; width: 100%;'
-            }, 'tcl-prog'
+      # Videos the user has favorited
+      div id: 'favoriteVids', ->
+        table class: 'profileTable', ->
+          for video in @favorites
+            tr class: 'profileRow', ->
+              td ->
+                a ->
+                  img src: 'photos/thumbnail/' + video.path.slice(15,-8) + '.png', class: 'thumbnailLarge'
+              td class: 'profileColDesc', ->
+                div class: 'title', ->
+                  video.videoName.toString()
+                div style: 'position: relative; left: 40px', ->
+                  'Created on ' + video.vidCreatedAt.toString().slice(0,15)
+                div style: 'position: relative; left: 40px', ->
+                  'Uploaded by ' + video.uploaderName
+                div ->
+                  video.likeCount.toString() + ' likes'
+                div ->
+                  'Description...'
 
-            cp1 = new ContentPane {
-              title: 'Uploads',
-              content: dojo.byId 'uploadedVids'
-            }
-            tc.addChild cp1
+      # Playlists the user has made
+      div id: 'playlists', ->
+        table class: 'profileTable', ->
+          for playlist in @playlists
+            tr class: 'profileRow', ->
+              td style: 'padding: 20px', ->
+                  img src: 'photos/thumbnail/' + playlist.path1.slice(15, -8) + '.png', class: 'thumbnailSmall'
+                  div ->
+                    img src: 'photos/thumbnail/' + playlist.path2.slice(15, -8) + '.png', class: 'thumbnailTiny'
+                    img src: 'photos/thumbnail/' + playlist.path3.slice(15, -8) + '.png', class: 'thumbnailTiny'
+              td class: 'profileColDesc', ->
+                div class: 'title', -> # Displays playlist's title
+                  playlist.name.toString()
+                div ->
+                  playlist.numVideos.toString() + ' videos in playlist'
+                div style: 'position: relative; left: 40px', -> # Displays playlist creation date
+                  'Created on ' + playlist.createdAt.toString().slice(0,15)
 
-            cp2 = new ContentPane {
-              title: 'Favorites',
-              content: dojo.byId 'favoriteVids'
-            }
-            tc.addChild cp2
+      div id: 'tabContainer', ->
+        div id: 'tcl-prog'
+        coffeescript ->
+          require ["dojo/ready", "dijit/layout/TabContainer", "dijit/layout/ContentPane"], (ready, TabContainer, ContentPane) ->
+            ready () ->
+              tc = new TabContainer {
+                style: 'height: 100%; width: 100%;'
+              }, 'tcl-prog'
 
-            cp3 = new ContentPane {
-              title: 'Playlists',
-              content: dojo.byId 'playlists'
-            }
-            tc.addChild cp3
+              cp1 = new ContentPane {
+                title: 'Uploads',
+                content: dojo.byId 'uploadedVids'
+              }
+              tc.addChild cp1
 
-            tc.startup ''
+              cp2 = new ContentPane {
+                title: 'Favorites',
+                content: dojo.byId 'favoriteVids'
+              }
+              tc.addChild cp2
+
+              cp3 = new ContentPane {
+                title: 'Playlists',
+                content: dojo.byId 'playlists'
+              }
+              tc.addChild cp3
+
+              tc.startup ''

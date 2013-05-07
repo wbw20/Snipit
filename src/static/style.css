@@ -106,8 +106,22 @@ div.videobar {
 }
 
 /* PROFILE PAGE */
+h1#profile-header {
+  text-align: left;
+  margin-left: 0;
+  margin-bottom: 20px;
+}
+img#user-icon {
+  margin-right: 30px;
+  margin-bottom: 20px;
+  height: 100px;
+  float: left;
+}
 #user-info {
   text-align: left;
+}
+#tabContainer {
+  margin-bottom: 30px;
 }
 dt {
   font-weight: bold;
