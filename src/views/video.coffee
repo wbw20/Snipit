@@ -131,16 +131,20 @@ html ->
 
                 (dojo.byId 'like').appendChild like_button.domNode
                 (dojo.byId 'dislike').appendChild dislike_button.domNode
-
-      h2 'Comments'
-      div id: 'comment-container', class: 'contentbar', ->
-        for i in @comments
-          div id: 'comment' + i.id, ->
-            a href: 'profile?u='+ i.user.id, ->
-              i.user.username
-            p i.comment
-            
-        # TODO: only if user is logged in!
+    
+      if @comments.length > 0      
+        h2 'Comments'
+        div id: 'comment-container', class: 'contentbar', ->
+          for i in @comments
+            div id: 'comment' + i.id, ->
+              a href: 'profile?u='+ i.user.id, ->
+                i.user.username
+              p i.comment
+      
+      unless @user      
+        div class: 'contentbar', id: 'add-comment', ->
+          text 'Log in to add a comment!'
+      if @user
 	      h2 'Add a Comment'  
 	      div id: 'add-comment', class: 'contentbar', ->
 	        form method: 'post', ->
