@@ -68,6 +68,12 @@ h2 {
 #icon {
   vertical-align: bottom;
 }
+#signinform label, #widget_username {
+  float: left !important;
+}
+#signinform label {
+  margin-right: 10px;
+}
 
 img.thumbnail {
   float: left;
