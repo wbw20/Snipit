@@ -225,7 +225,7 @@ app.post('/comment', function (req, res) {
       video: req.body.vid_id
   }).save();
 
-  req.redirect('/video?v=' + req.body.vid_id);
+  res.redirect('/video?v=' + req.body.vid_id);
 });
 
 app.post('/message', function (req, res) {
@@ -244,9 +244,11 @@ app.post('/new', function (req, res) {
         username: req.body.username,
         password: req.body.password,
         email: req.body.email
-    }).save();
-
-    res.render(__dirname + '/views/new.coffee');
+    }).save().success(function(user) {
+      new Cookies(req, res, keygrip).set('login', req.body.username, {signed: true});
+      req.user = user;
+      res.redirect('/');
+    });
 });
 
 app.post('/login', function (req, res) {
