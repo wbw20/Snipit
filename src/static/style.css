@@ -60,6 +60,9 @@ h2 {
 	color: white;
 	font-weight: bold;
 }
+#nav img#nav-logo {
+  padding: 4px;
+}
 img.thumbnail {
   float: left;
   height: 135px;

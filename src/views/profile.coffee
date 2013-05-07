@@ -7,6 +7,8 @@ html ->
 
   body class: 'claro', ->
     div id: 'nav', ->
+      a href: '/', ->
+        img id: 'nav-logo', src: 'logo-small.png'
       ul -> # List containing navigation menu
         unless @user
           li ->

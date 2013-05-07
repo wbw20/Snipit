@@ -6,6 +6,8 @@ html ->
 
   body class: 'claro', ->
     div id: 'nav', ->
+      a href: '/', ->
+        img id: 'nav-logo', src: 'logo-small.png'
       ul ->
         unless @user
           li ->
