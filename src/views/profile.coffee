@@ -120,6 +120,7 @@ html ->
     div id: 'uploadedVids', ->
       table class: 'profileTable', ->
         for video in @uploads
+          console.log video
           tr class: 'profileRow', ->
             td ->
               a ->
@@ -129,9 +130,7 @@ html ->
               div class: 'title', ->
                 video.name.toString()
               div style: 'position: relative; left: 40px', ->
-               'Created on ' + video.vidCreatedAt.toString().slice(0,15)
-              div ->
-                video.likeCount.toString() + ' likes'
+               'Created on ' + video.createdAt.toString().slice(0,15)
               div ->
                 'Description...' #TODO put in database
 
