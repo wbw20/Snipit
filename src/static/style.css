@@ -98,6 +98,9 @@ div.videobar {
 #creator {
   float: left !important;
 }
+#comment-box textarea {
+  min-height: 100px !important;
+}
 
 /* PROFILE PAGE */
 #user-info {

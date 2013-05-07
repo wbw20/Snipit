@@ -208,6 +208,41 @@ app.get('/video', function(req, res) {
   });
 });
 
+app.post('/video', function (req, res) {
+  models.Comment.build({
+      comment: req.body.comment,
+      user: req.user.id,
+      video: req.body.vid_id
+  }).save();
+
+  // get video
+  models.Video.find({where : {id: req.body.vid_id}, include: [models.User]
+    }).success(function(video) {
+      if (video) {
+        // get comments
+        models.Comment.findAll({
+          where : { video: video.id },
+          include: [models.User]
+        }).success(function(comments) {
+          //Has the snipping operation finished yet?
+          fs.exists('../data/' + video.path, function(exists) {
+            video.ready = exists;
+
+            res.render(__dirname + '/views/video.coffee', {
+              user: req.user,
+              vid: video,
+              uploader: video.user,
+              comments: comments
+            });
+          })
+        });
+      // Video doesn't exist
+      } else {
+        res.send(404);
+      }
+  });
+});
+
 app.post('/new', function (req, res) {
     models.User.build({
         name: req.body.first + ' ' + req.body.last,

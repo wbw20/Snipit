@@ -139,7 +139,35 @@ html ->
             a href: 'profile?u='+ i.user.id, ->
               i.user.username
             p i.comment
+            
+        # TODO: only if user is logged in!
 	      h2 'Add a Comment'  
 	      div id: 'add-comment', class: 'contentbar', ->
-	        
+	        form method: 'post', ->
+	          input name: 'vid_id', type: 'hidden', value: @vid.id
+	          div id: 'comment-box'
+	          div id: 'submit-comment'
+	          coffeescript ->
+              require ['dojo/ready', 
+                       'dojo/dom-style', 
+                       'dijit/form/Textarea', 
+                       'dijit/form/Button'], (ready, domstyle, TextArea, Button) ->
+                ready () ->
+                  commentBox = new TextArea {
+                    name: 'comment',
+                    style: 'width:400px;height:100px;'
+                  }
+                  (dojo.byId 'comment-box').appendChild commentBox.domNode
+	          
+	                (dojo.byId 'submit-comment').appendChild (new Button {
+                    type: 'Submit',
+                    label: 'Submit',
+                    style: 'margin-top:5px;'
+                  }).domNode
+	          
+	          
+	          
+	          
+	          
+	          
       
