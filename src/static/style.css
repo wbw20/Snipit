@@ -28,6 +28,8 @@ h2 {
 	margin: 0 auto;
 	width: 900px;
 }
+
+/* NAVIGATION */
 #nav {
 
 	/* gradient background */
@@ -63,6 +65,10 @@ h2 {
 #nav img#nav-logo {
   padding: 4px;
 }
+#icon {
+  vertical-align: bottom;
+}
+
 img.thumbnail {
   float: left;
   height: 135px;
@@ -113,9 +119,20 @@ h1#profile-header {
 }
 img#user-icon {
   margin-right: 30px;
-  margin-bottom: 20px;
   height: 100px;
   float: left;
+}
+#infoBox {
+  margin-bottom: 20px;
+  float: left;
+}
+#message-box {
+  text-align: left; 
+  float: right;
+}
+#messages { 
+  padding: 20px;
+  text-align: left;
 }
 #user-info {
   text-align: left;

@@ -121,7 +121,36 @@ html ->
             td ->
               div name: 'joinDate', ->
                 p 'Joined on ' + @pageUser.createdAt.toString().slice(0,15)
-
+      
+      unless @user      
+        div class: 'contentbar', id: 'add-comment', ->
+          text 'Log in to add a comment!'
+      if @user
+	       
+	      div id: 'message-box', ->
+	        form method: 'post', action: 'message', ->
+	          #input name: 'vid_id', type: 'hidden', value: @vid.id
+	          div id: 'comment-box'
+	          div id: 'submit-comment'
+	          coffeescript ->
+              require ['dojo/ready', 
+                       'dojo/dom-style', 
+                       'dijit/form/Textarea', 
+                       'dijit/form/Button'], (ready, domstyle, TextArea, Button) ->
+                ready () ->
+                  commentBox = new TextArea {
+                    name: 'comment',
+                    value: 'Message this user...',
+                    style: 'width:400px;height:100px;'
+                  }
+                  (dojo.byId 'comment-box').appendChild commentBox.domNode
+	            
+	                (dojo.byId 'submit-comment').appendChild (new Button {
+                    type: 'Submit',
+                    label: 'Submit',
+                    style: 'margin-top:5px;'
+                  }).domNode
+      
       # Videos the user has uploaded
       div id: 'uploadedVids', ->
         table class: 'profileTable', ->
@@ -178,6 +207,18 @@ html ->
                   playlist.numVideos.toString() + ' videos in playlist'
                 div style: 'position: relative; left: 40px', -> # Displays playlist creation date
                   'Created on ' + playlist.createdAt.toString().slice(0,15)
+                  
+                  
+      # Messages to the user
+      div id: 'messages', ->
+        
+        # display messages
+        for message in @messages
+          a href: 'profile?u='+ message.user.id, ->
+                message.user.username
+          p message.message
+        
+        
 
       div id: 'tabContainer', ->
         div id: 'tcl-prog'
@@ -203,6 +244,12 @@ html ->
               cp3 = new ContentPane {
                 title: 'Playlists',
                 content: dojo.byId 'playlists'
+              }
+              tc.addChild cp3
+              
+              cp3 = new ContentPane {
+                title: 'Messages',
+                content: dojo.byId 'messages'
               }
               tc.addChild cp3
 
