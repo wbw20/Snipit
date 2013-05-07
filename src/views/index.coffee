@@ -102,15 +102,16 @@ html ->
                       url: '/search?terms=' + JSON.stringify(searchBox.value.split ' '),
                       handleAs: 'text',
                       handle: (data) ->
-                        console.log (JSON.parse data)
+                        dojo.destroy 'resultGrid'
 
                         domstyle.set (dojo.byId 'resultsTitle'), 'display', ''
                         container = dojo.create 'div', {
+                          id: 'resultGrid',
                           style: {
                             'background-color': '#DBDBDB',
                             border: '2px solid #B8CCFF',
                             margin: '0 auto',
-                            height: ((JSON.parse data).length%4)*167,
+                            height: (Math.ceil((JSON.parse data).length/4))*167,
                             width: '827px'
                           }
                         }, (dojo.byId 'resultsContainer')
