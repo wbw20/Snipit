@@ -264,9 +264,10 @@ app.post('/login', function (req, res) {
           return res.redirect('/');
       //or don't
       } else {
-        res.send('invalid login');
-        res.send(401);
+        res.redirect("/oops?m=Invalid username or password. Please try again.");
       }
+    }).error(function(error) {
+      res.redirect("/oops?m=Invalid username or password. Please try again.");
     });
 });
 
@@ -293,6 +294,21 @@ app.get('/user', function (req, res) {
             res.send(200);
         }
     });
+});
+
+// 404/error page
+app.get('/oops', function (req, res) {
+  var url_str = url.parse(req.url, true).query;
+  
+  res.render(__dirname + '/views/oops.coffee', {
+    user: req.user,
+    message: url_str.m
+  });                                
+});
+
+// 404 Route (ALWAYS keep this as the last route)
+app.get('*', function(req, res){
+  res.redirect("/oops?m=It looks like the page you're looking for doesn't exist.");
 });
 
 app.listen(8080);
