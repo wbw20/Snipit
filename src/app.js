@@ -87,19 +87,20 @@ app.get('/profile', function(req, res) {
       if (userForPage) {
         new Sequelize.Utils.QueryChainer()
           .add(dao.connection.query(util.getPlaylists(userForPage)))
-          .add(dao.connection.query(util.getFavorites(userForPage)))
           .run().success(function(results) {
             util.getUploads(userForPage, function(videos) {
-              var playlistsForPage = results[0];
-              var favoritesForPage = results[1];
+              util.getFavorites(userForPage, function(favorites) {
+                var playlistsForPage = results[0];
+                var favoritesForPage = results[1];
 
-              res.render(__dirname + '/views/profile.coffee', {
-                user: req.user,
-                pageUser: userForPage,
-                uploads: videos,
-                playlists: playlistsForPage,
-                favorites: favoritesForPage,
-                messages: messages
+                res.render(__dirname + '/views/profile.coffee', {
+                    user: req.user,
+                    pageUser: userForPage,
+                    uploads: videos,
+                    playlists: playlistsForPage,
+                    favorites: favorites,
+                    messages: messages
+                });
               });
             });
           });
@@ -180,7 +181,7 @@ app.post('/snip', function(req, res) {
 
   downloader = util.spawn('java', ['-jar', '../opt/downloader.jar', req.body.url, '../data/videos/raw/' + id + '.mp4']);
     downloader.on('close', function(code) {
-        converter = util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/raw/' + id + '.mp4', req.body.start, req.body.end, '../data/videos/snipped/' + id + '.flv']);
+        converter = util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/raw/' + id + '.mp4', req.body.start*1000000, req.body.end*1000000, '../data/videos/snipped/' + id + '.flv']);
         converter.stdout.on('data', function (data) {});
         converter.stderr.on('data', function (data) {});
         converter.on('close', function(code) {
@@ -208,15 +209,18 @@ app.get('/video', function(req, res) {
           where : { video: video.id },
           include: [models.User]
         }).success(function(comments) {
-          //Has the snipping operation finished yet?
-          fs.exists('../data/' + video.path, function(exists) {
-            video.ready = exists;
+          util.getVideoInfo(video.id, req.user.id, function(likesdislikesfavorites) {
+            //Has the snipping operation finished yet?
+            fs.exists('../data/' + video.path, function(exists) {
+              video.ready = exists;
 
-            res.render(__dirname + '/views/video.coffee', {
-              user: req.user,
-              vid: video,
-              uploader: video.user,
-              comments: comments
+              res.render(__dirname + '/views/video.coffee', {
+                user: req.user,
+                vid: video,
+                uploader: video.user,
+                comments: comments,
+                likesfavs: likesdislikesfavorites
+              });
             });
           })
         });
@@ -226,6 +230,15 @@ app.get('/video', function(req, res) {
       }
   });
 });
+
+app.get('/info', function(req, res) {
+  var url_str = url.parse(req.url, true).query;
+
+  util.getVideoInfo(url_str.v, req.user.id, function (results) {
+    res.send(results);
+  });
+});
+
 
 /* saves video comments */
 app.post('/comment', function (req, res) {
@@ -261,6 +274,33 @@ app.post('/new', function (req, res) {
       req.user = user;
       res.redirect('/');
     });
+});
+
+app.post('/like', function(req, res) {
+    models.LikeDislike.build({
+        likedislike: 'like',
+        user: req.user.id,
+        video: req.body.video
+    }).save();
+
+    res.send(200);
+});
+
+app.post('/dislike', function(req, res) {
+    models.LikeDislike.build({
+        likedislike: 'dislike',
+        user: req.user.id,
+        video: req.body.video
+    }).save();
+
+    res.send(200);
+});
+
+app.post('/favorite', function(req, res) {
+    dao.connection.query('insert into user_to_video_favorites' +
+                         '  values (' + req.body.video + ', ' + req.user.id + ', now(), now());');
+
+    res.send(200);
 });
 
 /* login form */

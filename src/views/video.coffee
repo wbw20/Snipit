@@ -110,22 +110,74 @@ html ->
                 @uploader.username
             else
               text 'Created Anonymously'
-	        span id: 'dislike'
-	        span id: 'like'
-	        coffeescript ->
-            require ['dojo/ready', 'dojo/on', 'dojo/parser', 'dijit/form/TextBox', 'dijit/form/Button', 'dijit/form/DropDownButton', 'dijit/TooltipDialog'], (ready, dojon, parser, TextBox, Button, DropDownButton, Dialog) ->
-                ready () ->
-                
-                like_button = new Button {
-                  label: 'Like'
-                }
-                
-                dislike_button = new Button {
-                  label: 'Dislike'
-                }
+          if @user
+            span ->
+              div id: 'dislikeCount', style: 'color: red; font-family: impact; font-size: 18pt', ->
+                text @likesfavs.dislikes
+              span id: 'dislike'
+            span ->
+              div id: 'likeCount', style: 'color: green; font-family: impact; font-size: 18pt', ->
+                text @likesfavs.likes
+              span id: 'like'
+            span ->
+              div id: 'favoriteCount', style: 'font-family: impact; font-size: 18pt', ->
+                text @likesfavs.favorites
+              span id: 'favorite'
+            form id: 'likedislikefavorite', style: 'display: none', ->
+              input name: 'video', value: @vid.id
 
-                (dojo.byId 'like').appendChild like_button.domNode
-                (dojo.byId 'dislike').appendChild dislike_button.domNode
+            coffeescript ->
+              require ['dojo/ready', 'dojo/on', 'dojo/parser', 'dijit/form/TextBox', 'dijit/form/Button', 'dijit/form/DropDownButton', 'dijit/TooltipDialog'], (ready, dojon, parser, TextBox, Button, DropDownButton, Dialog) ->
+                  ready () ->
+                    dojo.xhrGet {
+                      url: '/info' + document.location.search,
+                      handle: (data) ->
+
+                        console.log JSON.parse(data).likeddisliked
+
+                        like_button = new Button {
+                          label: 'Like',
+                          disabled: JSON.parse(data).likeddisliked,
+                          onClick: () ->
+                            (dojo.byId 'likeCount').innerHTML++
+                            dojo.xhrPost {
+                              url: '/like',
+                              form: dojo.byId 'likedislikefavorite'
+                              handle: () ->
+                                like_button.disabled = true
+                            }
+                        }
+
+                        dislike_button = new Button {
+                          label: 'Dislike',
+                          disabled: JSON.parse(data).likeddisliked,
+                          onClick: () ->
+                            (dojo.byId 'dislikeCount').innerHTML++
+                            dojo.xhrPost {
+                              url: '/dislike'
+                              form: dojo.byId 'likedislikefavorite'
+                              handle: () ->
+                                dislike_button.disabled = true
+                            }
+                        }
+
+                        favorites_button = new Button {
+                          label: 'Favorite',
+                          disabled: JSON.parse(data).favorited,
+                          onClick: () ->
+                            (dojo.byId 'favoriteCount').innerHTML++
+                            dojo.xhrPost {
+                              url: '/favorite',
+                              form: dojo.byId 'likedislikefavorite'
+                              handle: () ->
+                                favorites_button.disabled = true
+                            }
+                        }
+
+                        (dojo.byId 'like').appendChild like_button.domNode
+                        (dojo.byId 'dislike').appendChild dislike_button.domNode
+                        (dojo.byId 'favorite').appendChild favorites_button.domNode
+                    }
     
       if @comments.length > 0      
         h2 'Comments'
