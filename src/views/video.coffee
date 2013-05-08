@@ -206,7 +206,7 @@ html ->
                 ready () ->
                   commentBox = new TextArea {
                     name: 'comment',
-                    style: 'width:400px;height:100px;'
+                    style: 'width:867px;height:100px;'
                   }
                   (dojo.byId 'comment-box').appendChild commentBox.domNode
 	          
