@@ -162,13 +162,15 @@ html ->
                   img src: 'photos/thumbnail/' + (video.path.match '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') + '.png', class: 'thumbnailLarge'
               td class: 'profileColDesc', ->
                 div class: 'title', ->
-                  video.videoName.toString()
+                  video.name
                 div style: 'position: relative; left: 40px', ->
-                  'Created on ' + video.vidCreatedAt.toString().slice(0,15)
+                  'Created on ' + video.createdAt.toString().slice(0,15)
                 div style: 'position: relative; left: 40px', ->
-                  'Uploaded by ' + video.uploaderName
-                div ->
-                  video.likeCount.toString() + ' likes'
+                  if video.userId
+                    a href: '/profile?u=' + video.userId, ->
+                      text 'Uploaded by ' + video.username
+                  else
+                    text 'Uploaded Anonymously'
                 div ->
                   'Description...'
 

@@ -87,19 +87,20 @@ app.get('/profile', function(req, res) {
       if (userForPage) {
         new Sequelize.Utils.QueryChainer()
           .add(dao.connection.query(util.getPlaylists(userForPage)))
-          .add(dao.connection.query(util.getFavorites(userForPage)))
           .run().success(function(results) {
             util.getUploads(userForPage, function(videos) {
-              var playlistsForPage = results[0];
-              var favoritesForPage = results[1];
+              util.getFavorites(userForPage, function(favorites) {
+                var playlistsForPage = results[0];
+                var favoritesForPage = results[1];
 
-              res.render(__dirname + '/views/profile.coffee', {
-                user: req.user,
-                pageUser: userForPage,
-                uploads: videos,
-                playlists: playlistsForPage,
-                favorites: favoritesForPage,
-                messages: messages
+                res.render(__dirname + '/views/profile.coffee', {
+                    user: req.user,
+                    pageUser: userForPage,
+                    uploads: videos,
+                    playlists: playlistsForPage,
+                    favorites: favorites,
+                    messages: messages
+                });
               });
             });
           });

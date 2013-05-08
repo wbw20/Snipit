@@ -95,18 +95,13 @@ module.exports = {
   },
 
   /* gets user's favorite videos */
-  getFavorites: function(userForPage) {
-        return('select videoId, FavLikes.vidCreatedAt, userId, FavLikes.name, FavLikes.username, path, videoName, ' +
-               'uploader, U.name as uploaderName, FavLikes.likeCount from ' +
-               '(select *, count(L.id) as likeCount ' +
-               'from (select V.id as videoId, V.createdAt as vidCreatedAt, U.id as userId, ' +
-               'U.name, U.username, U.age, V.path, V.name as videoName, V.uploader as uploader ' +
-               'from user_to_video_favorites F, videos V, users U ' +
-               'where F.videoId = V.id and F.userId = U.id and U.id = ' + userForPage.id + ') as X, ' +
-               'likedislikes L ' +
-               'where X.videoId = L.video and L.likedislike = "like" ' +
-               'group by X.videoId) as FavLikes, users U ' +
-               'where U.id = FavLikes.uploader')
+  getFavorites: function(userForPage, callback) {
+        dao.connection.query('select V.id, V.name, V.path, V.createdAt, U.id as userId, U.name as username' +
+                             '  from videos V, user_to_video_favorites F, users U' +
+                             '  where U.id = V.uploader and' +
+                             '  V.id = F.videoId and F.userId = ' + userForPage.id).success(function(results) {
+          callback(results);
+        });
   },
   
   /* gets messages sent to user */
