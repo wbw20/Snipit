@@ -251,6 +251,14 @@ app.post('/new', function (req, res) {
     });
 });
 
+app.post('/like', function(req, res) {
+    models.LikeDislike.build({
+        likedislike: 'like',
+        user: req.user.body,
+        video: red.body.video
+    });
+})
+
 app.post('/login', function (req, res) {
     models.User.find({
       where: {
