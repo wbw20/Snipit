@@ -104,49 +104,65 @@ html ->
         section name: 'search', ->
           div class: 'block', id: 'searchContainer', ->
             coffeescript ->
-              require ['dojo/ready', 'dojo/dom-style', 'dijit/form/TextBox'], (ready, domstyle,  TextBox) ->
+              require ['dojo/ready',
+                       'dojo/dom-style',
+                       'dijit/form/TextBox',
+                       'dijit/Tooltip',
+                       'dojo/on'], (ready, domstyle, TextBox, Tooltip, dojon) ->
                 ready () ->
                   dojo.addOnLoad () ->
                     dojoConfig = {
                       baseUrl: 'localhost:8080'
                     }
 
-                  searchBox = new TextBox
+                  searchBox = new TextBox {
+                    id: 'searchBox'
+                  }
                   dojo.connect searchBox, 'onChange', () ->
-                    console.log (searchBox.value.split ' ')
+                    dojo.query('.dijitTooltip*').forEach(dojo.destroy)
+
                     dojo.xhrGet {
                       url: '/search?terms=' + JSON.stringify(searchBox.value.split ' '),
                       handleAs: 'text',
                       handle: (data) ->
                         dojo.destroy 'resultGrid'
 
-                        domstyle.set (dojo.byId 'resultsTitle'), 'display', ''
-                        container = dojo.create 'div', {
-                          id: 'resultGrid',
-                          style: {
-                            'background-color': '#DBDBDB',
-                            border: '2px solid #B8CCFF',
-                            margin: '0 auto',
-                            height: (Math.ceil((JSON.parse data).length/4))*167,
-                            width: '827px'
-                          }
-                        }, (dojo.byId 'resultsContainer')
-
-                        for result in (JSON.parse data)
-                          link = dojo.create 'a', {
-                            href: 'video?v=' + result.id
-                          }, container
-
-                          thumbnail = dojo.create 'img', {
+                        #If we got back results from our search
+                        if JSON.parse(data).length > 0
+                          domstyle.set (dojo.byId 'resultsTitle'), 'display', ''
+                          container = dojo.create 'div', {
+                            id: 'resultGrid',
                             style: {
-                              float: 'left',
-                              height: '135px',
-                              width: '187',
-                              padding: '15px 0 15px 15px'
-                            },
-                            src: 'photos/thumbnail/' + (result.path.match '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') + '.png',
-                            alt: result.name
-                          }, link
+                              'background-color': '#DBDBDB',
+                              border: '2px solid #B8CCFF',
+                              margin: '0 auto',
+                              height: (Math.ceil((JSON.parse data).length/4))*167,
+                              width: '827px'
+                            }
+                          }, (dojo.byId 'resultsContainer')
+
+                          for result in (JSON.parse data)
+                            link = dojo.create 'a', {
+                              href: 'video?v=' + result.id
+                            }, container
+
+                            thumbnail = (dojo.create 'img', {
+                              style: {
+                                float: 'left',
+                                height: '135px',
+                                width: '187',
+                                padding: '15px 0 15px 15px'
+                              },
+                              src: 'photos/thumbnail/' + (result.path.match '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') + '.png',
+                              alt: result.name
+                            }, link)
+
+                        #If our search returned no results
+                        else
+                          domstyle.set (dojo.byId 'resultsTitle'), 'display', 'none'
+
+                          Tooltip.show('No Results', searchBox.domNode)
+
                     }
                   domstyle.set searchBox.domNode, 'width', '30em'
                   (dojo.byId 'searchContainer').appendChild searchBox.domNode

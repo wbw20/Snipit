@@ -102,25 +102,35 @@ html ->
                   searchBox = new TextBox {
                     placeHolder: 'Enter a YouTube URL...'
                   }
+
                   (dojo.byId 'searchContainer').appendChild searchBox.domNode
                   domstyle.set searchBox.domNode, 'width', '30em'
 
                   dojo.connect searchBox, 'onChange', () ->
-                    # Hide placeholder
+                    #Remove any videos that might exsist
+                    dojo.destroy 'videoEmbed'
+
+                    #Hide the placeholder
                     dojo.style (dojo.byId 'placeHolder'), 'display', 'none'
 
-                    # Embed video
-                    index = (searchBox.value.match ".com/").index + 5
-                    embedUrl = (searchBox.value.slice 0, index) + 'embed/' + (searchBox.value.slice index + 8)
-                    dojo.place (dojo.create 'iframe', {
-                      'src': embedUrl,
-                      'width': '740',
-                      'height': '480',
-                      'frameborder': '0',
-                      'allowfullscreen'
-                    }), (dojo.byId 'videoContainer')
+                    if (searchBox.value.indexOf 'youtube') == -1
+                      # Hide placeholder
+                      dojo.style (dojo.byId 'placeHolder'), 'display', ''
+                    else
+                      # Embed video
+                      index = (searchBox.value.match ".com/").index + 5
+                      embedUrl = (searchBox.value.slice 0, index) + 'embed/' + (searchBox.value.slice index + 8)
+                      dojo.place (dojo.create 'iframe', {
+                        id: 'videoEmbed',
+                        src: embedUrl,
+                        width: '740',
+                        height: '480',
+                        frameborder: '0',
+                        'allowfullscreen'
+                      }), (dojo.byId 'videoContainer')
 
-                    (dojo.byId 'url').value = searchBox.value
+                      (dojo.byId 'url').value = searchBox.value
+
 
         form method: 'post', style: 'margin: auto', ->
           table style: 'margin: auto;', ->
