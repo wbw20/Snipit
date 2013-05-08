@@ -187,4 +187,15 @@ html ->
                 a href: 'video?v=' + vid.id, ->
                   imgPath = 'photos/thumbnail/' + (vid.path.match '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') + '.png'
                   img src: imgPath, class: 'thumbnail', alt: vid.name
-
+    
+    div id: 'footer', ->
+      p 'Created by Matt Prosser, Caley Shem-Crumrine, William Wettersten, and Greg Ziegan.'
+      p ->
+        text 'View our project report '
+        a href: 'Prosser.Shem-Crumrine.Wettersten.Ziegan.FinalReport.pdf', ->
+          text 'here'
+        text '.'
+    
+    
+    
+    

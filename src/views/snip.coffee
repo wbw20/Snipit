@@ -186,3 +186,11 @@ html ->
                 type: 'Submit',
                 label: 'Snip!'
               }).domNode
+              
+    div id: 'footer', ->
+      p 'Created by Matt Prosser, Caley Shem-Crumrine, William Wettersten, and Greg Ziegan.'
+      p ->
+        text 'View our project report '
+        a href: 'Prosser.Shem-Crumrine.Wettersten.Ziegan.FinalReport.pdf', ->
+          text 'here'
+        text '.'
