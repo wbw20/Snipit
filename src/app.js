@@ -209,7 +209,7 @@ app.get('/video', function(req, res) {
           where : { video: video.id },
           include: [models.User]
         }).success(function(comments) {
-          util.getVideoInfo(video.id, req.user.id, function(likesdislikesfavorites) {
+          util.getVideoInfo(video.id, req.user ? req.user.id : 0, function(likesdislikesfavorites) {
             //Has the snipping operation finished yet?
             fs.exists('../data/' + video.path, function(exists) {
               video.ready = exists;
