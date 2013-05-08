@@ -143,17 +143,38 @@ module.exports = {
                              '  from user_to_video_favorites' +
                              '  where videoId = ' + video).success(function(favorites) {
             callback({
-                'likesdislikes': likesdislikes,
-                'favorites': favorites,
+                'likes': (function(data) {
+                    var count = 0;
+                    for (var record in data) {
+                        if (data[record].likedislike == 'like') {
+                            count++;
+                        }
+                    }
+
+                    return count;
+                }(likesdislikes)),
+                'dislikes': (function(data) {
+                    var count = 0;
+                    for (var record in data) {
+                        if (data[record].likedislike == 'dislike') {
+                            count++;
+                        }
+                    }
+
+                    return count;
+                }(likesdislikes)),
                 'likeddisliked': (function(data) {
                   for (var record in data) {
-                      if (data[record].user = user) {
+                      if (data[record].user == user) {
                           return true;
                       }
                   }
 
                   return false;
                 }(likesdislikes)),
+                'favorites': (function(data) {
+                    return data.length;
+                }(favorites)),
                 'favorited': (function(data) {
                   for (var record in data) {
                       if (data[record].userId == user) {

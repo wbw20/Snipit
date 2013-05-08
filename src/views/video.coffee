@@ -111,9 +111,18 @@ html ->
             else
               text 'Created Anonymously'
           if @user
-            span id: 'dislike'
-            span id: 'like'
-            span id: 'favorite'
+            span ->
+              div style: 'color: red; font-family: impact; font-size: 18pt', ->
+                font @likesfavs.dislikes
+              span id: 'dislike'
+            span ->
+              div style: 'color: green; font-family: impact; font-size: 18pt', ->
+                text @likesfavs.likes
+              span id: 'like'
+            span ->
+              div style: 'font-family: impact; font-size: 18pt', ->
+                text @likesfavs.favorites
+              span id: 'favorite'
             form id: 'likedislikefavorite', style: 'display: none', ->
               input name: 'video', value: @vid.id
 
