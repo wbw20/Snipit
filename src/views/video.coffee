@@ -112,15 +112,15 @@ html ->
               text 'Created Anonymously'
           if @user
             span ->
-              div style: 'color: red; font-family: impact; font-size: 18pt', ->
-                font @likesfavs.dislikes
+              div id: 'dislikeCount', style: 'color: red; font-family: impact; font-size: 18pt', ->
+                text @likesfavs.dislikes
               span id: 'dislike'
             span ->
-              div style: 'color: green; font-family: impact; font-size: 18pt', ->
+              div id: 'likeCount', style: 'color: green; font-family: impact; font-size: 18pt', ->
                 text @likesfavs.likes
               span id: 'like'
             span ->
-              div style: 'font-family: impact; font-size: 18pt', ->
+              div id: 'favoriteCount', style: 'font-family: impact; font-size: 18pt', ->
                 text @likesfavs.favorites
               span id: 'favorite'
             form id: 'likedislikefavorite', style: 'display: none', ->
@@ -139,6 +139,7 @@ html ->
                           label: 'Like',
                           disabled: JSON.parse(data).likeddisliked,
                           onClick: () ->
+                            (dojo.byId 'likeCount').innerHTML++
                             dojo.xhrPost {
                               url: '/like',
                               form: dojo.byId 'likedislikefavorite'
@@ -151,6 +152,7 @@ html ->
                           label: 'Dislike',
                           disabled: JSON.parse(data).likeddisliked,
                           onClick: () ->
+                            (dojo.byId 'dislikeCount').innerHTML++
                             dojo.xhrPost {
                               url: '/dislike'
                               form: dojo.byId 'likedislikefavorite'
@@ -163,6 +165,7 @@ html ->
                           label: 'Favorite',
                           disabled: JSON.parse(data).favorited,
                           onClick: () ->
+                            (dojo.byId 'favoriteCount').innerHTML++
                             dojo.xhrPost {
                               url: '/favorite',
                               form: dojo.byId 'likedislikefavorite'
