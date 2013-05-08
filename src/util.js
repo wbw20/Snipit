@@ -17,36 +17,6 @@ module.exports = {
     });
   },
 
-  /* grab 4 videos with most views */
-  getPopular: function(callback) {
-
-      /* fake data for now */
-      var results = [{
-                       name: "video 1",
-                       id:   "Aabc50a0-a460-11e2-9e96-0800200c9a66",
-                     }, {
-                       name: "video 2",
-                       id:   "Babc50a0-a460-11e2-9e96-0800200c9a66",
-                     }, {
-                       name: "video 3",
-                       id:   "Cabc50a0-a460-11e2-9e96-0800200c9a66",
-                     }, {
-                       name: "video 4",
-                       id:   "Dabc50a0-a460-11e2-9e96-0800200c9a66",
-                     }];
-
-      var toReturn = new Array();
-      for (var i = 0; i < results.length; i++) {
-        toReturn[i] = {
-                        name:      results[i].name,
-                        id:        results[i].id
-                        //thumbnail: fs.readFileSync('../data/photos/thumbnail/' + results[i].id + '.jpg')
-                      };
-      }
-
-    return toReturn;
-  },
-
   /* grab 4 videos created most recently */
   getRecent: function(callback) {
     models.Video.findAll({order: 'createdAt DESC', limit: 4
@@ -57,8 +27,19 @@ module.exports = {
 
   /* grab 4 most popular videos */
   getPopular: function(callback) {
-    models.Video.findAll({limit: 4
-      }).success(function(video) {
+    query = 'SELECT P.video as id, V.name, V.path, (likes-dislikes) AS popularity ' +
+            'FROM videos V, ( ' +
+                    'SELECT L.video, ' +
+                    'SUM(CASE WHEN L.likedislike = "like" THEN 1 ELSE 0 END) AS likes, ' +
+                    'SUM(CASE WHEN L.likedislike = "dislike" THEN 1 ELSE 0 END) AS dislikes ' +
+                    'FROM likedislikes L ' +
+                    'GROUP BY L.video ' +
+            ') P ' +
+            'WHERE P.video = V.id ' +
+            'GROUP BY P.video ' +
+            'ORDER BY popularity DESC ' +
+            'LIMIT 4';
+    dao.connection.query(query).success(function(video) {
         callback(video);
     });
   },
