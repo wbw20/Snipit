@@ -180,7 +180,7 @@ app.post('/snip', function(req, res) {
 
   downloader = util.spawn('java', ['-jar', '../opt/downloader.jar', req.body.url, '../data/videos/raw/' + id + '.mp4']);
     downloader.on('close', function(code) {
-        converter = util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/raw/' + id + '.mp4', req.body.start, req.body.end, '../data/videos/snipped/' + id + '.flv']);
+        converter = util.spawn('java', ['-jar', '../opt/converter.jar', '../data/videos/raw/' + id + '.mp4', req.body.start*1000000, req.body.end*1000000, '../data/videos/snipped/' + id + '.flv']);
         converter.stdout.on('data', function (data) {});
         converter.stderr.on('data', function (data) {});
         converter.on('close', function(code) {
