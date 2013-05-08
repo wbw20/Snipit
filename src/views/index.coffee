@@ -130,6 +130,7 @@ html ->
                         #If we got back results from our search
                         if JSON.parse(data).length > 0
                           domstyle.set (dojo.byId 'resultsTitle'), 'display', ''
+                          domstyle.set (dojo.byId 'results-vids'), 'display', ''
                           container = dojo.create 'div', {
                             id: 'resultGrid',
                             style: {
@@ -173,20 +174,24 @@ html ->
                   }, {
                     name: 'Our Favorites'
                   }]
-      div name: 'spacer', style: 'height: 60px'
-      h2 id: 'resultsTitle', style: 'display: none', ->
-        'Results'
-      div id: 'resultsContainer'
-      for sec in @videos
-        section name: sec.name, ->
-          div class: 'videocontainer', ->
-            h2 ->
-              sec.name
-            div class: 'contentbar clearfix', ->
-              for vid in sec.content
-                a href: 'video?v=' + vid.id, ->
-                  imgPath = 'photos/thumbnail/' + (vid.path.match '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') + '.png'
-                  img src: imgPath, class: 'thumbnail', alt: vid.name
+        div name: 'spacer', style: 'height: 60px'
+        
+        section name: 'Results', ->
+          div id: 'results-vids', class: 'videocontainer', style: 'display:none', ->
+            h2 id: 'resultsTitle', style: 'display: none', ->
+              'Search Results'
+            div id: 'resultsContainer', class: 'contentbar clearfix'
+        
+        for sec in @videos
+          section name: sec.name, ->
+            div class: 'videocontainer', ->
+              h2 ->
+                sec.name
+              div class: 'contentbar clearfix', ->
+                for vid in sec.content
+                  a href: 'video?v=' + vid.id, ->
+                    imgPath = 'photos/thumbnail/' + (vid.path.match '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') + '.png'
+                    img src: imgPath, class: 'thumbnail', alt: vid.name
     
     div id: 'footer', ->
       p 'Created by Matt Prosser, Caley Shem-Crumrine, William Wettersten, and Greg Ziegan.'
