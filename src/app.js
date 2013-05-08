@@ -254,10 +254,29 @@ app.post('/new', function (req, res) {
 app.post('/like', function(req, res) {
     models.LikeDislike.build({
         likedislike: 'like',
-        user: req.user.body,
-        video: red.body.video
-    });
-})
+        user: req.user.id,
+        video: req.body.video
+    }).save();
+
+    res.send(200);
+});
+
+app.post('/dislike', function(req, res) {
+    models.LikeDislike.build({
+        likedislike: 'dislike',
+        user: req.user.id,
+        video: req.body.video
+    }).save();
+
+    res.send(200);
+});
+
+app.post('/favorite', function(req, res) {
+    dao.connection.query('insert into user_to_video_favorites' +
+                         '  values (' + req.body.video + ', ' + req.user.id + ', now(), now());');
+
+    res.send(200);
+});
 
 app.post('/login', function (req, res) {
     models.User.find({
