@@ -199,17 +199,21 @@ app.get('/video', function(req, res) {
           where : { video: video.id },
           include: [models.User]
         }).success(function(comments) {
-          //Has the snipping operation finished yet?
-          fs.exists('../data/' + video.path, function(exists) {
-            video.ready = exists;
+          util.getVideoInfo(video.id, req.user ? req.user.id : 0, function(likesdislikesfavorites) {
 
-            res.render(__dirname + '/views/video.coffee', {
-              user: req.user,
-              vid: video,
-              uploader: video.user,
-              comments: comments
+            //Has the snipping operation finished yet?
+            fs.exists('../data/' + video.path, function(exists) {
+              video.ready = exists;
+
+              res.render(__dirname + '/views/video.coffee', {
+                  user: req.user,
+                  vid: video,
+                  uploader: video.user,
+                  comments: comments,
+                  likesfavs: likesdislikesfavorites
+              });
             });
-          })
+          });
         });
       // Video doesn't exist
       } else {

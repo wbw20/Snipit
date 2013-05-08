@@ -133,6 +133,39 @@ module.exports = {
         console.log(messages);
         callback(messages);
     });
+  },
+
+  getVideoInfo: function(video, user, callback) {
+    dao.connection.query('select *' +
+                         '  from likedislikes' +
+                         '  where video = ' + video).success(function(likesdislikes) {
+        dao.connection.query('select *' +
+                             '  from user_to_video_favorites' +
+                             '  where videoId = ' + video).success(function(favorites) {
+            callback({
+                'likesdislikes': likesdislikes,
+                'favorites': favorites,
+                'likeddisliked': (function(data) {
+                  for (var record in data) {
+                      if (data[record].user = user) {
+                          return true;
+                      }
+                  }
+
+                  return false;
+                }(likesdislikes)),
+                'favorited': (function(data) {
+                  for (var record in data) {
+                      if (data[record].user == user) {
+                          return true;
+                      }
+                  }
+
+                  return false;
+                }(favorites))
+            });
+        });
+    });
   }
 }
 
