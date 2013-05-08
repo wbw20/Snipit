@@ -199,19 +199,15 @@ app.get('/video', function(req, res) {
           where : { video: video.id },
           include: [models.User]
         }).success(function(comments) {
-          util.getVideoInfo(video.id, req.user ? req.user.id : 0, function(likesdislikesfavorites) {
+          //Has the snipping operation finished yet?
+          fs.exists('../data/' + video.path, function(exists) {
+            video.ready = exists;
 
-            //Has the snipping operation finished yet?
-            fs.exists('../data/' + video.path, function(exists) {
-              video.ready = exists;
-
-              res.render(__dirname + '/views/video.coffee', {
-                  user: req.user,
-                  vid: video,
-                  uploader: video.user,
-                  comments: comments,
-                  likesfavs: likesdislikesfavorites
-              });
+            res.render(__dirname + '/views/video.coffee', {
+                user: req.user,
+                vid: video,
+                uploader: video.user,
+                comments: comments
             });
           });
         });
@@ -219,6 +215,14 @@ app.get('/video', function(req, res) {
       } else {
         res.send(404);
       }
+  });
+});
+
+app.get('/info', function(req, res) {
+  var url_str = url.parse(req.url, true).query;
+
+  util.getVideoInfo(url_str.v, req.user.id, function (results) {
+    res.send(results);
   });
 });
 

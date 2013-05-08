@@ -120,43 +120,52 @@ html ->
             coffeescript ->
               require ['dojo/ready', 'dojo/on', 'dojo/parser', 'dijit/form/TextBox', 'dijit/form/Button', 'dijit/form/DropDownButton', 'dijit/TooltipDialog'], (ready, dojon, parser, TextBox, Button, DropDownButton, Dialog) ->
                   ready () ->
+                    dojo.xhrGet {
+                      url: '/info' + document.location.search,
+                      handle: (data) ->
 
-                  like_button = new Button {
-                    label: 'Like',
-                    onClick: () ->
-                      dojo.xhrPost {
-                        url: '/like',
-                        form: dojo.byId 'likedislikefavorite'
-                        handle: () ->
-                          like_button.disabled = true
-                      }
-                  }
+                        console.log JSON.parse(data).likeddisliked
 
-                  dislike_button = new Button {
-                    label: 'Dislike',
-                    onClick: () ->
-                      dojo.xhrPost {
-                        url: '/dislike',
-                        form: dojo.byId 'likedislikefavorite'
-                        handle: () ->
-                          dislike_button.disabled = true
-                      }
-                  }
+                        like_button = new Button {
+                          label: 'Like',
+                          disabled: JSON.parse(data).likeddisliked,
+                          onClick: () ->
+                            dojo.xhrPost {
+                              url: '/like',
+                              form: dojo.byId 'likedislikefavorite'
+                              handle: () ->
+                                like_button.disabled = true
+                            }
+                        }
 
-                  favorites_button = new Button {
-                    label: 'Favorite',
-                    onClick: () ->
-                      dojo.xhrPost {
-                        url: '/favorite',
-                        form: dojo.byId 'likedislikefavorite'
-                        handle: () ->
-                          favorites_button.disabled = true
-                      }
-                  }
+                        dislike_button = new Button {
+                          label: 'Dislike',
+                          disabled: JSON.parse(data).likeddisliked,
+                          onClick: () ->
+                            dojo.xhrPost {
+                              url: '/dislike'
+                              form: dojo.byId 'likedislikefavorite'
+                              handle: () ->
+                                dislike_button.disabled = true
+                            }
+                        }
 
-                  (dojo.byId 'like').appendChild like_button.domNode
-                  (dojo.byId 'dislike').appendChild dislike_button.domNode
-                  (dojo.byId 'favorite').appendChild favorites_button.domNode
+                        favorites_button = new Button {
+                          label: 'Favorite',
+                          disabled: JSON.parse(data).favorited,
+                          onClick: () ->
+                            dojo.xhrPost {
+                              url: '/favorite',
+                              form: dojo.byId 'likedislikefavorite'
+                              handle: () ->
+                                favorites_button.disabled = true
+                            }
+                        }
+
+                        (dojo.byId 'like').appendChild like_button.domNode
+                        (dojo.byId 'dislike').appendChild dislike_button.domNode
+                        (dojo.byId 'favorite').appendChild favorites_button.domNode
+                    }
     
       if @comments.length > 0      
         h2 'Comments'

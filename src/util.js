@@ -156,7 +156,7 @@ module.exports = {
                 }(likesdislikes)),
                 'favorited': (function(data) {
                   for (var record in data) {
-                      if (data[record].user == user) {
+                      if (data[record].userId == user) {
                           return true;
                       }
                   }
