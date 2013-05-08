@@ -4,7 +4,8 @@ var dao = require('./dao');
 var models = require('./models');
 
 module.exports = {
-  /* wrapper for build-in child.spawn */
+
+  /* wrapper for build-in function child.spawn */
   spawn: function(process, args, onData, onEnd) {
     return child.spawn(process, args);
   },
@@ -20,8 +21,8 @@ module.exports = {
   /* grab 4 videos created most recently */
   getRecent: function(callback) {
     models.Video.findAll({order: 'createdAt DESC', limit: 4
-      }).success(function(video) {
-        callback(video);
+      }).success(function(results) {
+        callback(results);
     });
   },
 
@@ -39,8 +40,8 @@ module.exports = {
             'GROUP BY P.video ' +
             'ORDER BY popularity DESC ' +
             'LIMIT 4';
-    dao.connection.query(query).success(function(video) {
-        callback(video);
+    dao.connection.query(query).success(function(results) {
+        callback(results);
     });
   },
 
@@ -69,7 +70,7 @@ module.exports = {
   },
 
 
-
+  /* gets list of videos uploaded by user */
   getUploads: function(user, callback) {
     dao.connection.query('select *' +
                          '  from videos V' +
@@ -78,6 +79,7 @@ module.exports = {
     });
   },
 
+  /* gets all playlists created by user and their videos */
   getPlaylists: function(userForPage) {
     return('select P.id, P.name, P.createdAt, P.creator, PH1.path as path1, PH2.path as path2, ' +
            'PH3.path as path3, count(V.id) as numVideos from videos V, video_to_playlists VP, ' +
@@ -92,9 +94,8 @@ module.exports = {
            'and PH3.path <> PH1.path group by P.id')
   },
 
+  /* gets user's favorite videos */
   getFavorites: function(userForPage) {
-
-    console.log('calls correctly')
         return('select videoId, FavLikes.vidCreatedAt, userId, FavLikes.name, FavLikes.username, path, videoName, ' +
                'uploader, U.name as uploaderName, FavLikes.likeCount from ' +
                '(select *, count(L.id) as likeCount ' +
@@ -108,6 +109,7 @@ module.exports = {
                'where U.id = FavLikes.uploader')
   },
   
+  /* gets messages sent to user */
   getMessages: function(userID, callback) {
     models.Message.findAll({where: {recipient: userID}, order: 'createdAt DESC', include: [models.User], include: [models.User]
       }).success(function(messages) {

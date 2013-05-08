@@ -17,6 +17,7 @@ dao.connection.sync().failure(function(error) {
   console.log(error);
 });
 
+/* app & cookie configuration */
 app.configure(function() {
   /* our state of the art authentication filter */
   app.use(function(req, res, next) {
@@ -42,6 +43,7 @@ app.configure(function() {
   app.use(express.bodyParser());
 });
 
+/* main page */
 app.get('/', function(req, res) {
   // asynchronous function to grab recently viewed videos
   util.getPopular(function(popular) {
@@ -60,6 +62,7 @@ app.get('/', function(req, res) {
   });
 });
 
+/* user profile page */
 app.get('/profile', function(req, res) {
 
   var url_str = url.parse(req.url, true).query;
@@ -107,6 +110,7 @@ app.get('/profile', function(req, res) {
   });
 });
 
+/*  */
 app.get('/uploads', function(req, res) {
    var ajaxdata = [];
 
@@ -129,6 +133,7 @@ app.get('/uploads', function(req, res) {
   res.send(ajaxdata);
 });
 
+/* seach box */
 app.get('/search', function(req, res) {
   console.log(url.parse(req.url, true).query.terms);
 
@@ -137,12 +142,14 @@ app.get('/search', function(req, res) {
   })
 });
 
+/* snip video page */
 app.get('/snip', function(req, res) {
   res.render(__dirname + '/views/snip.coffee', {
     user: req.user
   });
 });
 
+/* snips video! */
 app.post('/snip', function(req, res) {
   var id = util.uuid();
   var converter;
@@ -183,10 +190,12 @@ app.post('/snip', function(req, res) {
     });
 });
 
+/* create new user page */
 app.get('/new', function(req, res) {
   res.render(__dirname + '/views/new.coffee');
 });
 
+/* video page */
 app.get('/video', function(req, res) {
   var url_str = url.parse(req.url, true).query;
 
@@ -218,6 +227,7 @@ app.get('/video', function(req, res) {
   });
 });
 
+/* saves video comments */
 app.post('/comment', function (req, res) {
   models.Comment.build({
       comment: req.body.comment,
@@ -228,6 +238,7 @@ app.post('/comment', function (req, res) {
   res.redirect('/video?v=' + req.body.vid_id);
 });
 
+/* saves user messages */
 app.post('/message', function (req, res) {
   models.Message.build({
       message: req.body.message,
@@ -238,6 +249,7 @@ app.post('/message', function (req, res) {
   res.redirect('/profile?u=' + req.body.recipient);
 });
 
+/* saves new user */
 app.post('/new', function (req, res) {
     models.User.build({
         name: req.body.first + ' ' + req.body.last,
@@ -251,6 +263,7 @@ app.post('/new', function (req, res) {
     });
 });
 
+/* login form */
 app.post('/login', function (req, res) {
     models.User.find({
       where: {
@@ -258,11 +271,11 @@ app.post('/login', function (req, res) {
         password: req.body.password
       }
     }).success(function(theUserWeFound) {
-      //authenticate the user
+      // authenticate the user
       if (theUserWeFound) {
         new Cookies(req, res, keygrip).set('login', req.body.username, {signed: true});
           return res.redirect('/');
-      //or don't
+      // if error
       } else {
         res.redirect("/oops?m=Invalid username or password. Please try again.");
       }
@@ -271,6 +284,7 @@ app.post('/login', function (req, res) {
     });
 });
 
+/* logs current user out */
 app.get('/logout', function (req, res) {
     var cookies = new Cookies(req, res, keygrip);
     cookies.set('login', 'wbw20', {
@@ -281,6 +295,8 @@ app.get('/logout', function (req, res) {
     return res.redirect('/');
 });
 
+
+/* used to check if username is taken */
 app.get('/user', function (req, res) {
     console.log (req.query);
     models.User.find({
@@ -296,7 +312,7 @@ app.get('/user', function (req, res) {
     });
 });
 
-// 404/error page
+/* 404/error page */
 app.get('/oops', function (req, res) {
   var url_str = url.parse(req.url, true).query;
   
@@ -306,7 +322,7 @@ app.get('/oops', function (req, res) {
   });                                
 });
 
-// 404 Route (ALWAYS keep this as the last route)
+/* 404 route (ALWAYS keep this as the last route) */
 app.get('*', function(req, res){
   res.redirect("/oops?m=It looks like the page you're looking for doesn't exist.");
 });
