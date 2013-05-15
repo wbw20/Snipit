@@ -21,10 +21,10 @@ html ->
                 ready () ->
                 signinDialog = new Dialog {
                   content: '<form id="signinform" method="post" action="/login">' +
-                             '<label for="username">username:</label>' + 
+                             '<label for="username">username:</label>' +
                              '<input type="text" data-dojo-type="dijit/form/TextBox" id="username" name="username"><br><br>' +
-                             '<label for="password">password:</label>' + 
-                             '<input type="text" data-dojo-type="dijit/form/TextBox" id="password" name="password">' +
+                             '<label for="password">password:</label>' +
+                             '<input type="password" data-dojo-type="dijit/form/TextBox" id="password" name="password">' +
                              '<button id="signinsubmit" type="submit" data-dojo-type="dijit/form/Button">Login</button>' +
                            '</form>'
                 }
@@ -52,16 +52,16 @@ html ->
             img id: 'icon', src: 'icon.png'
 
             coffeescript ->
-              require ['dojo/ready', 
-                       'dijit/TooltipDialog', 
-                       'dijit/popup', 
-                       'dojo/on', 
+              require ['dojo/ready',
+                       'dijit/TooltipDialog',
+                       'dijit/popup',
+                       'dojo/on',
                        'dojo/dom'], (ready, TooltipDialog, popup, dojon, dom) ->
                 ready () ->
                   iconDialog = new TooltipDialog {
                     id: 'iconDialog',
                     style: 'width: 130px;',
-                    content: '<button id="profile" type="button" data-dojo-type="dijit/form/Button"' + 
+                    content: '<button id="profile" type="button" data-dojo-type="dijit/form/Button"' +
                                 'onclick="window.location=\'/profile\'">view profile</button>' +
                               '<form action="logout">' +
                                 '<button id="logoutsubmit" type="submit" data-dojo-type="dijit/form/Button">log out</button>' +
@@ -88,8 +88,8 @@ html ->
                   window.location = '/snip';
               }
 
-              (dojo.byId 'snip').appendChild snip_button.domNode 
-        
+              (dojo.byId 'snip').appendChild snip_button.domNode
+
     div id: 'container', ->
       div id: 'main', ->
         div name: 'spacer', style: 'height: 50px'
@@ -232,7 +232,7 @@ html ->
 
               (dojo.byId 'enabledContainer').appendChild submitEnabled.domNode
               (dojo.byId 'disabledContainer').appendChild submitDisabled.domNode
-              
+
     div id: 'footer', ->
       p 'Created by Matt Prosser, Caley Shem-Crumrine, William Wettersten, and Greg Ziegan.'
       p ->

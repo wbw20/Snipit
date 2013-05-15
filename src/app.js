@@ -1,3 +1,4 @@
+var bcrypt = require('bcrypt');
 var coffeecup = require('coffeecup');
 var express = require('express');
 var fs = require('fs');
@@ -264,15 +265,20 @@ app.post('/message', function (req, res) {
 
 /* saves new user */
 app.post('/new', function (req, res) {
-    models.User.build({
-        name: req.body.first + ' ' + req.body.last,
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email
-    }).save().success(function(user) {
-      new Cookies(req, res, keygrip).set('login', req.body.username, {signed: true});
-      req.user = user;
-      res.redirect('/');
+    bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(req.body.password, salt, function(err, hash) {
+            models.User.build({
+                name: req.body.first + ' ' + req.body.last,
+                username: req.body.username,
+                password: hash,
+                salted_password: salt,
+                email: req.body.email
+            }).save().success(function(user) {
+                new Cookies(req, res, keygrip).set('login', req.body.username, {signed: true});
+                req.user = user;
+                res.redirect('/');
+            });
+        });
     });
 });
 
@@ -305,22 +311,33 @@ app.post('/favorite', function(req, res) {
 
 /* login form */
 app.post('/login', function (req, res) {
-    models.User.find({
-      where: {
-        username: req.body.username,
-        password: req.body.password
-      }
-    }).success(function(theUserWeFound) {
-      // authenticate the user
-      if (theUserWeFound) {
-        new Cookies(req, res, keygrip).set('login', req.body.username, {signed: true});
-          return res.redirect('/');
-      // if error
-      } else {
-        res.redirect("/oops?m=Invalid username or password. Please try again.");
-      }
-    }).error(function(error) {
-      res.redirect("/oops?m=Invalid username or password. Please try again.");
+    models.User.find({ 
+        where: {
+            username: req.body.username
+        }
+    }).success(function(reqUser) {
+        if (!reqUser) 
+            res.redirect("/oops?m=Invalid username. Please try again.");
+
+        bcrypt.hash(req.body.password, reqUser.salted_password, function(err, hash) {
+            models.User.find({
+                where: {
+                    username: req.body.username,
+                    password: hash
+                }
+            }).success(function(theUserWeFound) {
+            // authenticate the user
+                if (theUserWeFound) {
+                    new Cookies(req, res, keygrip).set('login', req.body.username, {signed: true});
+                    return res.redirect('/');
+            // if error
+                } else {
+                    res.redirect("/oops?m=Invalid username or password. Please try again.");
+                }
+            }).error(function(error) {
+                res.redirect("/oops?m=Invalid username or password. Please try again.");
+            });
+        });
     });
 });
 
