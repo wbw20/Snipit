@@ -199,36 +199,36 @@ app.get('/video', function(req, res) {
   var url_str = url.parse(req.url, true).query;
 
   // Add a video view to the database
-  models.
+  util.addView(url_str.v, req.user.id, function(result) {
+    // Get video
+    models.Video.find({where : {id: url_str.v}, include: [models.User]
+      }).success(function(video) {
+          if (video) {
+              // get comments
+              models.Comment.findAll({
+                  where : { video: video.id },
+                  include: [models.User]
+              }).success(function(comments) {
+                      util.getVideoInfo(video.id, req.user ? req.user.id : 0, function(likesdislikesfavorites) {
+                          //Has the snipping operation finished yet?
+                          fs.exists('../data/' + video.path, function(exists) {
+                              video.ready = exists;
 
-  // Get video
-  models.Video.find({where : {id: url_str.v}, include: [models.User]
-    }).success(function(video) {
-      if (video) {
-        // get comments
-        models.Comment.findAll({
-          where : { video: video.id },
-          include: [models.User]
-        }).success(function(comments) {
-          util.getVideoInfo(video.id, req.user ? req.user.id : 0, function(likesdislikesfavorites) {
-            //Has the snipping operation finished yet?
-            fs.exists('../data/' + video.path, function(exists) {
-              video.ready = exists;
-
-              res.render(__dirname + '/views/video.coffee', {
-                user: req.user,
-                vid: video,
-                uploader: video.user,
-                comments: comments,
-                likesfavs: likesdislikesfavorites
-              });
-            });
-          })
-        });
-      // Video doesn't exist
-      } else {
-        res.send(404);
-      }
+                              res.render(__dirname + '/views/video.coffee', {
+                                  user: req.user,
+                                  vid: video,
+                                  uploader: video.user,
+                                  comments: comments,
+                                  likesfavs: likesdislikesfavorites
+                              });
+                          });
+                      })
+                  });
+            // Video doesn't exist
+          } else {
+              res.send(404);
+          }
+      });
   });
 });
 

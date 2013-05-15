@@ -165,6 +165,11 @@ module.exports = {
             });
         });
     });
+  },
+
+  addView : function(video, user,  callback) {
+    dao.connection.query('insert into user_to_video_views' +
+                         '  values (' + video + ', ' + user + ', now(), now())').success(callback);
   }
 }
 
