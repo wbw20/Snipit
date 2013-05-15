@@ -82,7 +82,7 @@ app.get('/profile', function(req, res) {
 
   util.getMessages(url_str.u, function(messages) {
     models.User.find({where: {id: url_str.u}
-    }).success(function(userForPage) {
+        }).success(function(userForPage) {
 
       if (userForPage) {
         new Sequelize.Utils.QueryChainer()
