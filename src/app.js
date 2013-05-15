@@ -136,8 +136,6 @@ app.get('/uploads', function(req, res) {
 
 /* seach box */
 app.get('/search', function(req, res) {
-  console.log(url.parse(req.url, true).query.terms);
-
   util.search(url.parse(req.url, true).query.terms, function(results) {
       res.send(results);
   })
@@ -200,7 +198,10 @@ app.get('/new', function(req, res) {
 app.get('/video', function(req, res) {
   var url_str = url.parse(req.url, true).query;
 
-  // get video
+  // Add a video view to the database
+  models.
+
+  // Get video
   models.Video.find({where : {id: url_str.v}, include: [models.User]
     }).success(function(video) {
       if (video) {
