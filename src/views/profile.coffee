@@ -21,10 +21,10 @@ html ->
                 ready () ->
                 signinDialog = new Dialog {
                   content: '<form id="signinform" method="post" action="/login">' +
-                             '<label for="username">username:</label>' + 
+                             '<label for="username">username:</label>' +
                              '<input type="text" data-dojo-type="dijit/form/TextBox" id="username" name="username"><br><br>' +
-                             '<label for="password">password:</label>' + 
-                             '<input type="text" data-dojo-type="dijit/form/TextBox" id="password" name="password">' +
+                             '<label for="password">password:</label>' +
+                             '<input type="password" data-dojo-type="dijit/form/TextBox" id="password" name="password">' +
                              '<button id="signinsubmit" type="submit" data-dojo-type="dijit/form/Button">Login</button>' +
                            '</form>'
                 }
@@ -50,16 +50,16 @@ html ->
             img id: 'icon', src: 'icon.png'
 
             coffeescript ->
-              require ['dojo/ready', 
-                       'dijit/TooltipDialog', 
-                       'dijit/popup', 
-                       'dojo/on', 
+              require ['dojo/ready',
+                       'dijit/TooltipDialog',
+                       'dijit/popup',
+                       'dojo/on',
                        'dojo/dom'], (ready, TooltipDialog, popup, dojon, dom) ->
                 ready () ->
                   iconDialog = new TooltipDialog {
                     id: 'iconDialog',
                     style: 'width: 130px;',
-                    content: '<button id="profile" type="button" data-dojo-type="dijit/form/Button"' + 
+                    content: '<button id="profile" type="button" data-dojo-type="dijit/form/Button"' +
                                 'onclick="window.location=\'/profile\'">view profile</button>' +
                               '<form action="logout">' +
                                 '<button id="logoutsubmit" type="submit" data-dojo-type="dijit/form/Button">log out</button>' +
@@ -109,18 +109,18 @@ html ->
             td ->
               div name: 'joinDate', ->
                 p 'Joined on ' + @pageUser.createdAt.toString().slice(0,15)
-      
+
       if @user
-	       
+
 	      div id: 'message-box', ->
 	        form method: 'post', action: 'message', ->
 	          input name: 'recipient', type: 'hidden', value: @pageUser.id
 	          div id: 'message-text'
 	          div id: 'submit-message'
 	          coffeescript ->
-              require ['dojo/ready', 
-                       'dojo/dom-style', 
-                       'dijit/form/Textarea', 
+              require ['dojo/ready',
+                       'dojo/dom-style',
+                       'dijit/form/Textarea',
                        'dijit/form/Button'], (ready, domstyle, TextArea, Button) ->
                 ready () ->
                   messageBox = new TextArea {
@@ -129,13 +129,13 @@ html ->
                     style: 'width:400px;height:100px;'
                   }
                   (dojo.byId 'message-text').appendChild messageBox.domNode
-	            
+
 	                (dojo.byId 'submit-message').appendChild (new Button {
                     type: 'Submit',
                     label: 'Submit',
                     style: 'margin-top:5px;'
                   }).domNode
-      
+
       # Videos the user has uploaded
       div id: 'uploadedVids', ->
         table class: 'profileTable', ->
@@ -192,18 +192,18 @@ html ->
                   playlist.numVideos.toString() + ' videos in playlist'
                 div style: 'position: relative; left: 40px', -> # Displays playlist creation date
                   'Created on ' + playlist.createdAt.toString().slice(0,15)
-                  
-                  
+
+
       # Messages to the user
       div id: 'messages', ->
-        
+
         # display messages
         for message in @messages
           a href: 'profile?u='+ message.user.id, ->
             message.user.username
           p message.message
-        
-        
+
+
 
       div id: 'tabContainer', ->
         div id: 'tcl-prog'
@@ -231,7 +231,7 @@ html ->
                 content: dojo.byId 'playlists'
               }
               tc.addChild cp3
-              
+
               cp3 = new ContentPane {
                 title: 'Messages',
                 content: dojo.byId 'messages'
@@ -239,7 +239,7 @@ html ->
               tc.addChild cp3
 
               tc.startup ''
-              
+
     div id: 'footer', ->
       p 'Created by Matt Prosser, Caley Shem-Crumrine, William Wettersten, and Greg Ziegan.'
       p ->

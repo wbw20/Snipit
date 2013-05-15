@@ -24,10 +24,10 @@ html ->
                 ready () ->
                 signinDialog = new Dialog {
                   content: '<form id="signinform" method="post" action="/login">' +
-                             '<label for="username">username:</label>' + 
+                             '<label for="username">username:</label>' +
                              '<input type="text" data-dojo-type="dijit/form/TextBox" id="username" name="username"><br><br>' +
-                             '<label for="password">password:</label>' + 
-                             '<input type="text" data-dojo-type="dijit/form/TextBox" id="password" name="password">' +
+                             '<label for="password">password:</label>' +
+                             '<input type="password" data-dojo-type="dijit/form/TextBox" id="password" name="password">' +
                              '<button id="signinsubmit" type="submit" data-dojo-type="dijit/form/Button">Login</button>' +
                            '</form>'
                 }
@@ -54,16 +54,16 @@ html ->
             img id: 'icon', src: 'icon.png'
 
             coffeescript ->
-              require ['dojo/ready', 
-                       'dijit/TooltipDialog', 
-                       'dijit/popup', 
-                       'dojo/on', 
+              require ['dojo/ready',
+                       'dijit/TooltipDialog',
+                       'dijit/popup',
+                       'dojo/on',
                        'dojo/dom'], (ready, TooltipDialog, popup, dojon, dom) ->
                 ready () ->
                   iconDialog = new TooltipDialog {
                     id: 'iconDialog',
                     style: 'width: 130px;',
-                    content: '<button id="profile" type="button" data-dojo-type="dijit/form/Button"' + 
+                    content: '<button id="profile" type="button" data-dojo-type="dijit/form/Button"' +
                                 'onclick="window.location=\'/profile\'">view profile</button>' +
                               '<form action="logout">' +
                                 '<button id="logoutsubmit" type="submit" data-dojo-type="dijit/form/Button">log out</button>' +
@@ -79,7 +79,7 @@ html ->
                     }
         li ->
           div id: 'snip'
-            
+
           coffeescript ->
             require ['dojo/ready', 'dojo/on', 'dojo/parser', 'dijit/form/TextBox', 'dijit/form/Button'], (ready, dojon, parser, TextBox, Button) ->
               ready () ->
@@ -90,7 +90,7 @@ html ->
                   window.location = '/snip';
               }
 
-              (dojo.byId 'snip').appendChild snip_button.domNode            
+              (dojo.byId 'snip').appendChild snip_button.domNode
 
     div id: 'container', ->
       div id: 'main', ->
@@ -99,7 +99,7 @@ html ->
           div id: 'video', ->
             a href: @vid.path, id: 'flowplayer', ->
             coffeescript ->
-              flowplayer 'flowplayer', 'flowplayer/flowplayer-3.2.16.swf'        
+              flowplayer 'flowplayer', 'flowplayer/flowplayer-3.2.16.swf'
         else
           h1 'NOT READY'
 	      div id: 'video-stats', class: 'clearfix', ->
@@ -178,8 +178,8 @@ html ->
                         (dojo.byId 'dislike').appendChild dislike_button.domNode
                         (dojo.byId 'favorite').appendChild favorites_button.domNode
                     }
-    
-      if @comments.length > 0      
+
+      if @comments.length > 0
         h2 'Comments'
         div id: 'comment-container', class: 'contentbar', ->
           for i in @comments
@@ -187,21 +187,21 @@ html ->
               a href: 'profile?u='+ i.user.id, ->
                 i.user.username
               p i.comment
-      
-      unless @user      
+
+      unless @user
         div class: 'contentbar', id: 'add-comment', ->
           text 'Log in to add a comment!'
       if @user
-	      h2 'Add a Comment'  
+	      h2 'Add a Comment'
 	      div id: 'add-comment', class: 'contentbar', ->
 	        form method: 'post', action: 'comment', ->
 	          input name: 'vid_id', type: 'hidden', value: @vid.id
 	          div id: 'comment-box'
 	          div id: 'submit-comment'
 	          coffeescript ->
-              require ['dojo/ready', 
-                       'dojo/dom-style', 
-                       'dijit/form/Textarea', 
+              require ['dojo/ready',
+                       'dojo/dom-style',
+                       'dijit/form/Textarea',
                        'dijit/form/Button'], (ready, domstyle, TextArea, Button) ->
                 ready () ->
                   commentBox = new TextArea {
@@ -209,13 +209,13 @@ html ->
                     style: 'width:867px;height:100px;'
                   }
                   (dojo.byId 'comment-box').appendChild commentBox.domNode
-	          
+
 	                (dojo.byId 'submit-comment').appendChild (new Button {
                     type: 'Submit',
                     label: 'Submit',
                     style: 'margin-top:5px;'
                   }).domNode
-	          
+
 	  div id: 'footer', ->
       p 'Created by Matt Prosser, Caley Shem-Crumrine, William Wettersten, and Greg Ziegan.'
       p ->
@@ -223,4 +223,4 @@ html ->
         a href: 'Prosser.Shem-Crumrine.Wettersten.Ziegan.FinalReport.pdf', ->
           text 'here'
         text '.'
-	          
+
